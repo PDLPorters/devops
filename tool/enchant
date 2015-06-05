@@ -1,0 +1,39 @@
+#!/bin/sh
+
+REPO="$1"
+
+# curl -u $GITHUB_USER:$GITHUB_PASSWD
+IRC_HOOK_URL=`curl -H "Accept: application/json"  https://api.github.com/repos/PDLPorters/"$REPO"/hooks | perl -E '
+use JSON::MaybeXS;
+use Modern::Perl;
+my $d = join "", <>;
+my $j = decode_json($d);
+my $irc = ( grep { $_->{name} eq "irc" } @$j)[0];
+say $irc->{url};
+'`
+curl  -H "Accept: application/json"  -X PATCH $IRC_HOOK_URL -d '
+{
+  "events": [
+    "push",
+    "pull_request",
+    "commit_comment",
+    "pull_request_review_comment",
+    "issues",
+    "issue_comment"
+  ],
+  "config": {
+    "server": "irc.perl.org",
+    "port": "6667",
+    "room": "#pdl",
+    "nick": "opkick",
+    "branches": "",
+    "nickserv_password": "",
+    "password": "",
+    "ssl": "0",
+    "message_without_join": "1",
+    "no_colors": "0",
+    "long_url": "0",
+    "notice": "0"
+  }
+}
+'
