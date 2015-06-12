@@ -3,7 +3,8 @@
 REPO="$1"
 
 # curl -u $GITHUB_USER:$GITHUB_PASSWD
-IRC_HOOK_URL=`curl -H "Accept: application/json"  https://api.github.com/repos/PDLPorters/"$REPO"/hooks | perl -E '
+# use -n for .netrc to set password on api.github.com domain
+IRC_HOOK_URL=`curl -n -H "Accept: application/json"  https://api.github.com/repos/PDLPorters/"$REPO"/hooks | perl -E '
 use JSON::MaybeXS;
 use Modern::Perl;
 my $d = join "", <>;
@@ -11,7 +12,7 @@ my $j = decode_json($d);
 my $irc = ( grep { $_->{name} eq "irc" } @$j)[0];
 say $irc->{url};
 '`
-curl  -H "Accept: application/json"  -X PATCH $IRC_HOOK_URL -d '
+curl -n -H "Accept: application/json"  -X PATCH $IRC_HOOK_URL -d '
 {
   "events": [
     "push",
