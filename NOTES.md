@@ -29,6 +29,7 @@ with `+x` in `/usr/local/libexec/git-core/git-subtree`)
 
 ## Add split task issue for repository
 
+```markdown
 - [ ] standalone `Makefile.PL`
 - [ ] add repository info to metadata
 - [ ] make sure PDL tests for this module are available
@@ -39,5 +40,6 @@ with `+x` in `/usr/local/libexec/git-core/git-subtree`)
 - [ ] add `.gitignore`
 
 [pdl split meta-issue](https://github.com/PDLPorters/pdl/issues/119)
+```
 
 See <https://github.com/PDLPorters/pdl-io-gd/issues/3> for an example.
