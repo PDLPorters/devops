@@ -1,0 +1,19 @@
+#!/bin/sh
+
+REPO="$1"
+DIST="$2"
+MOD="$3"
+
+if [ -z "$1" ]; then
+	echo "example: $0 pdl-io-gd PDL-IO-GD PDL::IO::GD"
+fi
+
+cat <<EOF
+# ${DIST}
+
+![PDL logo](http://pdlporters.github.io/images/icons/pdl.png)
+
+[![Build Status](https://travis-ci.org/PDLPorters/${REPO}.png?branch=master)](https://travis-ci.org/PDLPorters/${REPO})
+[![Coverage Status](https://coveralls.io/repos/PDLPorters/${REPO}/badge.png?branch=master)](https://coveralls.io/r/PDLPorters/${REPO}?branch=master)
+[![CPAN version](https://badge.fury.io/pl/${DIST}.svg)](https://metacpan.org/pod/${MOD})
+EOF
