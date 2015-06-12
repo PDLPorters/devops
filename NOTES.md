@@ -20,6 +20,7 @@ Make sure `git-subtree` is installed and works (if not, get from
 https://github.com/git/git/blob/master/contrib/subtree/git-subtree.sh and place
 with `+x` in `/usr/local/libexec/git-core/git-subtree`)
 ```shell
+    # example for pdl-io-gd
     cd $PDLREPODIR
     git subtree split -P IO/GD -b p-i-g
     cd $PIGDIR
