@@ -31,7 +31,7 @@ with `+x` in `/usr/local/libexec/git-core/git-subtree`)
 
 ```markdown
 - [ ] standalone `Makefile.PL`
-- [ ] add repository info to metadata
+- [ ] add repository info to metadata (`Makefile.PL`'s `META_MERGE`)
 - [ ] make sure PDL tests for this module are available
 - [ ] check that Travis-CI builds work
 - [ ] add badges to README (coverage, etc.)
