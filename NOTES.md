@@ -38,6 +38,7 @@ with `+x` in `/usr/local/libexec/git-core/git-subtree`)
 - [ ] prep `Changes` for new version. Make note that the next release is its own repo and distro
 - [ ] add `xt/00-check-changelog.t` test
 - [ ] add `.gitignore`
+- [ ] add a test to check that `pdldoc` indexing works for the new dist
 
 [pdl split meta-issue](https://github.com/PDLPorters/pdl/issues/119)
 ```
