@@ -14,6 +14,12 @@ git hub repo-new PDLPorters/$REPO_NAME
 ./tool/enchant $REPO_NAME
 ```
 
+```markdown
+- [ ] Travis-CI <https://travis-ci.org/PDLPorters/$REPO> (https://travis-ci.org/profile/PDLPorters)
+- [ ] Coveralls <https://coveralls.io/r/PDLPorters/$REPO> (https://coveralls.io/repos/new?name=PDLPorters)
+- [ ] IRC notifications (handled by devops `enchant` script)
+```
+
 
 ## How to split history
 Make sure `git-subtree` is installed and works (if not, get from
