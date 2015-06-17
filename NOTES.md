@@ -45,6 +45,7 @@ with `+x` in `/usr/local/libexec/git-core/git-subtree`)
 - [ ] add `xt/00-check-changelog.t` test
 - [ ] add `.gitignore`
 - [ ] add a test to check that `pdldoc` indexing works for the new dist
+- [ ] make sure all the configuration options for BAD values are tried by Travis-CI (settings are in `perldl.conf`)
 
 [pdl split meta-issue](https://github.com/PDLPorters/pdl/issues/119)
 ```
