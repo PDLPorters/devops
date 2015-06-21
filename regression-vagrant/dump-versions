@@ -1,0 +1,1 @@
+perlbrew exec 'pmvers PDL || echo "No version of PDL found"'
