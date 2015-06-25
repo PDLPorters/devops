@@ -1,0 +1,7 @@
+#!/bin/sh
+
+wget --mirror -ck -np -A 'PDL-*.tar.gz' \
+	http://backpan.perl.org/authors/id/C/CH/CHM/ \
+	http://backpan.perl.org/authors/id/C/CS/CSOE/ \
+	http://backpan.perl.org/authors/id/K/KG/KGB/ \
+	http://backpan.perl.org/authors/id/L/LU/LUKKA/
