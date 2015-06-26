@@ -1,0 +1,6 @@
+perlbrew lib list \
+	| perl -Mversion -MList::UtilsBy=nsort_by -E '
+		my @data = grep { $_ !~ /2.004011_011/ } map { chomp; $_ =~ s/^\s+//r; } <>;
+		my @out = nsort_by { ($_) = $_ =~ /-([^-]*)$/; $_ =~ s/p1$/.1/; $_ =~ s/a$/.1/; qv($_) } @data;
+		say join ",", @out;
+		'

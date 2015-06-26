@@ -15,6 +15,6 @@ if ! which cpanm > /dev/null 2>&1; then
 	perlbrew install-cpanm
 fi
 cpanm --installdeps .
-cpanm Data::Printer Devel::REPL Devel::REPL::Plugin::DataPrinter Lexical::Persistence Data::Dump::Streamer PPI App::pmuninstall pmtools
+cpanm Data::Printer Devel::REPL Devel::REPL::Plugin::DataPrinter Lexical::Persistence Data::Dump::Streamer PPI App::pmuninstall pmtools List::UtilsBy
 
 echo "source ~/perl5/perlbrew/etc/bashrc" >> ~/.bashrc
