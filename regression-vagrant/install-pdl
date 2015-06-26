@@ -21,19 +21,39 @@ function stop() {
 }
 
 
+#ExtUtils::ParseXS@2.22
+EUPXS_URL="https://cpan.metacpan.org/authors/id/D/DA/DAGOLDEN/ExtUtils-ParseXS-2.22.tar.gz"
+EUPXS_FILE="./cpan.metacpan.org/authors/id/D/DA/DAGOLDEN/ExtUtils-ParseXS-2.22.tar.gz"
+if [ -f "$EUPXS_FILE" ]; then
+	EUPXS_URL="$EUPXS_FILE"
+fi
+
 function install() {
 	local version="$1"
 	local URL="$2"
 	if [ -z "$URL" ]; then
-		URL="PDL@$version"
+		BACKPAN_MIRROR_PATH=$( find ./backpan.perl.org -name "PDL-$version.tar.gz" )
+		if [ -n "$BACKPAN_MIRROR_PATH" ]; then
+			URL="$BACKPAN_MIRROR_PATH"
+		else
+			URL="PDL@$version"
+		fi
+	fi
+	if perl -Mversion -E 'exit(not qv($ARGV[0]) < qv(2.005))' $version; then
+		URL="$EUPXS_URL $URL"
 	fi
 	perlbrew lib create "pdl-$version"
-	perlbrew exec --with @"pdl-$version" cpanm --notest $URL
+	perlbrew exec --with @"pdl-$version" cpanm --verbose --notest $URL
 }
 
-start
+#start
 
-install 2.007_14  # (CHM on 2015-04-11)
+install 2.012
+install 2.011
+install 2.010
+install 2.009
+install 2.008
+#install 2.007_14  # (CHM on 2015-04-11)
 #install 2.007_13  # (CHM on 2015-03-22)
 #install 2.007_12  # (CHM on 2015-03-06)
 #install 2.007_11 # (CHM on 2015-02-24)
