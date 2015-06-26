@@ -1,1 +1,1 @@
-perlbrew exec 'pmvers PDL || echo "No version of PDL found"'
+perlbrew exec --with $(./perlbrew-pdl-version-order) 'pmvers PDL 2>/dev/null || echo "No version of PDL found"'
