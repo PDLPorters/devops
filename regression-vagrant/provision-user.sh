@@ -17,4 +17,7 @@ fi
 cpanm --installdeps .
 cpanm Data::Printer Devel::REPL Devel::REPL::Plugin::DataPrinter Lexical::Persistence Data::Dump::Streamer PPI App::pmuninstall pmtools List::UtilsBy
 
+git config --global user.name "PDLPorters regression bot"
+git config --global user.email "pdl-devel@lists.sourceforge.net"
+
 echo "source ~/perl5/perlbrew/etc/bashrc" >> ~/.bashrc
