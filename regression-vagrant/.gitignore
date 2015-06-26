@@ -1,2 +1,5 @@
 .vagrant/
 backpan.perl.org/
+cpan.metacpan.org/
+output_*/
+pdl/
