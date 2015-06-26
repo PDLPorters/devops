@@ -1,0 +1,23 @@
+#!/bin/bash
+export TEST_ARGS=$@
+export DIR_FORMAT="%Y%m%d""T%H%M%S"
+export GIT_FORMAT="%Y-%m-%d""T%H:%M:%S"
+export DIR=$(date --utc +"output_$DIR_FORMAT")
+export FILENAME="log"
+export FILE="$DIR/$FILENAME"
+git init $DIR
+perlbrew exec --with $(./perlbrew-pdl-version-order) "
+	if pmvers PDL >/dev/null 2>&1; then
+		VERSION=\$(pmvers PDL)
+		BACKPAN_MIRROR_PATH=\$( find ./backpan.perl.org -name PDL-\$VERSION.tar.gz )
+		DATE=\$(date --utc +\$GIT_FORMAT -r \$BACKPAN_MIRROR_PATH)
+
+		echo \$VERSION > \$FILE
+		prove \$TEST_ARGS >> \$FILE 2>&1;
+
+		cd $DIR
+		git add \$FILENAME
+		git commit --date=\$DATE -m \"\$VERSION\"
+		cd ..
+	fi;
+	true"
