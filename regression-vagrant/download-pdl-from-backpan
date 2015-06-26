@@ -5,3 +5,5 @@ wget --mirror -ck -np -A 'PDL-*.tar.gz' \
 	http://backpan.perl.org/authors/id/C/CS/CSOE/ \
 	http://backpan.perl.org/authors/id/K/KG/KGB/ \
 	http://backpan.perl.org/authors/id/L/LU/LUKKA/
+wget --mirror -ck -np \
+	https://cpan.metacpan.org/authors/id/D/DA/DAGOLDEN/ExtUtils-ParseXS-2.22.tar.gz
