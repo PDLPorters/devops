@@ -40,7 +40,8 @@ with `+x` in `/usr/local/libexec/git-core/git-subtree`)
 - [ ] add repository info to metadata (`Makefile.PL`'s `META_MERGE`)
 - [ ] make sure PDL tests for this module are available
 - [ ] check that Travis-CI builds work
-- [ ] add badges to README (coverage, etc.)
+- [ ] check that Appveyor builds work
+- [ ] add badges to README (coverage, CI, etc.)
 - [ ] prep `Changes` for new version. Make note that the next release is its own repo and distro
 - [ ] add `xt/00-check-changelog.t` test
 - [ ] add `.gitignore`
@@ -51,3 +52,5 @@ with `+x` in `/usr/local/libexec/git-core/git-subtree`)
 ```
 
 See <https://github.com/PDLPorters/pdl-io-gd/issues/3> for an example.
+
+For information about Appveyor, see <https://github.com/PDLPorters/pdl/issues/130>.
