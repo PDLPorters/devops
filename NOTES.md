@@ -54,3 +54,13 @@ with `+x` in `/usr/local/libexec/git-core/git-subtree`)
 See <https://github.com/PDLPorters/pdl-io-gd/issues/3> for an example.
 
 For information about Appveyor, see <https://github.com/PDLPorters/pdl/issues/130>.
+
+## How to mirror a repository
+
+```shell
+git clone --bare git@github.com:PDLPorters/pdl.git;
+cd pdl.git;
+git push --mirror git@github.com:PDLPorters/pdla.git
+```
+
+from <https://help.github.com/articles/duplicating-a-repository/#mirroring-a-repository>.
