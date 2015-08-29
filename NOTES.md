@@ -70,3 +70,8 @@ from <https://help.github.com/articles/duplicating-a-repository/#mirroring-a-rep
 ```shell
 perl -pi -e 's#PDL([^A])#PDLA$1#g' $(git grep -l PDL)
 ```
+
+Checklist
+
+- [ ] Make sure that the changelog is not affected by the rename.
+- [ ] Modify README.md to fix the badges
