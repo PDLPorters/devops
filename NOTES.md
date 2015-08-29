@@ -64,3 +64,9 @@ git push --mirror git@github.com:PDLPorters/pdla.git
 ```
 
 from <https://help.github.com/articles/duplicating-a-repository/#mirroring-a-repository>.
+
+## Renaming a namespace
+
+```shell
+perl -pi -e 's#PDL([^A])#PDLA$1#g' $(git grep -l PDL)
+```
