@@ -36,6 +36,7 @@ sub main {
 
 	$self->create_repo();
 	$self->add_hooks();
+	$self->manual_issue();
 }
 
 sub request {
@@ -105,10 +106,8 @@ sub check_required {
 
 sub add_hook {
 	my ($self, $data) = @_;
-	$self->request(
-		'POST',
-		"https://api.github.com/repos/@{[ $self->github_org ]}/@{[ $self->github_user ]}/hooks",
-		$data);
+	my $url = "https://api.github.com/repos/@{[ $self->github_org ]}/@{[ $self->github_repo ]}/hooks";
+	$self->request( 'POST', $url, $data );
 }
 
 sub add_hooks {
@@ -138,6 +137,16 @@ sub add_hooks {
 				qw(push pull_request commit_comment pull_request_review_comment issues issue_comment)
 			]
 		});
+}
+
+sub manual_issue {
+	my ($self) = @_;
+	print "Please create an issue titled 'Enchant' with the following contents\n\n" . <<ISSUE . "\n";
+- [ ] Travis-CI <https://travis-ci.org/@{[ $self->github_org ]}/@{[ $self->github_repo ]}> (https://travis-ci.org/profile/@{[ $self->github_org ]})
+- [ ] Appveyor CI (https://ci.appveyor.com/)
+- [ ] Coveralls <https://coveralls.io/r/@{[ $self->github_org ]}/@{[ $self->github_repo ]}> (https://coveralls.io/repos/new?name=@{[ $self->github_org ]})
+- [ ] IRC notifications (handled by devops `enchant` script)
+ISSUE
 }
 
 main;
