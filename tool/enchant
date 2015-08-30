@@ -1,40 +1,143 @@
-#!/bin/sh
+#!/usr/bin/env perl
 
-REPO="$1"
-
-# curl -u $GITHUB_USER:$GITHUB_PASSWD
-# use -n for .netrc to set password on api.github.com domain
-IRC_HOOK_URL=`curl -n -H "Accept: application/json"  https://api.github.com/repos/PDLPorters/"$REPO"/hooks | perl -E '
+package Enchant;
+use Net::Netrc;
+use File::Which;
+use HTTP::Request;
+use LWP::UserAgent;
+use Moo;
 use JSON::MaybeXS;
-use Modern::Perl;
-my $d = join "", <>;
-my $j = decode_json($d);
-my $irc = ( grep { $_->{name} eq "irc" } @$j)[0];
-say $irc->{url};
-'`
-curl -n -H "Accept: application/json"  -X PATCH $IRC_HOOK_URL -d '
-{
-  "events": [
-    "push",
-    "pull_request",
-    "commit_comment",
-    "pull_request_review_comment",
-    "issues",
-    "issue_comment"
-  ],
-  "config": {
-    "server": "irc.perl.org",
-    "port": "6667",
-    "room": "#pdl",
-    "nick": "opkick",
-    "branches": "",
-    "nickserv_password": "",
-    "password": "",
-    "ssl": "0",
-    "message_without_join": "1",
-    "no_colors": "0",
-    "long_url": "0",
-    "notice": "0"
-  }
+
+use strict;
+use warnings;
+
+use constant DEFAULT_GITHUB_ORG => "PDLPorters";
+use constant PATH_TO_GITHUB_CONFIG => "$ENV{HOME}/.git-hub/config";
+use constant IRC_JSON => <<JSON;
+JSON
+
+has [ qw(github_org github_repo github_user github_password) ] => ( is => 'rw' );
+
+has ua => ( is => 'lazy' ); # _build_ua
+	sub _build_ua {
+		LWP::UserAgent->new;
+	}
+
+sub usage {
+	die "$0 [repo|org/repo]\n";
 }
-'
+
+sub main {
+	my $class = __PACKAGE__;
+
+	$class->check_required();
+
+	my $self = $class->_BUILD( @ARGV );
+
+	$self->create_repo();
+	$self->add_hooks();
+}
+
+sub request {
+	my ($self, $method, $url, $data ) = @_;
+	my $request = HTTP::Request->new($method, $url);
+	$request->authorization_basic($self->github_user, $self->github_password);
+	$request->content(encode_json($data));
+
+	my $response = $self->ua->request($request);
+
+	return $response;
+}
+
+sub _BUILD {
+	my ($class, @args) = @_;
+
+	my $target = shift @args;
+	return $class->usage unless $target;
+
+	my $self = $class->new;
+	if( $target =~ m|/| ) {
+		# if the target contains a slash
+		my ($org, $repo) = split m|/|, $target;
+		$self->github_org($org);
+		$self->github_repo($repo);
+	} else {
+		$self->github_org(DEFAULT_GITHUB_ORG);
+		$self->github_repo($target);
+	}
+
+	my $mach = Net::Netrc->lookup('api.github.com');
+	$self->github_user( $mach->login );
+	$self->github_password( $mach->password );
+
+	$self;
+}
+
+sub create_repo {
+	my ($self) = @_;
+	system(qw(git hub repo-new), "@{[ $self->github_org ]}/@{[ $self->github_repo ]}");
+}
+
+sub check_required {
+	my $exit = 0;
+
+	if( !which 'git-hub' ) {
+		$exit++;
+		warn "Need to install git-hub. Please run\n\n\tcpanm App::git::hub\n";
+	}
+
+	if( ! -r PATH_TO_GITHUB_CONFIG ) {
+		$exit++;
+		warn "Need to setup git-hub with GitHub token\n\n\tgit hub setup\n";
+	}
+
+	my $mach = Net::Netrc->lookup('api.github.com');
+	if( ! $mach ) {
+		$exit++;
+		warn "Please add an entry in ~/.netrc for api.github.com\n
+\tmachine api.github.com
+\tlogin your-github-login
+\tpassword your-github-password\n";
+	}
+
+	exit $exit if $exit;
+}
+
+sub add_hook {
+	my ($self, $data) = @_;
+	$self->request(
+		'POST',
+		"https://api.github.com/repos/@{[ $self->github_org ]}/@{[ $self->github_user ]}/hooks",
+		$data);
+}
+
+sub add_hooks {
+	my ($self) = @_;
+	$self->add_hook({
+			name => "travis",
+			config => {}
+		});
+
+	$self->add_hook({
+			name => "irc",
+			config => {
+				branches => "",
+				long_url => 0,
+				message_without_join => 1,
+				nick => "opkick",
+				nickserv_password => "",
+				no_colors => 0,
+				notice => 0,
+				password => "",
+				port => 6667,
+				room => "#pdl",
+				server => "irc.perl.org",
+				ssl => 0
+			},
+			events => [
+				qw(push pull_request commit_comment pull_request_review_comment issues issue_comment)
+			]
+		});
+}
+
+main;
