@@ -26,11 +26,22 @@ Make sure `git-subtree` is installed and works (if not, get from
 https://github.com/git/git/blob/master/contrib/subtree/git-subtree.sh and place
 with `+x` in `/usr/local/libexec/git-core/git-subtree`)
 ```shell
-    # example for pdl-io-gd
-    cd $PDLREPODIR
-    git subtree split -P IO/GD -b p-i-g
-    cd $PIGDIR
-    git pull $PDLREPODIR p-i-g
+# example for pdla-io-hdf
+KITCHENSINKREPO=$HOME/pdla
+KITCHENSINKDIR=IO/HDF
+SPLITOUTREPO=$HOME/pdla-io-hdf
+SPLITBRANCH=splitout
+MASTER=master
+pushd $KITCHENSINKREPO
+git subtree split -P $KITCHENSINKDIR -b $SPLITBRANCH
+git push $SPLITOUTREPO $SPLITBRANCH:$SPLITBRANCH
+git branch -D $SPLITBRANCH
+cd $SPLITOUTREPO
+git checkout $MASTER
+git reset --hard $SPLITBRANCH
+git branch -d $SPLITBRANCH
+git push origin
+popd
 ```
 
 ## Add split task issue for repository
@@ -38,14 +49,14 @@ with `+x` in `/usr/local/libexec/git-core/git-subtree`)
 ```markdown
 - [ ] standalone `Makefile.PL`
 - [ ] add repository info to metadata (`Makefile.PL`'s `META_MERGE`)
-- [ ] make sure PDL tests for this module are available
+- [ ] make sure PDLA tests for this module are available
 - [ ] check that Travis-CI builds work
 - [ ] check that Appveyor builds work
 - [ ] add badges to README (coverage, CI, etc.)
 - [ ] prep `Changes` for new version. Make note that the next release is its own repo and distro
 - [ ] add `xt/00-check-changelog.t` test
 - [ ] add `.gitignore`
-- [ ] add a test to check that `pdldoc` indexing works for the new dist
+- [ ] add a test to check that `pdladoc` indexing works for the new dist
 - [ ] make sure all the configuration options for BAD values are tried by Travis-CI (settings are in `perldl.conf`)
 
 [pdl split meta-issue](https://github.com/PDLPorters/pdl/issues/119)
