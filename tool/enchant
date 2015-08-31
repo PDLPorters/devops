@@ -1,5 +1,8 @@
 #!/usr/bin/env perl
 
+# need:
+# (unset AUTHOR_TESTING; cpanm File::Which HTTP::Request LWP::UserAgent Moo JSON::MaybeXS)
+
 package Enchant;
 use Net::Netrc;
 use File::Which;
