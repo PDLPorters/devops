@@ -86,3 +86,5 @@ Checklist
 
 - [ ] Make sure that the changelog is not affected by the rename.
 - [ ] Modify README.md to fix the badges
+- [ ] Ensure when zapping from previous (probably -rest) that any `DIR` reference is zapped
+- [ ] From -rest, zap from `MANIFEST`, `MANIFEST.SKIP`, `.gitignore`
