@@ -102,6 +102,7 @@ git add .
 git commit -am 'gen-ed'
 perl -pi -e 's#PDL([^A])#PDLA$1#g' *
 git commit -am 'perl -pi -e '\''s#PDL([^A])#PDLA$1#g'\'' *'
+# consider also zapping VERSION and Changes updates
 
 cd ../pdla-core
 git checkout -b update-from-upstream pdla2.013 # that's after big rename
