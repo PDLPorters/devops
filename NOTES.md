@@ -88,3 +88,25 @@ Checklist
 - [ ] Modify README.md to fix the badges
 - [ ] Ensure when zapping from previous (probably -rest) that any `DIR` reference is zapped
 - [ ] From -rest, zap from `MANIFEST`, `MANIFEST.SKIP`, `.gitignore`
+
+## How to update from upstream
+
+```shell
+mkdir td
+git format-patch -o td b26afaae..v2.014
+mv td ..
+cd ../td
+git init
+git commit --allow-empty -m empty
+git add .
+git commit -am 'gen-ed'
+perl -pi -e 's#PDL([^A])#PDLA$1#g' *
+git commit -am 'perl -pi -e '\''s#PDL([^A])#PDLA$1#g'\'' *'
+
+cd ../pdla-core
+git checkout -b update-from-upstream pdla2.013 # that's after big rename
+git am ../td/*
+git rebase -i pdla2.013 # edit VERSION commits to stop from updating VERSION
+git checkout -b update-from-upstream-on-2.013009
+git rebase -i master
+```
