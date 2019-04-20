@@ -107,7 +107,39 @@ git commit -am 'perl -pi -e '\''s#PDL([^A])#PDLA$1#g'\'' *'
 cd ../pdla-core
 git checkout -b update-from-upstream pdla2.013 # that's after big rename
 git am ../td/*
+
+# only on initial; afterwards, have to just deal with conflict in own work
 git rebase -i pdla2.013 # edit VERSION commits to stop from updating VERSION
 git checkout -b update-from-upstream-on-2.013009
 git rebase -i master
+
+# on conflict, if just want to get to supplied filestate for files
+# instead of manually applying changes, but with renames:
+# reporoot commit file...
+updatefrom() {
+  local dir="$1" commit="$2"; shift 2
+  for file in "$@"
+  do
+    if [ -f "$file" ]; then
+      (cd "$dir"; git show "$commit":"$file") |
+        perl -p -e 's#PDL([^A])#PDLA$1#g' >"$file"
+    fi
+  done
+}
+
+# to get commit and file-list from `git am --show-current-patch`
+commitfiles-from-current() {
+  local text="$(git am --show-current-patch)"
+  local commit="${text:5}"; commit="${commit%% *}"
+  local files=$(
+    local filelist="${text#*---}";
+    filelist="${filelist%%diff*}" # zap from first "diff"
+    filelist="${filelist%|*}" # zap from last "|"
+    echo "$filelist" | while read name discard; do echo $name; done
+  )
+  echo "$commit" $files
+}
+
+# so:
+updatefrom ../pdl-code $(commitfiles-from-current)
 ```
