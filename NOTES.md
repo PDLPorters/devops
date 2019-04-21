@@ -142,4 +142,28 @@ commitfiles-from-current() {
 
 # so:
 updatefrom ../pdl-code $(commitfiles-from-current)
+
+# then:
+perl -pi -e 's#Pdlpp#Pdlapp#g' $(gg 'Pdlpp\b'|sed 's/:.*//'|g -v '^Changes'|sort -u) /dev/null
+
+perl -pi -e 's#pdl2#pdla2#g' $(gg 'pdl2\b'|sed 's/:.*//'|g -v '^Changes'|sort -u) /dev/null
+
+perl -pi -e 's#PDLAPorters/pdl#PDLPorters/pdla-core#g' $(gg 'PDLAPorters/pdl'|sed 's/:.*//'|g -v '^Changes'|sort -u) /dev/null
+
+perl -pi -e 's#PDLAPorters#PDLPorters#g' $(gg 'PDLAPorters'|sed 's/:.*//'|g -v '^Changes'|sort -u) /dev/null
+
+perl -pi -e 's#([\s'\'']+)pdl>#${1}pdla>#g' $(gg '[     '\'']pdl>'|sed 's/:.*//'|sort -u) /dev/null # second thing in [] is tab
+
+perl -pi -e 's#\bperldl\b([^./'\''])([^m])?#perldla$1$2#g' $(gg '\bperldl\b[^\./'\'']'|g -v 'mailing list'|g -v '^Changes'|sed 's/:.*//'|sort -u) /dev/null
+
+perl -pi -e 's#\bpdldoc\b#pdladoc#g' $(gg -l '\bpdldoc\b'|g -Ev '^(Changes|Known)'|sed 's/:.*//'|sort -u) /dev/null
+
+perl -pi \
+  -e 's#(\s)SymTab#${1}PDLA::PP::SymTab#g;' \
+  -e 's#C::Type#PDLA::PP::CType#g;' \
+  -e 's#XS(::mkproto)#PDLA::PP::$&#g;' \
+  Basic/Gen/PP.pm
+
+# also fixup FAQ "pdl," -> "pdla", "perldla mailing"
+# fixup 'perldl' in Basic/Pod/QuickStart.pod Doc/Doc/Perldl.pm
 ```
