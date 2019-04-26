@@ -44,6 +44,18 @@ git push origin
 popd
 ```
 
+## How to restructure repo into lib/*
+```
+for x in $(find * -name examples -prune -o -name blib -prune -o -name \*.pm -print)
+do
+  p=$(perl -nE 'next if !/^package\s+(\S+);$/; push @p, $1; END { say for @p }' $x)
+  f=$(perl -e '@l = split /::/, shift; pop @l; print join "/", @l' $p)
+  d=lib/$f
+  echo mkdir -p $d
+  echo git mv $x $d
+done
+```
+
 ## Add split task issue for repository
 
 ```markdown
