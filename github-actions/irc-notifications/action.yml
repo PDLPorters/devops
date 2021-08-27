@@ -5,7 +5,7 @@ inputs:
     required: true
   irc_channel:
     required: true
-    default: '#pdl'
+    default: '#pdl-irc-test'
   irc_server:
     required: true
     default: 'irc.perl.org'
@@ -14,7 +14,7 @@ inputs:
     default: '6667'
   irc_nickname:
     required: true
-    default: 'pdl-commits'
+    default: 'pdl-commits-irc-test'
 runs:
   using: "composite"
   steps:
