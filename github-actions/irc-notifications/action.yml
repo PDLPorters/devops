@@ -1,6 +1,6 @@
 name: IRC notifications
 inputs:
-  repo:
+  repository:
     description: Repository that notifications are triggered for.
     required: true
   irc_channel:
@@ -21,12 +21,12 @@ runs:
     - uses: actions/checkout@v2
 
     - name: irc push (build messages)
-      if: ${{ github.event_name == 'push' && github.repository == inputs.repo }}
+      if: ${{ github.event_name == 'push' && github.repository == inputs.repository }}
       run: |
           echo "commitmsg="$( git show -s --oneline ${{ join(github.event.commits.*.id, ' ') }} ) >> $GITHUB_ENV
     - name: irc push
       uses: Gottox/irc-message-action@v1.3
-      if: ${{ github.event_name == 'push' && github.repository == inputs.repo }}
+      if: ${{ github.event_name == 'push' && github.repository == inputs.repository }}
       with:
         channel: ${{ inputs.irc_channel }}
         server: ${{ inputs.irc_server }}
@@ -40,7 +40,7 @@ runs:
 
     - name: irc pull request
       uses: Gottox/irc-message-action@v1.3
-      if: ${{ github.event_name == 'pull_request' && github.repository == inputs.repo }}
+      if: ${{ github.event_name == 'pull_request' && github.repository == inputs.repository }}
       with:
         channel: ${{ inputs.irc_channel }}
         server: ${{ inputs.irc_server }}
@@ -53,7 +53,7 @@ runs:
 
     - name: irc tag created
       uses: Gottox/irc-message-action@v1.3
-      if: ${{ github.event_name == 'create' && github.event.ref_type == 'tag' && github.repository == inputs.repo }}
+      if: ${{ github.event_name == 'create' && github.event.ref_type == 'tag' && github.repository == inputs.repository }}
       with:
         channel: ${{ inputs.irc_channel }}
         server: ${{ inputs.irc_server }}
@@ -66,7 +66,7 @@ runs:
 
     - name: irc issue
       uses: Gottox/irc-message-action@v1.3
-      if: ${{ github.event_name == 'issues' && github.repository == inputs.repo }}
+      if: ${{ github.event_name == 'issues' && github.repository == inputs.repository }}
       with:
         channel: ${{ inputs.irc_channel }}
         server: ${{ inputs.irc_server }}
@@ -79,7 +79,7 @@ runs:
 
     - name: irc comment
       uses: Gottox/irc-message-action@v1.3
-      if: ${{ github.event_name == 'issue_comment' && github.repository == inputs.repo }}
+      if: ${{ github.event_name == 'issue_comment' && github.repository == inputs.repository }}
       with:
         channel: ${{ inputs.irc_channel }}
         server: ${{ inputs.irc_server }}
