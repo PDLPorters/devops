@@ -1,0 +1,91 @@
+name: IRC notifications
+inputs:
+  repo:
+    description: Repository that notifications are triggered for.
+    required: true
+  irc_channel:
+    required: true
+    default: '#pdl'
+  irc_server:
+    required: true
+    default: 'irc.perl.org'
+  irc_port:
+    required: true
+    default: '6667'
+  irc_nickname:
+    required: true
+    default: 'pdl-commits'
+runs:
+  using: "composite"
+  steps:
+    - uses: actions/checkout@v2
+
+    - name: irc push (build messages)
+      if: ${{ github.event_name == 'push' && github.repository == inputs.repo }}
+      run: |
+          echo "commitmsg="$( git show -s --oneline ${{ join(github.event.commits.*.id, ' ') }} ) >> $GITHUB_ENV
+    - name: irc push
+      uses: Gottox/irc-message-action@v1.3
+      if: ${{ github.event_name == 'push' && github.repository == inputs.repo }}
+      with:
+        channel: ${{ inputs.irc_channel }}
+        server: ${{ inputs.irc_server }}
+        port: ${{ inputs.irc_port }}
+        nickname: ${{ inputs.irc_nickname }}
+        tls: false
+        notice: true
+        message: |
+          ${{ github.actor }} pushed ${{ github.event.ref }} ${{ github.event.compare }}
+          ${{ env.commitmsg }}
+
+    - name: irc pull request
+      uses: Gottox/irc-message-action@v1.3
+      if: ${{ github.event_name == 'pull_request' && github.repository == inputs.repo }}
+      with:
+        channel: ${{ inputs.irc_channel }}
+        server: ${{ inputs.irc_server }}
+        port: ${{ inputs.irc_port }}
+        nickname: ${{ inputs.irc_nickname }}
+        tls: false
+        notice: true
+        message: |
+          ${{ github.actor }} ${{ github.event.action }} PR «${{ github.event.pull_request.title }}» ${{ github.event.pull_request.html_url }}
+
+    - name: irc tag created
+      uses: Gottox/irc-message-action@v1.3
+      if: ${{ github.event_name == 'create' && github.event.ref_type == 'tag' && github.repository == inputs.repo }}
+      with:
+        channel: ${{ inputs.irc_channel }}
+        server: ${{ inputs.irc_server }}
+        port: ${{ inputs.irc_port }}
+        nickname: ${{ inputs.irc_nickname }}
+        tls: false
+        notice: true
+        message: |
+          ${{ github.actor }} tagged ${{ github.repository }} ${{ github.event.ref }}
+
+    - name: irc issue
+      uses: Gottox/irc-message-action@v1.3
+      if: ${{ github.event_name == 'issues' && github.repository == inputs.repo }}
+      with:
+        channel: ${{ inputs.irc_channel }}
+        server: ${{ inputs.irc_server }}
+        port: ${{ inputs.irc_port }}
+        nickname: ${{ inputs.irc_nickname }}
+        tls: false
+        notice: true
+        message: |
+          ${{ github.actor }} ${{ github.event.action }} issue #${{ github.event.issue.number }} ${{ github.event.issue.html_url }}
+
+    - name: irc comment
+      uses: Gottox/irc-message-action@v1.3
+      if: ${{ github.event_name == 'issue_comment' && github.repository == inputs.repo }}
+      with:
+        channel: ${{ inputs.irc_channel }}
+        server: ${{ inputs.irc_server }}
+        port: ${{ inputs.irc_port }}
+        nickname: ${{ inputs.irc_nickname }}
+        tls: false
+        notice: true
+        message: |
+          ${{ github.actor }} ${{ github.event.review.state || 'commented' }} on #${{ github.event.issue.number }} ${{ github.event.comment.html_url || github.event.review.html_url }}
