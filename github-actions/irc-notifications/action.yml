@@ -21,6 +21,8 @@ inputs:
   irc_notice:
     required: true
     default: true
+  needs: # only needed for the target-build-status target
+    required: false
   target-notifications:
     required: true
     default: false
@@ -141,7 +143,7 @@ runs:
     - name: IRC build success
       shell: bash
       run: |
-          if ${{ toJSON( fromJSON(env.GHA_IRC_TARGET_BUILD_STATUS) && ( ! contains(needs.*.result, 'failure') && ! contains(needs.*.result, 'cancelled') ) ) }}; then
+          if ${{ toJSON( fromJSON(env.GHA_IRC_TARGET_BUILD_STATUS) && ( ! contains(fromJSON(inputs.needs).*.result, 'failure') && ! contains(fromJSON(inputs.needs).*.result, 'cancelled') ) ) }}; then
             node .github/actions/irc-message-action/app.js
           fi
       env:
@@ -158,7 +160,7 @@ runs:
     - name: IRC build failure
       shell: bash
       run: |
-          if ${{ toJSON( fromJSON(env.GHA_IRC_TARGET_BUILD_STATUS) && contains(needs.*.result, 'failure') ) }}; then
+          if ${{ toJSON( fromJSON(env.GHA_IRC_TARGET_BUILD_STATUS) && contains(fromJSON(inputs.needs).*.result, 'failure') ) }}; then
             node .github/actions/irc-message-action/app.js
           fi
       env:
