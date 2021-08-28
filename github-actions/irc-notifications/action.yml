@@ -30,12 +30,15 @@ inputs:
 runs:
   using: "composite"
   steps:
+    # actions/checkout of the repo is used by both targets
+    # (target-notifications, target-build-status).
     - uses: actions/checkout@v2
     - uses: actions/checkout@v2
       with:
         repository: Gottox/irc-message-action
         ref: v1.3
         path: .github/actions/irc-message-action
+    # Target: target-notifications
     - name: irc push (build messages)
       shell: bash
       run: |
@@ -116,6 +119,52 @@ runs:
       env:
         INPUT_MESSAGE: |
           ${{ github.actor }} ${{ github.event.review.state || 'commented' }} on #${{ github.event.issue.number }} ${{ github.event.comment.html_url || github.event.review.html_url }}
+        # Common inputs for Gottox/irc-message-action@v1.3
+        INPUT_CHANNEL: ${{ inputs.irc_channel }}
+        INPUT_SERVER: ${{ inputs.irc_server }}
+        INPUT_PORT: ${{ inputs.irc_port }}
+        INPUT_NICKNAME: ${{ inputs.irc_nickname }}
+        INPUT_TLS: ${{ inputs.irc_tls }}
+        INPUT_NOTICE: ${{ inputs.irc_notice }}
+    # Target: target-build-status
+    - name: Set target-build-status conditional env
+      shell: bash
+      run: |
+          echo "GHA_IRC_TARGET_BUILD_STATUS="${{ toJSON( inputs.target-build-status && ( github.event_name == 'push' || github.event_name == 'pull_request' || ( github.event_name == 'create' && github.event.ref_type == 'tag' ) ) && github.event_name == 'issue_comment' && github.repository == inputs.repository ) }} >> $GITHUB_ENV
+    - name: Prepare message
+      shell: bash
+      run: |
+        if $GHA_IRC_TARGET_BUILD_STATUS; then
+          echo "GITHUB_WORKFLOW_URL=https://github.com/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID" >> $GITHUB_ENV
+          echo "commitmsg="$( git show -s --oneline ${{ join(github.event.commits[0].id, ' ') }} ) >> $GITHUB_ENV
+        fi
+    - name: IRC build success
+      shell: bash
+      run: |
+          if ${{ toJSON( fromJSON(env.GHA_IRC_TARGET_BUILD_STATUS) && ( ! contains(needs.*.result, 'failure') && ! contains(needs.*.result, 'cancelled') ) ) }}; then
+            node .github/actions/irc-message-action/app.js
+          fi
+      env:
+        INPUT_MESSAGE: |
+          Build status: All builds succeeded [${{ github.event_name }}]: ${{ env.GITHUB_WORKFLOW_URL }}
+          @ ${{ github.sha }} | ${{ github.event.commits[0].author.name }} | «${{ env.commitmsg }}»
+        # Common inputs for Gottox/irc-message-action@v1.3
+        INPUT_CHANNEL: ${{ inputs.irc_channel }}
+        INPUT_SERVER: ${{ inputs.irc_server }}
+        INPUT_PORT: ${{ inputs.irc_port }}
+        INPUT_NICKNAME: ${{ inputs.irc_nickname }}
+        INPUT_TLS: ${{ inputs.irc_tls }}
+        INPUT_NOTICE: ${{ inputs.irc_notice }}
+    - name: IRC build failure
+      shell: bash
+      run: |
+          if ${{ toJSON( fromJSON(env.GHA_IRC_TARGET_BUILD_STATUS) && contains(needs.*.result, 'failure') ) }}; then
+            node .github/actions/irc-message-action/app.js
+          fi
+      env:
+        INPUT_MESSAGE: |
+          Build status: Some builds failed [${{ github.event_name }}]: ${{ env.GITHUB_WORKFLOW_URL }}
+          @ ${{ github.sha }} | ${{ github.event.commits[0].author.name }} | «${{ env.commitmsg }}»
         # Common inputs for Gottox/irc-message-action@v1.3
         INPUT_CHANNEL: ${{ inputs.irc_channel }}
         INPUT_SERVER: ${{ inputs.irc_server }}
