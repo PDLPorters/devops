@@ -21,6 +21,12 @@ inputs:
   irc_notice:
     required: true
     default: true
+  target-notifications:
+    required: true
+    default: false
+  target-build-status:
+    required: true
+    default: false
 runs:
   using: "composite"
   steps:
@@ -33,13 +39,13 @@ runs:
     - name: irc push (build messages)
       shell: bash
       run: |
-          if ${{ toJSON( github.event_name == 'push' && github.repository == inputs.repository ) }}; then
+          if ${{ toJSON( inputs.target-notifications && github.event_name == 'push' && github.repository == inputs.repository ) }}; then
             echo "commitmsg="$( git show -s --oneline ${{ join(github.event.commits.*.id, ' ') }} ) >> $GITHUB_ENV
           fi
     - name: irc push
       shell: bash
       run: |
-          if ${{ toJSON( github.event_name == 'push' && github.repository == inputs.repository ) }}; then
+          if ${{ toJSON( inputs.target-notifications && github.event_name == 'push' && github.repository == inputs.repository ) }}; then
             node .github/actions/irc-message-action/app.js
           fi
       env:
@@ -56,7 +62,7 @@ runs:
     - name: irc pull request
       shell: bash
       run: |
-          if ${{ toJSON( github.event_name == 'pull_request' && github.repository == inputs.repository ) }}; then
+          if ${{ toJSON( inputs.target-notifications && github.event_name == 'pull_request' && github.repository == inputs.repository ) }}; then
             node .github/actions/irc-message-action/app.js
           fi
       env:
@@ -72,7 +78,7 @@ runs:
     - name: irc tag created
       shell: bash
       run: |
-          if ${{ toJSON( github.event_name == 'create' && github.event.ref_type == 'tag' && github.repository == inputs.repository   ) }}; then
+          if ${{ toJSON( inputs.target-notifications && github.event_name == 'create' && github.event.ref_type == 'tag' && github.repository == inputs.repository   ) }}; then
             node .github/actions/irc-message-action/app.js
           fi
       env:
@@ -88,7 +94,7 @@ runs:
     - name: irc issue
       shell: bash
       run: |
-          if ${{ toJSON( github.event_name == 'issues' && github.repository == inputs.repository ) }}; then
+          if ${{ toJSON( inputs.target-notifications && github.event_name == 'issues' && github.repository == inputs.repository ) }}; then
             node .github/actions/irc-message-action/app.js
           fi
       env:
@@ -104,7 +110,7 @@ runs:
     - name: irc comment
       shell: bash
       run: |
-          if ${{ toJSON( github.event_name == 'issue_comment' && github.repository == inputs.repository ) }}; then
+          if ${{ toJSON( inputs.target-notifications && github.event_name == 'issue_comment' && github.repository == inputs.repository ) }}; then
             node .github/actions/irc-message-action/app.js
           fi
       env:
