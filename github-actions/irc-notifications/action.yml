@@ -142,7 +142,7 @@ runs:
     - name: Set target-build-status conditional env
       shell: bash
       run: |
-          echo "GHA_IRC_TARGET_BUILD_STATUS="${{ toJSON( fromJSON(inputs.target-build-status) && ( github.event_name == 'push' || github.event_name == 'pull_request' || ( github.event_name == 'create' && github.event.ref_type == 'tag' ) ) && github.event_name == 'issue_comment' && github.repository == inputs.repository ) }} >> $GITHUB_ENV
+          echo "GHA_IRC_TARGET_BUILD_STATUS="${{ toJSON( fromJSON(inputs.target-build-status) && ( github.event_name == 'push' || github.event_name == 'pull_request' || ( github.event_name == 'create' && github.event.ref_type == 'tag' ) ) && github.repository == inputs.repository ) }} >> $GITHUB_ENV
     - name: Prepare message
       shell: bash
       run: |
