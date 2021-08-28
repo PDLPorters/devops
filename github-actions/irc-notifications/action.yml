@@ -3,22 +3,22 @@ inputs:
   repository:
     description: Repository that notifications are triggered for.
     required: true
-  irc_channel:
+  irc-channel:
     required: true
     default: '#pdl'
-  irc_server:
+  irc-server:
     required: true
     default: 'irc.perl.org'
-  irc_port:
+  irc-port:
     required: true
     default: '6667'
-  irc_nickname:
+  irc-nickname:
     required: true
     default: 'pdl-commits'
-  irc_tls:
+  irc-tls:
     required: true
     default: false
-  irc_notice:
+  irc-notice:
     required: true
     default: true
   needs: # only needed for the target-build-status target
@@ -60,12 +60,12 @@ runs:
           ${{ github.actor }} pushed ${{ github.event.ref }} ${{ github.event.compare }}
           ${{ env.commitmsg }}
         # Common inputs for Gottox/irc-message-action@v1.3
-        INPUT_CHANNEL: ${{ inputs.irc_channel }}
-        INPUT_SERVER: ${{ inputs.irc_server }}
-        INPUT_PORT: ${{ inputs.irc_port }}
-        INPUT_NICKNAME: ${{ inputs.irc_nickname }}
-        INPUT_TLS: ${{ inputs.irc_tls }}
-        INPUT_NOTICE: ${{ inputs.irc_notice }}
+        INPUT_CHANNEL: ${{ inputs.irc-channel }}
+        INPUT_SERVER: ${{ inputs.irc-server }}
+        INPUT_PORT: ${{ inputs.irc-port }}
+        INPUT_NICKNAME: ${{ inputs.irc-nickname }}
+        INPUT_TLS: ${{ inputs.irc-tls }}
+        INPUT_NOTICE: ${{ inputs.irc-notice }}
     - name: irc pull request
       shell: bash
       run: |
@@ -78,12 +78,12 @@ runs:
         INPUT_MESSAGE: |
           ${{ github.actor }} ${{ github.event.action }} PR «${{ github.event.pull_request.title }}» ${{ github.event.pull_request.html_url }}
         # Common inputs for Gottox/irc-message-action@v1.3
-        INPUT_CHANNEL: ${{ inputs.irc_channel }}
-        INPUT_SERVER: ${{ inputs.irc_server }}
-        INPUT_PORT: ${{ inputs.irc_port }}
-        INPUT_NICKNAME: ${{ inputs.irc_nickname }}
-        INPUT_TLS: ${{ inputs.irc_tls }}
-        INPUT_NOTICE: ${{ inputs.irc_notice }}
+        INPUT_CHANNEL: ${{ inputs.irc-channel }}
+        INPUT_SERVER: ${{ inputs.irc-server }}
+        INPUT_PORT: ${{ inputs.irc-port }}
+        INPUT_NICKNAME: ${{ inputs.irc-nickname }}
+        INPUT_TLS: ${{ inputs.irc-tls }}
+        INPUT_NOTICE: ${{ inputs.irc-notice }}
     - name: irc tag created
       shell: bash
       run: |
@@ -96,12 +96,12 @@ runs:
         INPUT_MESSAGE: |
           ${{ github.actor }} tagged ${{ github.repository }} ${{ github.event.ref }}
         # Common inputs for Gottox/irc-message-action@v1.3
-        INPUT_CHANNEL: ${{ inputs.irc_channel }}
-        INPUT_SERVER: ${{ inputs.irc_server }}
-        INPUT_PORT: ${{ inputs.irc_port }}
-        INPUT_NICKNAME: ${{ inputs.irc_nickname }}
-        INPUT_TLS: ${{ inputs.irc_tls }}
-        INPUT_NOTICE: ${{ inputs.irc_notice }}
+        INPUT_CHANNEL: ${{ inputs.irc-channel }}
+        INPUT_SERVER: ${{ inputs.irc-server }}
+        INPUT_PORT: ${{ inputs.irc-port }}
+        INPUT_NICKNAME: ${{ inputs.irc-nickname }}
+        INPUT_TLS: ${{ inputs.irc-tls }}
+        INPUT_NOTICE: ${{ inputs.irc-notice }}
     - name: irc issue
       shell: bash
       run: |
@@ -114,12 +114,12 @@ runs:
         INPUT_MESSAGE: |
           ${{ github.actor }} ${{ github.event.action }} issue #${{ github.event.issue.number }} ${{ github.event.issue.html_url }}
         # Common inputs for Gottox/irc-message-action@v1.3
-        INPUT_CHANNEL: ${{ inputs.irc_channel }}
-        INPUT_SERVER: ${{ inputs.irc_server }}
-        INPUT_PORT: ${{ inputs.irc_port }}
-        INPUT_NICKNAME: ${{ inputs.irc_nickname }}
-        INPUT_TLS: ${{ inputs.irc_tls }}
-        INPUT_NOTICE: ${{ inputs.irc_notice }}
+        INPUT_CHANNEL: ${{ inputs.irc-channel }}
+        INPUT_SERVER: ${{ inputs.irc-server }}
+        INPUT_PORT: ${{ inputs.irc-port }}
+        INPUT_NICKNAME: ${{ inputs.irc-nickname }}
+        INPUT_TLS: ${{ inputs.irc-tls }}
+        INPUT_NOTICE: ${{ inputs.irc-notice }}
     - name: irc comment
       shell: bash
       run: |
@@ -132,12 +132,12 @@ runs:
         INPUT_MESSAGE: |
           ${{ github.actor }} ${{ github.event.review.state || 'commented' }} on #${{ github.event.issue.number }} ${{ github.event.comment.html_url || github.event.review.html_url }}
         # Common inputs for Gottox/irc-message-action@v1.3
-        INPUT_CHANNEL: ${{ inputs.irc_channel }}
-        INPUT_SERVER: ${{ inputs.irc_server }}
-        INPUT_PORT: ${{ inputs.irc_port }}
-        INPUT_NICKNAME: ${{ inputs.irc_nickname }}
-        INPUT_TLS: ${{ inputs.irc_tls }}
-        INPUT_NOTICE: ${{ inputs.irc_notice }}
+        INPUT_CHANNEL: ${{ inputs.irc-channel }}
+        INPUT_SERVER: ${{ inputs.irc-server }}
+        INPUT_PORT: ${{ inputs.irc-port }}
+        INPUT_NICKNAME: ${{ inputs.irc-nickname }}
+        INPUT_TLS: ${{ inputs.irc-tls }}
+        INPUT_NOTICE: ${{ inputs.irc-notice }}
     # Target: target-build-status
     - name: Set target-build-status conditional env
       shell: bash
@@ -163,12 +163,12 @@ runs:
           Build status: All builds succeeded [${{ github.event_name }}]: ${{ env.GITHUB_WORKFLOW_URL }}
           @ ${{ github.sha }} | ${{ github.event.commits[0].author.name }} | «${{ env.commitmsg }}»
         # Common inputs for Gottox/irc-message-action@v1.3
-        INPUT_CHANNEL: ${{ inputs.irc_channel }}
-        INPUT_SERVER: ${{ inputs.irc_server }}
-        INPUT_PORT: ${{ inputs.irc_port }}
-        INPUT_NICKNAME: ${{ inputs.irc_nickname }}
-        INPUT_TLS: ${{ inputs.irc_tls }}
-        INPUT_NOTICE: ${{ inputs.irc_notice }}
+        INPUT_CHANNEL: ${{ inputs.irc-channel }}
+        INPUT_SERVER: ${{ inputs.irc-server }}
+        INPUT_PORT: ${{ inputs.irc-port }}
+        INPUT_NICKNAME: ${{ inputs.irc-nickname }}
+        INPUT_TLS: ${{ inputs.irc-tls }}
+        INPUT_NOTICE: ${{ inputs.irc-notice }}
     - name: IRC build failure
       shell: bash
       run: |
@@ -182,9 +182,9 @@ runs:
           Build status: Some builds failed [${{ github.event_name }}]: ${{ env.GITHUB_WORKFLOW_URL }}
           @ ${{ github.sha }} | ${{ github.event.commits[0].author.name }} | «${{ env.commitmsg }}»
         # Common inputs for Gottox/irc-message-action@v1.3
-        INPUT_CHANNEL: ${{ inputs.irc_channel }}
-        INPUT_SERVER: ${{ inputs.irc_server }}
-        INPUT_PORT: ${{ inputs.irc_port }}
-        INPUT_NICKNAME: ${{ inputs.irc_nickname }}
-        INPUT_TLS: ${{ inputs.irc_tls }}
-        INPUT_NOTICE: ${{ inputs.irc_notice }}
+        INPUT_CHANNEL: ${{ inputs.irc-channel }}
+        INPUT_SERVER: ${{ inputs.irc-server }}
+        INPUT_PORT: ${{ inputs.irc-port }}
+        INPUT_NICKNAME: ${{ inputs.irc-nickname }}
+        INPUT_TLS: ${{ inputs.irc-tls }}
+        INPUT_NOTICE: ${{ inputs.irc-notice }}
