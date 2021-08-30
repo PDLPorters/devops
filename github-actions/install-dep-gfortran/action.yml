@@ -1,0 +1,16 @@
+name: Install gfortran dependencies
+runs:
+  using: "composite"
+  steps:
+    - name: Install gfortran
+      shell: bash
+      run: |
+          echo "::group::Install gfortran (via apt-get)"
+          sudo apt-get install gfortran
+          echo "::endgroup::"
+    - name: Install ExtUtils::F77
+      shell: bash
+      run: |
+          echo "::group::Install ExtUtils::F77 (via cpanm)"
+          cpanm -n ExtUtils::F77 || cat ~/.cpanm/build.log
+          echo "::endgroup::"
