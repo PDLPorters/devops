@@ -21,12 +21,21 @@ inputs:
   irc-notice:
     required: true
     default: true
-  needs: # only needed for the target-build-status target
+  needs:
+    description: |
+      The GitHub Actions `need` context which should be passed
+      in using toJSON(). Only required for the
+      target-build-status target.
     required: false
   target-notifications:
+    description: |
+      Flag for target that notifies on various events.
     required: true
     default: false
   target-build-status:
+    description: |
+      Flag for target that notifies after builds are complete
+      and reports the build status (success/failure).
     required: true
     default: false
 runs:
