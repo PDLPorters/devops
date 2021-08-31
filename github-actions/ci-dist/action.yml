@@ -132,7 +132,7 @@ runs:
                 (  fromJSON(inputs.target-all)
                 || fromJSON(inputs.target-test-release-testing)
                 )
-                && fromJSON(inputs.test-enable-release-testing)
+                && fromJSON(inputs.test-enable-release-testing || 'false')
               ) }}; then
             echo "::group::test-release-testing (via cpanm)"
             cpanm -n --installdeps --with-develop . || cat ~/.cpanm/build.log
@@ -154,7 +154,7 @@ runs:
                 (  fromJSON(inputs.target-all)
                 || fromJSON(inputs.target-test)
                 )
-                && ! fromJSON(inputs.test-enable-coverage)
+                && ! fromJSON(inputs.test-enable-coverage || 'false')
               ) }}; then
             echo "::group::test (no coverage)"
             if [ -f Makefile.PL ]; then
@@ -174,7 +174,7 @@ runs:
                 (  fromJSON(inputs.target-all)
                 || fromJSON(inputs.target-test)
                 )
-                && fromJSON(inputs.test-enable-coverage)
+                && fromJSON(inputs.test-enable-coverage || 'false')
               ) }}; then
             echo "::group::test (with coverage)"
             cpanm -n Devel::Cover::Report::Coveralls || cat ~/.cpanm/build.log
