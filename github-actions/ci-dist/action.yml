@@ -95,6 +95,7 @@ runs:
       env:
         INPUT_DISTRIBUTION: ${{ inputs.perl-distribution }}
         INPUT_PERL-VERSION: ${{ inputs.perl-version }}
+        INPUT_ENABLE-MODULES-CACHE: false
     - name: target-setup-perl (perl -V)
       shell: bash
       run: |
