@@ -94,7 +94,7 @@ runs:
           fi
       env:
         INPUT_DISTRIBUTION: ${{ inputs.perl-distribution }}
-        INPUT_PERL_VERSION: ${{ inputs.perl-version }}
+        INPUT_PERL-VERSION: ${{ inputs.perl-version }}
     - name: target-setup-perl (perl -V)
       shell: bash
       run: |
