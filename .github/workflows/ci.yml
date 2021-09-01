@@ -1,0 +1,42 @@
+name: perl
+on:
+  push:
+    branches:
+      - '*'
+    tags-ignore:
+      - '*'
+  pull_request:
+  create:
+jobs:
+  notify:
+    runs-on: ubuntu-latest
+    continue-on-error: true
+    if: ${{ always() }}
+    steps:
+      - uses: PDLPorters/devops/github-actions/irc-notifications@master
+        with:
+          repository: PDLPorters/devops
+          target-notifications: true
+  ci:
+    runs-on: 'ubuntu-latest'
+    if: ${{ github.event_name == 'push' || github.event_name == 'pull_request' }}
+    needs: notify
+    strategy:
+      fail-fast: false
+    steps:
+      - uses: actions/checkout@v2
+      - name: Run yamllint on actions
+        run: |
+            yamllint --format github github-actions
+
+  build-status:
+    runs-on: ubuntu-latest
+    continue-on-error: true
+    if: ${{ always() }}
+    needs: [ 'ci' ]
+    steps:
+      - uses: PDLPorters/devops/github-actions/irc-notifications@master
+        with:
+          repository: PDLPorters/devops
+          target-build-status: true
+          needs: ${{ toJSON(needs) }}
