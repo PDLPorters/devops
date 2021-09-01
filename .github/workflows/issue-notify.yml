@@ -12,4 +12,5 @@ jobs:
     continue-on-error: true
     if: ${{ always() }}
     steps:
-      - uses: PDLPorters/devops/github-actions/irc-notifications@master
+      - uses: actions/checkout@v2
+      - uses: ./github-actions/irc-notifications
