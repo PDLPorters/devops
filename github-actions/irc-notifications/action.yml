@@ -1,0 +1,199 @@
+name: IRC notifications
+inputs:
+  repository:
+    description: Repository that notifications are triggered for.
+    required: true
+  irc-channel:
+    required: true
+    default: '#pdl'
+  irc-server:
+    required: true
+    default: 'irc.perl.org'
+  irc-port:
+    required: true
+    default: '6667'
+  irc-nickname:
+    required: true
+    default: 'pdl-commits'
+  irc-tls:
+    required: true
+    default: false
+  irc-notice:
+    required: true
+    default: true
+  needs:
+    description: |
+      The GitHub Actions `need` context which should be passed
+      in using toJSON(). Only required for the
+      target-build-status target.
+    required: false
+  target-notifications:
+    description: |
+      Flag for target that notifies on various events.
+    required: true
+    default: false
+  target-build-status:
+    description: |
+      Flag for target that notifies after builds are complete
+      and reports the build status (success/failure).
+    required: true
+    default: false
+runs:
+  using: "composite"
+  steps:
+    # actions/checkout of the repo is used by both targets
+    # (target-notifications, target-build-status).
+    - uses: actions/checkout@v2
+    - uses: actions/checkout@v2
+      with:
+        repository: Gottox/irc-message-action
+        ref: v1.3
+        path: .github/actions/irc-message-action
+    # Target: target-notifications
+    - name: irc push (build messages)
+      shell: bash
+      run: |
+          if ${{ toJSON( fromJSON(inputs.target-notifications) && github.event_name == 'push' && github.repository == inputs.repository ) }}; then
+            echo "commitmsg="$( git show -s --oneline ${{ join(github.event.commits.*.id, ' ') }} ) >> $GITHUB_ENV
+          fi
+    - name: irc push
+      shell: bash
+      run: |
+          if ${{ toJSON( fromJSON(inputs.target-notifications) && github.event_name == 'push' && github.repository == inputs.repository ) }}; then
+            echo "::group::IRC notification (push)"
+            node .github/actions/irc-message-action/app.js
+            echo "::endgroup::"
+          fi
+      env:
+        INPUT_MESSAGE: |
+          ${{ github.actor }} pushed ${{ github.event.ref }} ${{ github.event.compare }}
+          ${{ env.commitmsg }}
+        # Common inputs for Gottox/irc-message-action@v1.3
+        INPUT_CHANNEL: ${{ inputs.irc-channel }}
+        INPUT_SERVER: ${{ inputs.irc-server }}
+        INPUT_PORT: ${{ inputs.irc-port }}
+        INPUT_NICKNAME: ${{ inputs.irc-nickname }}
+        INPUT_TLS: ${{ inputs.irc-tls }}
+        INPUT_NOTICE: ${{ inputs.irc-notice }}
+    - name: irc pull request
+      shell: bash
+      run: |
+          if ${{ toJSON( fromJSON(inputs.target-notifications) && github.event_name == 'pull_request' && github.repository == inputs.repository ) }}; then
+            echo "::group::IRC notification (pull request)"
+            node .github/actions/irc-message-action/app.js
+            echo "::endgroup::"
+          fi
+      env:
+        INPUT_MESSAGE: |
+          ${{ github.actor }} ${{ github.event.action }} PR «${{ github.event.pull_request.title }}» ${{ github.event.pull_request.html_url }}
+        # Common inputs for Gottox/irc-message-action@v1.3
+        INPUT_CHANNEL: ${{ inputs.irc-channel }}
+        INPUT_SERVER: ${{ inputs.irc-server }}
+        INPUT_PORT: ${{ inputs.irc-port }}
+        INPUT_NICKNAME: ${{ inputs.irc-nickname }}
+        INPUT_TLS: ${{ inputs.irc-tls }}
+        INPUT_NOTICE: ${{ inputs.irc-notice }}
+    - name: irc tag created
+      shell: bash
+      run: |
+          if ${{ toJSON( fromJSON(inputs.target-notifications) && github.event_name == 'create' && github.event.ref_type == 'tag' && github.repository == inputs.repository   ) }}; then
+            echo "::group::IRC notification (create tag)"
+            node .github/actions/irc-message-action/app.js
+            echo "::endgroup::"
+          fi
+      env:
+        INPUT_MESSAGE: |
+          ${{ github.actor }} tagged ${{ github.repository }} ${{ github.event.ref }}
+        # Common inputs for Gottox/irc-message-action@v1.3
+        INPUT_CHANNEL: ${{ inputs.irc-channel }}
+        INPUT_SERVER: ${{ inputs.irc-server }}
+        INPUT_PORT: ${{ inputs.irc-port }}
+        INPUT_NICKNAME: ${{ inputs.irc-nickname }}
+        INPUT_TLS: ${{ inputs.irc-tls }}
+        INPUT_NOTICE: ${{ inputs.irc-notice }}
+    - name: irc issue
+      shell: bash
+      run: |
+          if ${{ toJSON( fromJSON(inputs.target-notifications) && github.event_name == 'issues' && github.repository == inputs.repository ) }}; then
+            echo "::group::IRC notification (issue)"
+            node .github/actions/irc-message-action/app.js
+            echo "::endgroup::"
+          fi
+      env:
+        INPUT_MESSAGE: |
+          ${{ github.actor }} ${{ github.event.action }} issue #${{ github.event.issue.number }} ${{ github.event.issue.html_url }}
+        # Common inputs for Gottox/irc-message-action@v1.3
+        INPUT_CHANNEL: ${{ inputs.irc-channel }}
+        INPUT_SERVER: ${{ inputs.irc-server }}
+        INPUT_PORT: ${{ inputs.irc-port }}
+        INPUT_NICKNAME: ${{ inputs.irc-nickname }}
+        INPUT_TLS: ${{ inputs.irc-tls }}
+        INPUT_NOTICE: ${{ inputs.irc-notice }}
+    - name: irc comment
+      shell: bash
+      run: |
+          if ${{ toJSON( fromJSON(inputs.target-notifications) && github.event_name == 'issue_comment' && github.repository == inputs.repository ) }}; then
+            echo "::group::IRC notification (issue comment)"
+            node .github/actions/irc-message-action/app.js
+            echo "::endgroup::"
+          fi
+      env:
+        INPUT_MESSAGE: |
+          ${{ github.actor }} ${{ github.event.review.state || 'commented' }} on #${{ github.event.issue.number }} ${{ github.event.comment.html_url || github.event.review.html_url }}
+        # Common inputs for Gottox/irc-message-action@v1.3
+        INPUT_CHANNEL: ${{ inputs.irc-channel }}
+        INPUT_SERVER: ${{ inputs.irc-server }}
+        INPUT_PORT: ${{ inputs.irc-port }}
+        INPUT_NICKNAME: ${{ inputs.irc-nickname }}
+        INPUT_TLS: ${{ inputs.irc-tls }}
+        INPUT_NOTICE: ${{ inputs.irc-notice }}
+    # Target: target-build-status
+    - name: Set target-build-status conditional env
+      shell: bash
+      run: |
+          echo "GHA_IRC_TARGET_BUILD_STATUS="${{ toJSON( fromJSON(inputs.target-build-status) && ( github.event_name == 'push' || github.event_name == 'pull_request' || ( github.event_name == 'create' && github.event.ref_type == 'tag' ) ) && github.repository == inputs.repository ) }} >> $GITHUB_ENV
+    - name: Prepare message
+      shell: bash
+      run: |
+        if $GHA_IRC_TARGET_BUILD_STATUS; then
+          echo "GITHUB_WORKFLOW_URL=https://github.com/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID" >> $GITHUB_ENV
+          echo "commitmsg="$( git show -s --oneline ${{ join(github.event.commits[0].id, ' ') }} ) >> $GITHUB_ENV
+        fi
+    - name: IRC build success
+      shell: bash
+      run: |
+          if ${{ toJSON( fromJSON(env.GHA_IRC_TARGET_BUILD_STATUS) && ( ! contains(fromJSON(inputs.needs).*.result, 'failure') && ! contains(fromJSON(inputs.needs).*.result, 'cancelled') ) ) }}; then
+            echo "::group::IRC notification (build status: success)"
+            node .github/actions/irc-message-action/app.js
+            echo "::endgroup::"
+          fi
+      env:
+        INPUT_MESSAGE: |
+          Build status: All builds succeeded [${{ github.event_name }}]: ${{ env.GITHUB_WORKFLOW_URL }}
+          @ ${{ github.sha }} | ${{ github.event.commits[0].author.name }} | «${{ env.commitmsg }}»
+        # Common inputs for Gottox/irc-message-action@v1.3
+        INPUT_CHANNEL: ${{ inputs.irc-channel }}
+        INPUT_SERVER: ${{ inputs.irc-server }}
+        INPUT_PORT: ${{ inputs.irc-port }}
+        INPUT_NICKNAME: ${{ inputs.irc-nickname }}
+        INPUT_TLS: ${{ inputs.irc-tls }}
+        INPUT_NOTICE: ${{ inputs.irc-notice }}
+    - name: IRC build failure
+      shell: bash
+      run: |
+          if ${{ toJSON( fromJSON(env.GHA_IRC_TARGET_BUILD_STATUS) && contains(fromJSON(inputs.needs).*.result, 'failure') ) }}; then
+            echo "::group::IRC notification (build status: failure)"
+            node .github/actions/irc-message-action/app.js
+            echo "::endgroup::"
+          fi
+      env:
+        INPUT_MESSAGE: |
+          Build status: Some builds failed [${{ github.event_name }}]: ${{ env.GITHUB_WORKFLOW_URL }}
+          @ ${{ github.sha }} | ${{ github.event.commits[0].author.name }} | «${{ env.commitmsg }}»
+        # Common inputs for Gottox/irc-message-action@v1.3
+        INPUT_CHANNEL: ${{ inputs.irc-channel }}
+        INPUT_SERVER: ${{ inputs.irc-server }}
+        INPUT_PORT: ${{ inputs.irc-port }}
+        INPUT_NICKNAME: ${{ inputs.irc-nickname }}
+        INPUT_TLS: ${{ inputs.irc-tls }}
+        INPUT_NOTICE: ${{ inputs.irc-notice }}

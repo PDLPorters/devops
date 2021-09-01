@@ -1,0 +1,11 @@
+name: Install ExtUtils::MakeMaker blead
+runs:
+  using: "composite"
+  steps:
+    - name: Install ExtUtils::MakeMaker blead
+      shell: bash
+      run: |
+          echo "::group::Install ExtUtils::MakeMaker blead (via cpanm)"
+          cpanm -n --dev ExtUtils::MakeMaker || cat ~/.cpanm/build.log
+          echo "::endgroup::"
+

@@ -1,0 +1,185 @@
+name: Cross-platform CI for Perl dist
+inputs:
+  target-all:
+    description: |
+      Flag for target that runs all steps.
+    required: true
+    default: false
+  target-setup-perl:
+    description: |
+      Flag for target that sets up a particular version of Perl.
+    required: true
+    default: false
+  target-install-dist-perl-deps:
+    description: |
+      Flag for target that installs Perl dependencies of distribution.
+    required: true
+    default: false
+  target-test-release-testing:
+    description: |
+      Flag for target that runs release tests.
+    required: true
+    default: false
+  target-test:
+    description: |
+      Flag for target that runs tests.
+    required: true
+    default: false
+  perl-version:
+    description: |
+      Version of Perl to setup. Passed on to to action shogo82148/actions-setup-perl@v1
+      as `perl-version` input.
+
+      Used by target-setup-perl.
+    required: false
+    default: '5'
+  perl-distribution:
+    description: |
+      Perl distribution to install. Passed on to to action
+      shogo82148/actions-setup-perl@v1 as `distribution` input. This does not
+      need to be set as it defaults to strawberry which is ignored on
+      non-Windows systems.
+
+      Used by target-setup-perl.
+    required: false
+    default: strawberry
+  test-harness-options:
+    description: |
+      Sets env $HARNESS_OPTIONS.
+
+      Used in target-test.
+    required: true
+    default: 'j4'
+  test-enable-release-testing:
+    description: |
+      Flag for enabling release testing.
+
+      Used in target-test-release-testing.
+    required: true
+    default: false
+  test-enable-coverage:
+    description: |
+      Flag for enabling code coverage.
+
+      Used in target-test.
+    required: true
+    default: false
+  github-token:
+    description: |
+      GitHub token passed in.
+
+      Used by target-test if the test-enable-coverage option is enabled.
+    required: false
+    default: null
+runs:
+  using: "composite"
+  steps:
+    # Target: target-setup-perl
+    - name: target-setup-perl (actions-setup-perl)
+      shell: bash
+      run: |
+          if ${{ toJSON(
+                (  fromJSON(inputs.target-all)
+                || fromJSON(inputs.target-setup-perl)
+                )
+              ) }}; then
+            echo "::group::setup-perl (actions-setup-perl)"
+            git clone \
+                    https://github.com/shogo82148/actions-setup-perl.git \
+                    -b v1 \
+                    .github/actions/actions-setup-perl;
+            node .github/actions/actions-setup-perl/dist/index.js
+            echo "::endgroup::"
+          fi
+      env:
+        INPUT_DISTRIBUTION: ${{ inputs.perl-distribution }}
+        INPUT_PERL-VERSION: ${{ inputs.perl-version }}
+        INPUT_ENABLE-MODULES-CACHE: false
+    - name: target-setup-perl (perl -V)
+      shell: bash
+      run: |
+          if ${{ toJSON(
+                (  fromJSON(inputs.target-all)
+                || fromJSON(inputs.target-setup-perl)
+                )
+              ) }}; then
+            echo "::group::setup-perl (perl -V)"
+            export MYPERL=$(which -a perl | grep -m 1 hostedtoolcache)
+            echo "MYPERL=$MYPERL" >> $GITHUB_ENV
+            $MYPERL -V
+            echo "::endgroup::"
+          fi
+    # Target: target-install-dist-perl-deps
+    - name: target-install-dist-perl-deps (via cpanm)
+      shell: bash
+      run: |
+          if ${{ toJSON(
+                (  fromJSON(inputs.target-all)
+                || fromJSON(inputs.target-install-dist-perl-deps)
+                )
+              ) }}; then
+            echo "::group::install-dist-perl-deps (via cpanm)"
+            $MYPERL -S cpanm -n ExtUtils::MakeMaker Devel::CheckLib && $MYPERL -S cpanm -n --installdeps . || cat ~/.cpanm/build.log
+            echo "::endgroup::"
+          fi
+    # Target: target-test-release-testing
+    # Run release tests, before others as may install useful stuff
+    - name: target-test-release-testing (via cpanm)
+      shell: bash
+      env:
+        RELEASE_TESTING: 1
+      run: |
+          if ${{ toJSON(
+                (  fromJSON(inputs.target-all)
+                || fromJSON(inputs.target-test-release-testing)
+                )
+                && fromJSON(inputs.test-enable-release-testing || 'false')
+              ) }}; then
+            echo "::group::test-release-testing (via cpanm)"
+            $MYPERL -S cpanm -n --installdeps --with-develop . || cat ~/.cpanm/build.log
+            $MYPERL -S cpanm -n CPAN::Changes || cat ~/.cpanm/build.log
+            if [ -d xt ]; then
+              $MYPERL -S prove -lr xt
+            else
+              echo "Warning: no directory xt/" > /dev/stderr
+            fi
+            echo "::endgroup::"
+          fi
+    # Target: target-test
+    - name: target-test (no coverage)
+      shell: bash
+      env:
+        HARNESS_OPTIONS: ${{ inputs.test-harness-options }}
+      run: |
+          if ${{ toJSON(
+                (  fromJSON(inputs.target-all)
+                || fromJSON(inputs.target-test)
+                )
+                && ! fromJSON(inputs.test-enable-coverage || 'false')
+              ) }}; then
+            echo "::group::test (no coverage)"
+            if [ -f Makefile.PL ]; then
+              $MYPERL Makefile.PL && make test
+            else
+              echo "No file Makefile.PL" > /dev/stderr
+            fi
+            echo "::endgroup::"
+          fi
+    - name: target-test (with coverage)
+      shell: bash
+      env:
+        HARNESS_OPTIONS: ${{ inputs.test-harness-options }}
+        GITHUB_TOKEN: ${{ inputs.github-token }}
+      run: |
+          if ${{ toJSON(
+                (  fromJSON(inputs.target-all)
+                || fromJSON(inputs.target-test)
+                )
+                && fromJSON(inputs.test-enable-coverage || 'false')
+              ) }}; then
+            echo "::group::test (with coverage)"
+            $MYPERL -S cpanm -n Devel::Cover::Report::Coveralls || cat ~/.cpanm/build.log
+            $MYPERL -S cpanm git://github.com/mohawk2/Devel--Cover.git@deepdirs
+            $MYPERL -S cover -test -relative_only -gcov_chdir -report Coveralls
+            echo "::endgroup::"
+          fi
