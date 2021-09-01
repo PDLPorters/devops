@@ -1,8 +1,13 @@
 name: IRC notifications
 inputs:
+  organization:
+    description: Organization that notifications are triggered for.
+    required: true
+    default: 'PDLPorters'
   repository:
     description: Repository that notifications are triggered for.
     required: true
+    default: ''
   irc-channel:
     required: true
     default: '#pdl'
@@ -56,7 +61,10 @@ runs:
           if ${{ toJSON(
                       fromJSON(inputs.target-notifications)
                    && github.event_name == 'push'
-                   && github.repository == inputs.repository
+                   && (
+                         startsWith( github.repository, join([ inputs.organization, '/'], ''))
+                      || github.repository == inputs.repository
+                      )
                  ) }}; then
             echo "commitmsg="$( git show -s --oneline ${{ join(github.event.commits.*.id, ' ') }} ) >> $GITHUB_ENV
           fi
@@ -66,7 +74,10 @@ runs:
           if ${{ toJSON(
                       fromJSON(inputs.target-notifications)
                    && github.event_name == 'push'
-                   && github.repository == inputs.repository
+                   && (
+                         startsWith( github.repository, join([ inputs.organization, '/'], ''))
+                      || github.repository == inputs.repository
+                      )
                  ) }}; then
             echo "::group::IRC notification (push)"
             node .github/actions/irc-message-action/app.js
@@ -89,7 +100,10 @@ runs:
           if ${{ toJSON(
                    fromJSON(inputs.target-notifications)
                    && github.event_name == 'pull_request'
-                   && github.repository == inputs.repository
+                   && (
+                         startsWith( github.repository, join([ inputs.organization, '/'], ''))
+                      || github.repository == inputs.repository
+                      )
                  ) }}; then
             echo "::group::IRC notification (pull request)"
             node .github/actions/irc-message-action/app.js
@@ -112,7 +126,10 @@ runs:
                       fromJSON(inputs.target-notifications)
                    && github.event_name == 'create'
                    && github.event.ref_type == 'tag'
-                   && github.repository == inputs.repository
+                   && (
+                         startsWith( github.repository, join([ inputs.organization, '/'], ''))
+                      || github.repository == inputs.repository
+                      )
                  ) }}; then
             echo "::group::IRC notification (create tag)"
             node .github/actions/irc-message-action/app.js
@@ -134,7 +151,10 @@ runs:
           if ${{ toJSON(
                       fromJSON(inputs.target-notifications)
                    && github.event_name == 'issues'
-                   && github.repository == inputs.repository
+                   && (
+                         startsWith( github.repository, join([ inputs.organization, '/'], ''))
+                      || github.repository == inputs.repository
+                      )
                  ) }}; then
             echo "::group::IRC notification (issue)"
             node .github/actions/irc-message-action/app.js
@@ -156,7 +176,10 @@ runs:
           if ${{ toJSON(
                       fromJSON(inputs.target-notifications)
                    && github.event_name == 'issue_comment'
-                   && github.repository == inputs.repository
+                   && (
+                         startsWith( github.repository, join([ inputs.organization, '/'], ''))
+                      || github.repository == inputs.repository
+                      )
                  ) }}; then
             echo "::group::IRC notification (issue comment)"
             node .github/actions/irc-message-action/app.js
@@ -187,7 +210,10 @@ runs:
                           && github.event.ref_type == 'tag'
                           )
                        )
-                       && github.repository == inputs.repository
+                       && (
+                             startsWith( github.repository, join([ inputs.organization, '/'], ''))
+                          || github.repository == inputs.repository
+                          )
                   ) }} >> $GITHUB_ENV
     - name: Prepare message
       shell: bash
