@@ -104,7 +104,9 @@ runs:
                 )
               ) }}; then
             echo "::group::setup-perl (perl -V)"
-            perl -V
+            export MYPERL=$(which -a perl | grep -m 1 hostedtoolcache)
+            echo "MYPERL=$MYPERL" >> $GITHUB_ENV
+            $MYPERL -V
             echo "::endgroup::"
           fi
     # Target: target-install-dist-perl-deps
@@ -117,7 +119,7 @@ runs:
                 )
               ) }}; then
             echo "::group::install-dist-perl-deps (via cpanm)"
-            cpanm -n ExtUtils::MakeMaker Devel::CheckLib && cpanm -n --installdeps . || cat ~/.cpanm/build.log
+            $MYPERL -S cpanm -n ExtUtils::MakeMaker Devel::CheckLib && $MYPERL -S cpanm -n --installdeps . || cat ~/.cpanm/build.log
             echo "::endgroup::"
           fi
     # Target: target-test-release-testing
@@ -134,10 +136,10 @@ runs:
                 && fromJSON(inputs.test-enable-release-testing || 'false')
               ) }}; then
             echo "::group::test-release-testing (via cpanm)"
-            cpanm -n --installdeps --with-develop . || cat ~/.cpanm/build.log
-            cpanm -n CPAN::Changes || cat ~/.cpanm/build.log
+            $MYPERL -S cpanm -n --installdeps --with-develop . || cat ~/.cpanm/build.log
+            $MYPERL -S cpanm -n CPAN::Changes || cat ~/.cpanm/build.log
             if [ -d xt ]; then
-              prove -lr xt
+              $MYPERL -S prove -lr xt
             else
               echo "Warning: no directory xt/" > /dev/stderr
             fi
@@ -157,7 +159,7 @@ runs:
               ) }}; then
             echo "::group::test (no coverage)"
             if [ -f Makefile.PL ]; then
-              perl Makefile.PL && make test
+              $MYPERL Makefile.PL && make test
             else
               echo "No file Makefile.PL" > /dev/stderr
             fi
@@ -176,8 +178,8 @@ runs:
                 && fromJSON(inputs.test-enable-coverage || 'false')
               ) }}; then
             echo "::group::test (with coverage)"
-            cpanm -n Devel::Cover::Report::Coveralls || cat ~/.cpanm/build.log
-            cpanm git://github.com/mohawk2/Devel--Cover.git@deepdirs
-            cover -test -relative_only -gcov_chdir -report Coveralls
+            $MYPERL -S cpanm -n Devel::Cover::Report::Coveralls || cat ~/.cpanm/build.log
+            $MYPERL -S cpanm git://github.com/mohawk2/Devel--Cover.git@deepdirs
+            $MYPERL -S cover -test -relative_only -gcov_chdir -report Coveralls
             echo "::endgroup::"
           fi
