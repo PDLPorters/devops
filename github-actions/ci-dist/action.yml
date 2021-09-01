@@ -74,11 +74,6 @@ inputs:
 runs:
   using: "composite"
   steps:
-    - uses: actions/checkout@v2
-      with:
-        repository: shogo82148/actions-setup-perl
-        ref: v1
-        path: .github/actions/actions-setup-perl
     # Target: target-setup-perl
     - name: target-setup-perl (actions-setup-perl)
       shell: bash
@@ -89,6 +84,10 @@ runs:
                 )
               ) }}; then
             echo "::group::setup-perl (actions-setup-perl)"
+            git clone \
+                    https://github.com/shogo82148/actions-setup-perl.git \
+                    -b v1 \
+                    .github/actions/actions-setup-perl;
             node .github/actions/actions-setup-perl/dist/index.js
             echo "::endgroup::"
           fi
