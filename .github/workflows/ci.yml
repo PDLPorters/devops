@@ -13,9 +13,9 @@ jobs:
     continue-on-error: true
     if: ${{ always() }}
     steps:
-      - uses: PDLPorters/devops/github-actions/irc-notifications@master
+      - uses: actions/checkout@v2
+      - uses: ./github-actions/irc-notifications
         with:
-          repository: PDLPorters/devops
           target-notifications: true
   ci:
     runs-on: 'ubuntu-latest'
@@ -35,8 +35,8 @@ jobs:
     if: ${{ always() }}
     needs: [ 'ci' ]
     steps:
-      - uses: PDLPorters/devops/github-actions/irc-notifications@master
+      - uses: actions/checkout@v2
+      - uses: ./github-actions/irc-notifications
         with:
-          repository: PDLPorters/devops
           target-build-status: true
           needs: ${{ toJSON(needs) }}
