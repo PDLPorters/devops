@@ -1,7 +1,7 @@
 name: IRC notifications
 inputs:
-  organization:
-    description: Organization that notifications are triggered for.
+  repository_owner:
+    description: Organization/owner that notifications are triggered for.
     required: true
     default: 'PDLPorters'
   repository:
@@ -62,7 +62,7 @@ runs:
                       fromJSON(inputs.target-notifications)
                    && github.event_name == 'push'
                    && (
-                         startsWith( github.repository, join([ inputs.organization, '/'], ''))
+                         github.repository_owner == inputs.repository_owner
                       || github.repository == inputs.repository
                       )
                  ) }}; then
@@ -75,7 +75,7 @@ runs:
                       fromJSON(inputs.target-notifications)
                    && github.event_name == 'push'
                    && (
-                         startsWith( github.repository, join([ inputs.organization, '/'], ''))
+                         github.repository_owner == inputs.repository_owner
                       || github.repository == inputs.repository
                       )
                  ) }}; then
@@ -101,7 +101,7 @@ runs:
                    fromJSON(inputs.target-notifications)
                    && github.event_name == 'pull_request'
                    && (
-                         startsWith( github.repository, join([ inputs.organization, '/'], ''))
+                         github.repository_owner == inputs.repository_owner
                       || github.repository == inputs.repository
                       )
                  ) }}; then
@@ -127,7 +127,7 @@ runs:
                    && github.event_name == 'create'
                    && github.event.ref_type == 'tag'
                    && (
-                         startsWith( github.repository, join([ inputs.organization, '/'], ''))
+                         github.repository_owner == inputs.repository_owner
                       || github.repository == inputs.repository
                       )
                  ) }}; then
@@ -152,7 +152,7 @@ runs:
                       fromJSON(inputs.target-notifications)
                    && github.event_name == 'issues'
                    && (
-                         startsWith( github.repository, join([ inputs.organization, '/'], ''))
+                         github.repository_owner == inputs.repository_owner
                       || github.repository == inputs.repository
                       )
                  ) }}; then
@@ -177,7 +177,7 @@ runs:
                       fromJSON(inputs.target-notifications)
                    && github.event_name == 'issue_comment'
                    && (
-                         startsWith( github.repository, join([ inputs.organization, '/'], ''))
+                         github.repository_owner == inputs.repository_owner
                       || github.repository == inputs.repository
                       )
                  ) }}; then
@@ -211,7 +211,7 @@ runs:
                           )
                        )
                        && (
-                             startsWith( github.repository, join([ inputs.organization, '/'], ''))
+                             github.repository_owner == inputs.repository_owner
                           || github.repository == inputs.repository
                           )
                   ) }} >> $GITHUB_ENV
