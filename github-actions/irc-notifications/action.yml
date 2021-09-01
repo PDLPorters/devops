@@ -53,13 +53,21 @@ runs:
     - name: irc push (build messages)
       shell: bash
       run: |
-          if ${{ toJSON( fromJSON(inputs.target-notifications) && github.event_name == 'push' && github.repository == inputs.repository ) }}; then
+          if ${{ toJSON(
+                      fromJSON(inputs.target-notifications)
+                   && github.event_name == 'push'
+                   && github.repository == inputs.repository
+                 ) }}; then
             echo "commitmsg="$( git show -s --oneline ${{ join(github.event.commits.*.id, ' ') }} ) >> $GITHUB_ENV
           fi
     - name: irc push
       shell: bash
       run: |
-          if ${{ toJSON( fromJSON(inputs.target-notifications) && github.event_name == 'push' && github.repository == inputs.repository ) }}; then
+          if ${{ toJSON(
+                      fromJSON(inputs.target-notifications)
+                   && github.event_name == 'push'
+                   && github.repository == inputs.repository
+                 ) }}; then
             echo "::group::IRC notification (push)"
             node .github/actions/irc-message-action/app.js
             echo "::endgroup::"
@@ -78,7 +86,11 @@ runs:
     - name: irc pull request
       shell: bash
       run: |
-          if ${{ toJSON( fromJSON(inputs.target-notifications) && github.event_name == 'pull_request' && github.repository == inputs.repository ) }}; then
+          if ${{ toJSON(
+                   fromJSON(inputs.target-notifications)
+                   && github.event_name == 'pull_request'
+                   && github.repository == inputs.repository
+                 ) }}; then
             echo "::group::IRC notification (pull request)"
             node .github/actions/irc-message-action/app.js
             echo "::endgroup::"
@@ -96,7 +108,12 @@ runs:
     - name: irc tag created
       shell: bash
       run: |
-          if ${{ toJSON( fromJSON(inputs.target-notifications) && github.event_name == 'create' && github.event.ref_type == 'tag' && github.repository == inputs.repository   ) }}; then
+          if ${{ toJSON(
+                      fromJSON(inputs.target-notifications)
+                   && github.event_name == 'create'
+                   && github.event.ref_type == 'tag'
+                   && github.repository == inputs.repository
+                 ) }}; then
             echo "::group::IRC notification (create tag)"
             node .github/actions/irc-message-action/app.js
             echo "::endgroup::"
@@ -114,7 +131,11 @@ runs:
     - name: irc issue
       shell: bash
       run: |
-          if ${{ toJSON( fromJSON(inputs.target-notifications) && github.event_name == 'issues' && github.repository == inputs.repository ) }}; then
+          if ${{ toJSON(
+                      fromJSON(inputs.target-notifications)
+                   && github.event_name == 'issues'
+                   && github.repository == inputs.repository
+                 ) }}; then
             echo "::group::IRC notification (issue)"
             node .github/actions/irc-message-action/app.js
             echo "::endgroup::"
@@ -132,7 +153,11 @@ runs:
     - name: irc comment
       shell: bash
       run: |
-          if ${{ toJSON( fromJSON(inputs.target-notifications) && github.event_name == 'issue_comment' && github.repository == inputs.repository ) }}; then
+          if ${{ toJSON(
+                      fromJSON(inputs.target-notifications)
+                   && github.event_name == 'issue_comment'
+                   && github.repository == inputs.repository
+                 ) }}; then
             echo "::group::IRC notification (issue comment)"
             node .github/actions/irc-message-action/app.js
             echo "::endgroup::"
@@ -162,7 +187,12 @@ runs:
     - name: IRC build success
       shell: bash
       run: |
-          if ${{ toJSON( fromJSON(env.GHA_IRC_TARGET_BUILD_STATUS) && ( ! contains(fromJSON(inputs.needs).*.result, 'failure') && ! contains(fromJSON(inputs.needs).*.result, 'cancelled') ) ) }}; then
+          if ${{ toJSON(
+                      fromJSON(env.GHA_IRC_TARGET_BUILD_STATUS)
+                   && (    ! contains(fromJSON(inputs.needs).*.result, 'failure')
+                        && ! contains(fromJSON(inputs.needs).*.result, 'cancelled')
+                      )
+                 ) }}; then
             echo "::group::IRC notification (build status: success)"
             node .github/actions/irc-message-action/app.js
             echo "::endgroup::"
@@ -181,7 +211,10 @@ runs:
     - name: IRC build failure
       shell: bash
       run: |
-          if ${{ toJSON( fromJSON(env.GHA_IRC_TARGET_BUILD_STATUS) && contains(fromJSON(inputs.needs).*.result, 'failure') ) }}; then
+          if ${{ toJSON(
+                      fromJSON(env.GHA_IRC_TARGET_BUILD_STATUS)
+                   && contains(fromJSON(inputs.needs).*.result, 'failure')
+                 ) }}; then
             echo "::group::IRC notification (build status: failure)"
             node .github/actions/irc-message-action/app.js
             echo "::endgroup::"
