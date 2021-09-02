@@ -141,7 +141,7 @@ runs:
             if [ -d xt ]; then
               $MYPERL -S prove -lr xt
             else
-              echo "Warning: no directory xt/" > /dev/stderr
+              echo "Warning: no directory xt/" >&2
             fi
             echo "::endgroup::"
           fi
@@ -161,7 +161,7 @@ runs:
             if [ -f Makefile.PL ]; then
               $MYPERL Makefile.PL && make test
             else
-              echo "No file Makefile.PL" > /dev/stderr
+              echo "No file Makefile.PL" >&2
             fi
             echo "::endgroup::"
           fi
