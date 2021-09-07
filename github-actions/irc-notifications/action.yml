@@ -54,6 +54,54 @@ runs:
         repository: Gottox/irc-message-action
         ref: v1.3
         path: .github/actions/irc-message-action
+    - name: Set up IRC colors
+      shell: bash
+      run: |
+          echo "::group::Setting up IRC colors"
+          perl -e '
+            for (sort grep { /^map_color_/ } keys %ENV) {
+              (my $key = $_) =~ s/^map_//;
+              my $value = $ENV{ "IRC_CC_" . $ENV{$_} };
+              print "$key=$value\n"
+            }' >> $GITHUB_ENV
+          echo "::endgroup::"
+      env:
+        # IRC color codes
+        # From <https://metacpan.org/pod/IRC::Toolkit::Colors>.
+        IRC_CC_NORMAL      : "\x0f"
+        IRC_CC_BOLD        : "\x02"
+        IRC_CC_UNDERLINE   : "\x1f"
+        IRC_CC_REVERSE     : "\x16"
+        IRC_CC_ITALIC      : "\x1d"
+        IRC_CC_WHITE       : "\x0300"
+        IRC_CC_BLACK       : "\x0301"
+        IRC_CC_BLUE        : "\x0302"
+        IRC_CC_GREEN       : "\x0303"
+        IRC_CC_RED         : "\x0304"
+        IRC_CC_BROWN       : "\x0305"
+        IRC_CC_PURPLE      : "\x0306"
+        IRC_CC_ORANGE      : "\x0307"
+        IRC_CC_YELLOW      : "\x0308"
+        IRC_CC_TEAL        : "\x0310"
+        IRC_CC_PINK        : "\x0313"
+        IRC_CC_GREY        : "\x0314"
+        IRC_CC_GRAY        : "\x0314"
+        IRC_CC_LIGHT_BLUE  : "\x0312"
+        IRC_CC_LIGHT_CYAN  : "\x0311"
+        IRC_CC_CYAN        : "\x0311"
+        IRC_CC_LIGHT_GREEN : "\x0309"
+        IRC_CC_LIGHT_GRAY  : "\x0315"
+        IRC_CC_LIGHT_GREY  : "\x0315"
+        map_color_reset: "NORMAL"
+        map_color_repo: 'BLUE'
+        map_color_actor: 'ORANGE'
+        map_color_commit: 'GREEN'
+        map_color_number: 'GREEN'
+        map_color_issue: 'GREEN'
+        map_color_url: 'PINK'
+        map_color_branch: 'GREEN'
+        map_color_success: 'GREEN'
+        map_color_failure: 'RED'
     # Target: target-notifications
     - name: irc push (build messages)
       shell: bash
@@ -85,7 +133,7 @@ runs:
           fi
       env:
         INPUT_MESSAGE: |
-          ${{ github.actor }} pushed ${{ github.event.ref }} ${{ github.event.compare }}
+          ${{ env.color_actor }}${{ github.actor }}${{ env.color_reset }} pushed ${{ env.color_branch }}${{ github.event.ref }}${{ env.color_reset }} ${{env.color_url}}${{ github.event.compare }}${{env.color_reset}}
           ${{ env.commitmsg }}
         # Common inputs for Gottox/irc-message-action@v1.3
         INPUT_CHANNEL: ${{ inputs.irc-channel }}
@@ -111,7 +159,7 @@ runs:
           fi
       env:
         INPUT_MESSAGE: |
-          ${{ github.actor }} ${{ github.event.action }} PR «${{ github.event.pull_request.title }}» ${{ github.event.pull_request.html_url }}
+          ${{ env.color_actor }}${{ github.actor }}${{ env.color_reset }} ${{ github.event.action }} PR «${{ github.event.pull_request.title }}» ${{ env.color_url }}${{ github.event.pull_request.html_url }}${{ env.color_reset }}
         # Common inputs for Gottox/irc-message-action@v1.3
         INPUT_CHANNEL: ${{ inputs.irc-channel }}
         INPUT_SERVER: ${{ inputs.irc-server }}
@@ -137,7 +185,7 @@ runs:
           fi
       env:
         INPUT_MESSAGE: |
-          ${{ github.actor }} tagged ${{ github.repository }} ${{ github.event.ref }}
+          ${{ env.color_actor }}${{ github.actor }}${{ env.color_reset }} tagged ${{ github.repository }} ${{ env.color_number }}${{ github.event.ref }}${{ env.color_reset }}
         # Common inputs for Gottox/irc-message-action@v1.3
         INPUT_CHANNEL: ${{ inputs.irc-channel }}
         INPUT_SERVER: ${{ inputs.irc-server }}
@@ -162,7 +210,7 @@ runs:
           fi
       env:
         INPUT_MESSAGE: |
-          ${{ github.actor }} ${{ github.event.action }} issue #${{ github.event.issue.number }} ${{ github.event.issue.html_url }}
+          ${{ env.color_actor }}${{ github.actor }}${{ env.color_reset }} ${{ github.event.action }} issue ${{ env.color_number }}#${{ github.event.issue.number }}${{ env.color_reset }} ${{ env.color_url }}${{ github.event.issue.html_url }}${{ env.color_reset }}
         # Common inputs for Gottox/irc-message-action@v1.3
         INPUT_CHANNEL: ${{ inputs.irc-channel }}
         INPUT_SERVER: ${{ inputs.irc-server }}
@@ -187,7 +235,7 @@ runs:
           fi
       env:
         INPUT_MESSAGE: |
-          ${{ github.actor }} ${{ github.event.review.state || 'commented' }} on #${{ github.event.issue.number }} ${{ github.event.comment.html_url || github.event.review.html_url }}
+          ${{ env.color_actor }}${{ github.actor }}${{ env.color_reset }} ${{ github.event.review.state || 'commented' }} on ${{ env.color_number }}#${{ github.event.issue.number }}${{ env.color_reset }} ${{ env.color_url }}${{ github.event.comment.html_url || github.event.review.html_url }}${{ env.color_reset }}
         # Common inputs for Gottox/irc-message-action@v1.3
         INPUT_CHANNEL: ${{ inputs.irc-channel }}
         INPUT_SERVER: ${{ inputs.irc-server }}
@@ -237,8 +285,8 @@ runs:
           fi
       env:
         INPUT_MESSAGE: |
-          Build status: All builds succeeded [${{ github.event_name }}]: ${{ env.GITHUB_WORKFLOW_URL }}
-          @ ${{ github.sha }} | ${{ github.event.commits[0].author.name }} | «${{ env.commitmsg }}»
+          Build status: All builds ${{env.color_success}}succeeded${{env.color_reset}} [${{ github.event_name }}]: ${{env.color_url}}${{ env.GITHUB_WORKFLOW_URL }}${{env.color_reset}}
+          @ ${{env.color_number}}${{ github.sha }}${{env.color_reset}} | ${{env.color_actor}}${{ github.event.commits[0].author.name }}${{env.color_reset}} | «${{ env.commitmsg }}»
         # Common inputs for Gottox/irc-message-action@v1.3
         INPUT_CHANNEL: ${{ inputs.irc-channel }}
         INPUT_SERVER: ${{ inputs.irc-server }}
@@ -259,8 +307,8 @@ runs:
           fi
       env:
         INPUT_MESSAGE: |
-          Build status: Some builds failed [${{ github.event_name }}]: ${{ env.GITHUB_WORKFLOW_URL }}
-          @ ${{ github.sha }} | ${{ github.event.commits[0].author.name }} | «${{ env.commitmsg }}»
+          Build status: Some builds ${{env.color_failure}}failed${{env.color_reset}} [${{ github.event_name }}]: ${{env.color_url}}${{ env.GITHUB_WORKFLOW_URL }}${{env.color_reset}}
+          @ ${{env.color_number}}${{ github.sha }}${{env.color_reset}} | ${{env.color_actor}}${{ github.event.commits[0].author.name }}${{env.color_reset}} | «${{ env.commitmsg }}»
         # Common inputs for Gottox/irc-message-action@v1.3
         INPUT_CHANNEL: ${{ inputs.irc-channel }}
         INPUT_SERVER: ${{ inputs.irc-server }}
