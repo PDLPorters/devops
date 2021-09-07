@@ -1,0 +1,29 @@
+name: Install Gnuplot
+runs:
+  using: "composite"
+  steps:
+    - name: Install gnuplot (via apt-get)
+      shell: bash
+      run: |
+          if ${{ toJSON( runner.os == 'Linux' ) }}; then
+            echo "::group::Install gnuplot (via apt-get)"
+            sudo apt-get install gnuplot gnuplot-qt
+            echo "::endgroup::"
+          fi
+    - name: Install gnuplot (via brew)
+      shell: bash
+      run: |
+          if ${{ toJSON( runner.os == 'macOS' ) }}; then
+            echo "::group::Install gnuplot (via brew)"
+            brew install gnuplot
+            echo "::endgroup::"
+          fi
+    - name: Install gnuplot (via choco)
+      shell: bash
+      run: |
+          if ${{ toJSON( runner.os == 'Windows' ) }}; then
+            echo "::group::Install gnuplot (via choco)"
+            choco install gnuplot
+            pwsh -c 'echo "C:\Program Files\gnuplot\bin" | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append'
+            echo "::endgroup::"
+          fi
