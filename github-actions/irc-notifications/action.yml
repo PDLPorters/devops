@@ -269,7 +269,7 @@ runs:
       run: |
         if $GHA_IRC_TARGET_BUILD_STATUS; then
           echo "GITHUB_WORKFLOW_URL=https://github.com/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID" >> $GITHUB_ENV
-          echo "commitmsg="$( git show -s --pretty='format:${{env.color_ref}}%h${{env.color_reset}} | ${{env.color_actor}}%an${{env.color_reset}} | %s' ${{ join(github.event.commits[0].id, ' ') }} ) >> $GITHUB_ENV
+          echo "commitmsg="$( git show -s --pretty='format:${{env.color_ref}}%h${{env.color_reset}} | ${{env.color_actor}}%an${{env.color_reset}} | %s' ${{ github.sha }} ) >> $GITHUB_ENV
         fi
     - name: IRC build success
       shell: bash
