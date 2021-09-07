@@ -287,7 +287,7 @@ runs:
       env:
         INPUT_MESSAGE: |
           [${{env.color_repo}}${{env.SHORT_REPO}}${{env.color_reset}}] Build status: All builds ${{env.color_success}}succeeded${{env.color_reset}} [${{ github.event_name }}]: ${{env.color_url}}${{ env.GITHUB_WORKFLOW_URL }}${{env.color_reset}}
-          [${{env.color_repo}}${{env.SHORT_REPO}}${{env.color_reset}}] => ${{ env.commitmsg }}
+          [${{env.color_repo}}${{env.SHORT_REPO}}${{env.color_reset}}] ${{env.color_success}}✓${{env.color_reset}} ${{ env.commitmsg }}
         # Common inputs for Gottox/irc-message-action@v1.3
         INPUT_CHANNEL: ${{ inputs.irc-channel }}
         INPUT_SERVER: ${{ inputs.irc-server }}
@@ -309,7 +309,7 @@ runs:
       env:
         INPUT_MESSAGE: |
           [${{env.color_repo}}${{env.SHORT_REPO}}${{env.color_reset}}] Build status: Some builds ${{env.color_failure}}failed${{env.color_reset}} [${{ github.event_name }}]: ${{env.color_url}}${{ env.GITHUB_WORKFLOW_URL }}${{env.color_reset}}
-          [${{env.color_repo}}${{env.SHORT_REPO}}${{env.color_reset}}] => ${{ env.commitmsg }}
+          [${{env.color_repo}}${{env.SHORT_REPO}}${{env.color_reset}}] ${{env.color_failure}}✗${{env.color_reset}} ${{ env.commitmsg }}
         # Common inputs for Gottox/irc-message-action@v1.3
         INPUT_CHANNEL: ${{ inputs.irc-channel }}
         INPUT_SERVER: ${{ inputs.irc-server }}
