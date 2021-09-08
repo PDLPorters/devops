@@ -159,7 +159,7 @@ runs:
               ) }}; then
             echo "::group::test (no coverage)"
             if [ -f Makefile.PL ]; then
-              $MYPERL Makefile.PL && make test
+              ( [ -f Makefile ] || $MYPERL Makefile.PL ) && make test
             else
               echo "No file Makefile.PL" >&2
             fi
