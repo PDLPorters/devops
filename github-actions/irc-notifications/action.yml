@@ -129,7 +129,7 @@ runs:
                       )
                  ) }}; then
             echo "::group::IRC notification (push)"
-            node .github/actions/irc-message-action/app.js
+            parallel -N0 -t --retries 3 --delay $(( 2 + $RANDOM % 6 )) node .github/actions/irc-message-action/app.js ::: 0
             echo "::endgroup::"
           fi
       env:
@@ -155,7 +155,7 @@ runs:
                       )
                  ) }}; then
             echo "::group::IRC notification (pull request)"
-            node .github/actions/irc-message-action/app.js
+            parallel -N0 -t --retries 3 --delay $(( 2 + $RANDOM % 6 )) node .github/actions/irc-message-action/app.js ::: 0
             echo "::endgroup::"
           fi
       env:
@@ -181,7 +181,7 @@ runs:
                       )
                  ) }}; then
             echo "::group::IRC notification (create tag)"
-            node .github/actions/irc-message-action/app.js
+            parallel -N0 -t --retries 3 --delay $(( 2 + $RANDOM % 6 )) node .github/actions/irc-message-action/app.js ::: 0
             echo "::endgroup::"
           fi
       env:
@@ -206,7 +206,7 @@ runs:
                       )
                  ) }}; then
             echo "::group::IRC notification (issue)"
-            node .github/actions/irc-message-action/app.js
+            parallel -N0 -t --retries 3 --delay $(( 2 + $RANDOM % 6 )) node .github/actions/irc-message-action/app.js ::: 0
             echo "::endgroup::"
           fi
       env:
@@ -231,7 +231,7 @@ runs:
                       )
                  ) }}; then
             echo "::group::IRC notification (issue comment)"
-            node .github/actions/irc-message-action/app.js
+            parallel -N0 -t --retries 3 --delay $(( 2 + $RANDOM % 6 )) node .github/actions/irc-message-action/app.js ::: 0
             echo "::endgroup::"
           fi
       env:
@@ -281,7 +281,7 @@ runs:
                       )
                  ) }}; then
             echo "::group::IRC notification (build status: success)"
-            node .github/actions/irc-message-action/app.js
+            parallel -N0 -t --retries 3 --delay $(( 2 + $RANDOM % 6 )) node .github/actions/irc-message-action/app.js ::: 0
             echo "::endgroup::"
           fi
       env:
@@ -303,7 +303,7 @@ runs:
                    && contains(fromJSON(inputs.needs).*.result, 'failure')
                  ) }}; then
             echo "::group::IRC notification (build status: failure)"
-            node .github/actions/irc-message-action/app.js
+            parallel -N0 -t --retries 3 --delay $(( 2 + $RANDOM % 6 )) node .github/actions/irc-message-action/app.js ::: 0
             echo "::endgroup::"
           fi
       env:
