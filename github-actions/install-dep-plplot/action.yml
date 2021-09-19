@@ -1,0 +1,32 @@
+name: Install PLplot
+runs:
+  using: "composite"
+  steps:
+    - name: Install plplot (via apt-get)
+      shell: bash
+      run: |
+          if ${{ toJSON( runner.os == 'Linux' ) }}; then
+            echo "::group::Install plplot (via apt-get)"
+            sudo apt-get install libplplot-dev
+            echo "::endgroup::"
+          fi
+    - name: Install plplot (via brew)
+      shell: bash
+      run: |
+          if ${{ toJSON( runner.os == 'macOS' ) }}; then
+            echo "::group::Install plplot (via brew)"
+            brew install plplot
+            echo "::endgroup::"
+          fi
+    - name: Install plplot (via vcpkg)
+      shell: bash
+      run: |
+          if ${{ toJSON( runner.os == 'Windows' ) }}; then
+            echo "::group::Install plplot (via vcpkg)"
+            vcpkg install plplot:x64-windows
+            cp /c/vcpkg/packages/plplot_x64-windows/bin/plplot.dll /c/vcpkg/packages/plplot_x64-windows/bin/libplplot.dll
+            echo "PLPLOT_LIBDIR=C:/vcpkg/packages/plplot_x64-windows/bin" >> $GITHUB_ENV
+            pwsh -c 'echo "C:/vcpkg/packages/plplot_x64-windows/bin" | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append'
+            echo "PLPLOT_INCDIR=C:/vcpkg/packages/plplot_x64-windows/include/plplot" >> $GITHUB_ENV
+            echo "::endgroup::"
+          fi
