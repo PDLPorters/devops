@@ -43,6 +43,11 @@ inputs:
       Used by target-setup-perl.
     required: false
     default: strawberry
+  build-enable-parallel:
+    description: |
+      Setting for building in parallel if possible.
+    required: false
+    default: true
   test-harness-options:
     description: |
       Sets env $HARNESS_OPTIONS.
@@ -74,6 +79,27 @@ inputs:
 runs:
   using: "composite"
   steps:
+    # Target: none
+    # Shared step to do initial set up
+    - name: initial setup
+      shell: bash
+      run: |
+          echo "::group::initial setup"
+          export SYSTEM_CORES=1;
+          if ${{ toJSON( runner.os == 'Linux' ) }}; then
+            export SYSTEM_CORES="$(grep -c ^processor /proc/cpuinfo 2>/dev/null || echo 1 )"
+          elif ${{ toJSON( runner.os == 'macOS' ) }}; then
+            export SYSTEM_CORES="$(sysctl -n hw.ncpu || echo 1)"
+          elif ${{ toJSON( runner.os == 'Windows' ) }}; then
+            export SYSTEM_CORES=$( powershell -NoProfile -Command "& { Get-WmiObject Win32_Processor | Select-Object -Property NumberOfCores }" | perl -0777 -ne 'print $1, "\n" while /(\d+)/g' );
+          fi
+          echo "SYSTEM_CORES=$SYSTEM_CORES";
+          if ${{ toJSON(
+                 fromJSON(inputs.build-enable-parallel || 'true')
+              ) }}; then
+            echo "MAKEFLAGS=-j$(( SYSTEM_CORES + 1))" >> $GITHUB_ENV
+          fi
+          echo "::endgroup::"
     # Target: target-setup-perl
     - name: target-setup-perl (actions-setup-perl)
       shell: bash
