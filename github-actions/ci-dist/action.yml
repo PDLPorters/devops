@@ -48,6 +48,14 @@ inputs:
       Used by target-setup-perl.
     required: false
     default: strawberry
+  perl-threaded:
+    description: |
+      Setting for running a threaded Perl. Passed on to to action
+      shogo82148/actions-setup-perl@v1 as `multi-thread` input.
+
+      Used by target-setup-perl.
+    required: false
+    default: false
   build-enable-parallel:
     description: |
       Setting for building in parallel if possible.
@@ -125,6 +133,7 @@ runs:
       env:
         INPUT_DISTRIBUTION: ${{ inputs.perl-distribution }}
         INPUT_PERL-VERSION: ${{ inputs.perl-version }}
+        INPUT_MULTI-THREAD: ${{ inputs.perl-threaded }}
         INPUT_ENABLE-MODULES-CACHE: false
     - name: target-setup-perl (perl -V)
       shell: bash
