@@ -198,6 +198,7 @@ runs:
     - name: target-test-release-testing (via cpanm)
       shell: bash
       env:
+        AUTOMATED_TESTING: 1
         RELEASE_TESTING: 1
       run: |
           if ${{ toJSON(
@@ -221,6 +222,7 @@ runs:
     - name: target-test (no coverage)
       shell: bash
       env:
+        AUTOMATED_TESTING: 1
         HARNESS_OPTIONS: ${{ inputs.test-harness-options }}
       run: |
           if ${{ toJSON(
@@ -243,6 +245,7 @@ runs:
     - name: target-test (with coverage)
       shell: bash
       env:
+        AUTOMATED_TESTING: 1
         HARNESS_OPTIONS: ${{ inputs.test-harness-options }}
         GITHUB_TOKEN: ${{ inputs.github-token }}
       run: |
