@@ -1,0 +1,92 @@
+- main:
+  - repo: https://github.com/PDLPorters/pdlporters.github.com
+    description: website
+  - repo: https://github.com/PDLPorters/pdl-fftw
+    description: obsolete, replaced by PDL-FFTW3
+- external:
+  - dist: 'PDL-IO-Matlab'
+    repo: 'https://github.com/jlapeyre/PDL-IO-Matlab'
+  - dist: 'Test-PDL'
+    repo: 'https://github.com/ebaudrez/Test-PDL'
+  - dist: 'PDL-NDBin'
+    repo: 'https://github.com/ebaudrez/PDL-NDBin'
+  - repo: 'https://github.com/moocow-the-bovine/PDL-CCS'
+  - repo: 'https://github.com/moocow-the-bovine/PDL-Cluster'
+  - repo: 'https://github.com/moocow-the-bovine/PDL-EditDistance'
+  - repo: 'https://github.com/moocow-the-bovine/PDL-GA'
+  - repo: 'https://github.com/moocow-the-bovine/PDL-HMM'
+  - repo: 'https://github.com/moocow-the-bovine/PDL-Ngrams'
+  - repo: 'https://github.com/moocow-the-bovine/PDL-SVDLIBC'
+  - repo: 'https://github.com/moocow-the-bovine/PDL-SVDSLEPc'
+  - repo: 'https://github.com/moocow-the-bovine/PDL-VectorValued'
+  - repo: 'https://github.com/wlmb/Photonic'
+  - repo: 'https://github.com/run4flat/PDL-Drawing-Prima'
+  - repo: 'https://github.com/run4flat/PDL-Graphics-Prima'
+  - dist: PDL-Parallel-threads
+    repo: 'https://github.com/run4flat/PDL-Parallel-threads'
+  - repo: https://github.com/run4flat/PDL-Fit-ExpRate
+  - repo: https://github.com/run4flat/PDL-Fit-OO
+  - repo: https://github.com/run4flat/PDL-Periodogram
+  - repo: https://github.com/run4flat/PDL-Prima-DirectImage
+  - dist: PDL-Opt-QP
+    repo: 'https://github.com/mvgrimes/pdl-opt-qp'
+  - dist: Gimp
+    repo: 'https://gitlab.gnome.org/GNOME/gimp-perl'
+  - dist: Statistics-Descriptive-PDL
+    repo: 'https://github.com/shawnlaffan/Statistics-Descriptive-PDL'
+  - dist: PDL-IO-NDF
+    repo: https://github.com/Starlink/perl-PDL-IO-NDF
+  - dist: Alien-Gnuplot
+    repo: https://github.com/drzowie/Alien-Gnuplot
+  - dist: Alien-PGPLOT
+    repo: https://gitlab.com/djerius/alien-pgplot
+  - dist: MooX-PDL-Role-Proxy
+    repo: https://gitlab.com/djerius/moox-pdl-role-proxy
+  - dist: PDL-Algorithm-Center
+    repo: https://gitlab.com/djerius/PDL-Algorithm-Center
+  - dist: Types-PDL
+    repo: https://gitlab.com/djerius/types-pdl
+  - dist: MooX-PDL2
+    repo: https://github.com/djerius/moox-pdl2
+  - dist: PDLx-DetachedObject
+    repo: https://github.com/djerius/pdlx-detachedobject
+  - dist: PDLx-Mask
+    repo: https://gitlab.com/djerius/PDLx-Mask
+  - dist: PDL-FuncND
+    repo: https://gitlab.com/djerius/PDL-FuncND
+  - dist: PDL-Fit-Levmar
+    repo: https://github.com/jlapeyre/PDL-Fit-Levmar
+  - dist: PDL-DSP-Fir
+    repo: https://github.com/jlapeyre/PDL-DSP-Fir
+  - dist: Alien-PLplot
+    repo: https://github.com/PDLPorters/Alien-PLplot
+  - dist: Astro-FITS-CFITSIO-Simple
+    repo: ~
+  - dist: Graphics-Asymptote
+    repo: ~
+  - dist: PDL-Apply
+    repo: https://github.com/kmx/pdl-apply
+  - dist: PDL-DateTime
+    repo: https://github.com/kmx/pdl-datetime
+  - dist: PDL-Finance-TA
+    repo: https://github.com/kmx/pdl-finance-ta
+  - dist: PDL-Finance-Talib
+    repo: https://github.com/kmx/pdl-finance-talib
+  - dist: PDL-IO-CSV
+    repo: https://github.com/kmx/pdl-io-csv
+  - dist: PDL-IO-DBI
+    repo: https://github.com/kmx/pdl-io-dbi
+  - dist: PDL-IO-Image
+    repo: https://github.com/kmx/pdl-io-image
+  - dist: PDL-IO-Sereal
+    repo: https://github.com/kmx/pdl-io-sereal
+  - dist: PDL-IO-XLSX
+    repo: https://github.com/kmx/pdl-io-xlsx
+  - dist: PDL-DSP-Windows
+    repo: https://github.com/jjatria/PDL-DSP-Windows
+  - dist: Data-Frame
+    repo: https://github.com/EntropyOrg/p5-Data-Frame
+  - dist: AI-MXNet
+    repo: https://github.com/apache/incubator-mxnet/tree/v1.9.x/perl-package/AI-MXNet
+  - dist: Test2-Tools-PDL
+    repo: https://github.com/stphnlyd/perl5-Test2-Tools-PDL
