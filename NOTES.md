@@ -1,3 +1,20 @@
+# Testing environment
+
+1. Debugging GitHub Actions can be done through SSH by using
+   <https://github.com/mxschmitt/action-tmate> as below:
+
+```yaml
+      - name: Setup tmate session
+        if: ${{ failure() }}
+        uses: mxschmitt/action-tmate@v3
+        with:
+          limit-access-to-actor: true
+```
+
+2. Debugging locally can be done through VMs. One way to use a VM for Windows
+   is to use Vagrant and install the box
+   <https://app.vagrantup.com/StefanScherer/boxes/windows_10>.
+
 # Split
 
 ## Create repo
