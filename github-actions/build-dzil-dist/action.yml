@@ -1,0 +1,53 @@
+name: Make distribution using Dist::Zilla
+runs:
+  using: "composite"
+  steps:
+    - name: Cache ~/perl5
+      uses: actions/cache@v2
+      with:
+        key: ${{ runner.os }}-dist-locallib
+        path: ~/perl5
+    - name: Check for dist.ini
+      shell: bash
+      run: |
+          echo "::group::Check for dist.ini"
+          [ -f "dist.ini" ]
+          echo "::endgroup::"
+    - name: Perl version
+      shell: bash
+      run: |
+          echo "::group::Perl version"
+          perl -v
+          echo "::endgroup::"
+    - name: Install cpanm
+      shell: bash
+      run: |
+          echo "::group::Install cpanm"
+          curl -L https://cpanmin.us | perl - --sudo App::cpanminus
+          echo "::endgroup::"
+    - name: Install local::lib
+      shell: bash
+      run: |
+          echo "::group::Install local::lib"
+          cpanm --local-lib=~/perl5 local::lib && eval $(perl -I ~/perl5/lib/perl5/ -Mlocal::lib)
+          echo "::endgroup::"
+    - name: Install Dist::Zilla
+      shell: bash
+      run: |
+          echo "::group::Install Dist::Zilla"
+          eval $(perl -I ~/perl5/lib/perl5/ -Mlocal::lib)
+          cpanm -n Dist::Zilla
+          dzil authordeps --missing | cpanm -n
+          echo "::endgroup::"
+    - name: Make distribution
+      shell: bash
+      run: |
+          echo "::group::Make distribution"
+          eval $(perl -I ~/perl5/lib/perl5/ -Mlocal::lib)
+          dzil build --in build-dir
+          echo "::endgroup::"
+    - name: Upload artifact
+      uses: actions/upload-artifact@v2
+      with:
+        name: dist
+        path: ./build-dir

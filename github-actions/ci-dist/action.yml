@@ -1,5 +1,10 @@
 name: Cross-platform CI for Perl dist
 inputs:
+  path:
+    description: |
+      Path for root of dist to build.
+    required: false
+    default: '.'
   target-all:
     description: |
       Flag for target that runs all steps.
@@ -145,6 +150,7 @@ runs:
                 )
               ) }}; then
             echo "::group::install-dist-perl-deps (via cpanm)"
+            cd ${{ inputs.path }}
             $MYPERL -S cpanm -n ExtUtils::MakeMaker Devel::CheckLib && $MYPERL -S cpanm -n --installdeps . || cat ~/.cpanm/build.log
             echo "::endgroup::"
           fi
@@ -162,6 +168,7 @@ runs:
                 && fromJSON(inputs.test-enable-release-testing || 'false')
               ) }}; then
             echo "::group::test-release-testing (via cpanm)"
+            cd ${{ inputs.path }}
             $MYPERL -S cpanm -n --installdeps --with-develop . || cat ~/.cpanm/build.log
             $MYPERL -S cpanm -n CPAN::Changes || cat ~/.cpanm/build.log
             if [ -d xt ]; then
@@ -184,6 +191,7 @@ runs:
                 && ! fromJSON(inputs.test-enable-coverage || 'false')
               ) }}; then
             echo "::group::test (no coverage)"
+            cd ${{ inputs.path }}
             if [ -f Makefile.PL ]; then
               ( [ -f Makefile ] || $MYPERL Makefile.PL ) && make test
             else
@@ -204,6 +212,7 @@ runs:
                 && fromJSON(inputs.test-enable-coverage || 'false')
               ) }}; then
             echo "::group::test (with coverage)"
+            cd ${{ inputs.path }}
             $MYPERL -S cpanm -n Devel::Cover::Report::Coveralls || cat ~/.cpanm/build.log
             $MYPERL -S cpanm git://github.com/mohawk2/Devel--Cover.git@deepdirs
             $MYPERL -S cover -test -relative_only -gcov_chdir -report Coveralls
