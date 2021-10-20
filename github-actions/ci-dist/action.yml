@@ -48,6 +48,14 @@ inputs:
       Used by target-setup-perl.
     required: false
     default: strawberry
+  perl-threaded:
+    description: |
+      Setting for running a threaded Perl. Passed on to to action
+      shogo82148/actions-setup-perl@v1 as `multi-thread` input.
+
+      Used by target-setup-perl.
+    required: false
+    default: false
   build-enable-parallel:
     description: |
       Setting for building in parallel if possible.
@@ -72,6 +80,15 @@ inputs:
       Flag for enabling code coverage.
 
       Used in target-test.
+    required: true
+    default: false
+  test-enable-graphical-display:
+    description: |
+      Flag for enabling testing with graphical display setup. On a Linux
+      system, this uses xvfb to set up an X11 display. This does not do
+      anything on macOS and Windows systems.
+
+      Used in target-test, target-test-release-testing.
     required: true
     default: false
   github-token:
@@ -125,6 +142,7 @@ runs:
       env:
         INPUT_DISTRIBUTION: ${{ inputs.perl-distribution }}
         INPUT_PERL-VERSION: ${{ inputs.perl-version }}
+        INPUT_MULTI-THREAD: ${{ inputs.perl-threaded }}
         INPUT_ENABLE-MODULES-CACHE: false
     - name: target-setup-perl (perl -V)
       shell: bash
@@ -154,11 +172,33 @@ runs:
             $MYPERL -S cpanm -n ExtUtils::MakeMaker Devel::CheckLib && $MYPERL -S cpanm -n --installdeps . || cat ~/.cpanm/build.log
             echo "::endgroup::"
           fi
+    # Target: target-test-release-testing | target-test
+    # Shared step for setting up graphical display.
+    - name: target-test-release-testing | target-test
+      shell: bash
+      run: |
+          if ${{ toJSON(
+                (  fromJSON(inputs.target-all)
+                || fromJSON(inputs.target-test-release-testing)
+                || fromJSON(inputs.target-test)
+                )
+                && fromJSON(inputs.test-enable-graphical-display || 'false')
+              ) }}; then
+            if ${{ toJSON( runner.os == 'Linux' ) }}; then
+              echo "::group::Install xvfb (via apt-get)"
+              sudo apt-get install xvfb
+              mkdir /tmp/runtime-runner && chmod 0700 /tmp/runtime-runner
+              echo "XDG_RUNTIME_DIR=/tmp/runtime-runner" >> $GITHUB_ENV
+              echo "TEST_RUNNER_PREFIX=xvfb-run -a" >> $GITHUB_ENV
+              echo "::endgroup::"
+            fi
+          fi
     # Target: target-test-release-testing
     # Run release tests, before others as may install useful stuff
     - name: target-test-release-testing (via cpanm)
       shell: bash
       env:
+        AUTOMATED_TESTING: 1
         RELEASE_TESTING: 1
       run: |
           if ${{ toJSON(
@@ -172,7 +212,7 @@ runs:
             $MYPERL -S cpanm -n --installdeps --with-develop . || cat ~/.cpanm/build.log
             $MYPERL -S cpanm -n CPAN::Changes || cat ~/.cpanm/build.log
             if [ -d xt ]; then
-              $MYPERL -S prove -lr xt
+              $TEST_RUNNER_PREFIX $MYPERL -S prove -lr xt
             else
               echo "Warning: no directory xt/" >&2
             fi
@@ -182,6 +222,7 @@ runs:
     - name: target-test (no coverage)
       shell: bash
       env:
+        AUTOMATED_TESTING: 1
         HARNESS_OPTIONS: ${{ inputs.test-harness-options }}
       run: |
           if ${{ toJSON(
@@ -193,15 +234,18 @@ runs:
             echo "::group::test (no coverage)"
             cd ${{ inputs.path }}
             if [ -f Makefile.PL ]; then
-              ( [ -f Makefile ] || $MYPERL Makefile.PL ) && make test
+              ( [ -f Makefile ] || $MYPERL Makefile.PL ) && $TEST_RUNNER_PREFIX make test
+            elif [ -f Build.PL ]; then
+              ( [ -f Build ] || $MYPERL Build.PL ) && $TEST_RUNNER_PREFIX ./Build test
             else
-              echo "No file Makefile.PL" >&2
+              echo "No file Makefile.PL or Build.PL" >&2
             fi
             echo "::endgroup::"
           fi
     - name: target-test (with coverage)
       shell: bash
       env:
+        AUTOMATED_TESTING: 1
         HARNESS_OPTIONS: ${{ inputs.test-harness-options }}
         GITHUB_TOKEN: ${{ inputs.github-token }}
       run: |
@@ -215,6 +259,6 @@ runs:
             cd ${{ inputs.path }}
             $MYPERL -S cpanm -n Devel::Cover::Report::Coveralls || cat ~/.cpanm/build.log
             $MYPERL -S cpanm git://github.com/mohawk2/Devel--Cover.git@deepdirs
-            $MYPERL -S cover -test -relative_only -gcov_chdir -report Coveralls
+            $TEST_RUNNER_PREFIX $MYPERL -S cover -test -relative_only -gcov_chdir -report Coveralls
             echo "::endgroup::"
           fi
