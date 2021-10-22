@@ -225,6 +225,7 @@ runs:
         AUTOMATED_TESTING: 1
         HARNESS_OPTIONS: ${{ inputs.test-harness-options }}
       run: |
+          set -e
           if ${{ toJSON(
                 (  fromJSON(inputs.target-all)
                 || fromJSON(inputs.target-test)
