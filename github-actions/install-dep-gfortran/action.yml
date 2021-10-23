@@ -5,9 +5,11 @@ runs:
     - name: Install gfortran
       shell: bash
       run: |
-          echo "::group::Install gfortran (via apt-get)"
-          sudo apt-get -y update && sudo apt-get install gfortran
-          echo "::endgroup::"
+          if ${{ toJSON( runner.os == 'Linux' ) }}; then
+            echo "::group::Install gfortran (via apt-get)"
+            sudo apt-get -y update && sudo apt-get install gfortran
+            echo "::endgroup::"
+          fi
     - name: Install ExtUtils::F77
       shell: bash
       run: |
