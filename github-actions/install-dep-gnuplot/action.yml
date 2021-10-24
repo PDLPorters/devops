@@ -18,7 +18,7 @@ runs:
             brew install gnuplot
             echo "::endgroup::"
           fi
-    - name: Install gnuplot (via choco)
+    - name: Install gnuplot (extract from archive)
       shell: bash
       run: |
           if ${{ toJSON( runner.os == 'Windows' ) }}; then
