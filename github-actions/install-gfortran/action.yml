@@ -1,0 +1,16 @@
+name: Install gfortran
+runs:
+  using: "composite"
+  steps:
+    - name: Install gfortran
+      shell: bash
+      run: |
+          if ${{ toJSON( runner.os == 'Linux' ) }}; then
+            echo "::group::Install gfortran (via apt-get)"
+            sudo apt-get -y update && sudo apt-get install gfortran
+            echo "::endgroup::"
+          elif ${{ toJSON( runner.os == 'macOS' ) }}; then
+            echo "::group::Install gfortran (via brew)"
+            brew reinstall gfortran
+            echo "::endgroup::"
+          fi
