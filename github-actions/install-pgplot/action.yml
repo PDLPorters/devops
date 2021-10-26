@@ -1,0 +1,16 @@
+name: Install PGPLOT
+runs:
+  using: "composite"
+  steps:
+    - name: Install PGPLOT
+      shell: bash
+      run: |
+          if ${{ toJSON( runner.os == 'Linux' ) }}; then
+            echo "::group::Install PGPLOT (via apt-get)"
+            sudo apt-get -y update && sudo apt-get install pgplot5
+            echo "::endgroup::"
+          elif ${{ toJSON( runner.os == 'macOS' ) }}; then
+            echo "::group::Install PGPLOT (via brew)"
+            brew install kazuakiyama/pgplot/pgplot
+            echo "::endgroup::"
+          fi
