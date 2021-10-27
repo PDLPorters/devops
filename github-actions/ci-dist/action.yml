@@ -235,7 +235,7 @@ runs:
             echo "::group::test (no coverage)"
             cd ${{ inputs.path }}
             if [ -f Makefile.PL ]; then
-              ( [ -f Makefile ] || $MYPERL Makefile.PL ) && $TEST_RUNNER_PREFIX make test
+              ( [ -f Makefile ] || $MYPERL Makefile.PL ) && $TEST_RUNNER_PREFIX make && $TEST_RUNNER_PREFIX make test
             elif [ -f Build.PL ]; then
               ( [ -f Build ] || $MYPERL Build.PL ) && $TEST_RUNNER_PREFIX ./Build test
             else
