@@ -49,6 +49,8 @@ runs:
     # actions/checkout of the repo is used by both targets
     # (target-notifications, target-build-status).
     - uses: actions/checkout@v2
+      with:
+        fetch-depth: 0
     - uses: actions/checkout@v2
       with:
         repository: Gottox/irc-message-action
@@ -103,6 +105,9 @@ runs:
         map_color_branch: 'GREEN'
         map_color_success: 'GREEN'
         map_color_failure: 'RED'
+        map_color_insertion: 'GREEN'
+        map_color_deletion: 'RED'
+        map_color_modification: 'YELLOW'
     # Target: target-notifications
     - name: irc push (build messages)
       shell: bash
@@ -115,7 +120,16 @@ runs:
                       || github.repository == inputs.repository
                       )
                  ) }}; then
-            echo "commitmsg="$( git show -s --pretty='format:${{env.color_ref}}%h${{env.color_reset}} %s' ${{ join(github.event.commits.*.id, ' ') }} ) >> $GITHUB_ENV
+            sudo apt-get install -y diffstat
+            export commitnum="$( git show -s --oneline ${{ join(github.event.commits.*.id, ' ') }} | wc -l )"
+            export committext="commits"
+            if [ $commitnum -eq 1 ]; then
+              export committext="commit"
+            fi
+            echo "commitnum=$commitnum" >> $GITHUB_ENV
+            echo "committext=$committext" >> $GITHUB_ENV
+            echo "commitstats=$( git show ${{ join(github.event.commits.*.id, ' ') }} | diffstat -ms | perl -npe 's/\s\d+ files? changed, //; s/(\d+) (\w+?)s?\((.)\)(, )?/$ENV{q|color_|.$2}$3$ENV{color_reset}$1/g' )" >> $GITHUB_ENV
+            echo "commitmsg="$( git show -s --pretty='format:${{env.color_ref}}%h${{env.color_reset}} %s' ${{ github.event.head_commit.id }} ) >> $GITHUB_ENV
           fi
     - name: irc push
       shell: bash
@@ -134,7 +148,7 @@ runs:
           fi
       env:
         INPUT_MESSAGE: |
-          [${{env.color_repo}}${{env.SHORT_REPO}}${{env.color_reset}}] ${{ env.color_actor }}${{ github.actor }}${{ env.color_reset }} pushed ${{ env.color_branch }}${{ github.event.ref }}${{ env.color_reset }} ${{ env.commitmsg }} ${{env.color_url}}${{ github.event.compare }}${{env.color_reset}}
+          [${{env.color_repo}}${{env.SHORT_REPO}}${{env.color_reset}}] ${{ env.color_actor }}${{ github.actor }}${{ env.color_reset }} pushed ${{ env.color_number }}${{ env.commitnum }}${{ env.color_reset }} ${{ env.committext }} ${{ env.color_branch }}${{ github.event.ref }}${{ env.color_reset }} [${{ env.commitstats }}] ${{ env.commitmsg }} ${{env.color_url}}${{ github.event.compare }}${{env.color_reset}}
         # Common inputs for Gottox/irc-message-action@v1.3
         INPUT_CHANNEL: ${{ inputs.irc-channel }}
         INPUT_SERVER: ${{ inputs.irc-server }}
