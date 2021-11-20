@@ -56,6 +56,13 @@ inputs:
       Used by target-setup-perl.
     required: false
     default: false
+  dist-perl-deps-configure:
+    description: |
+      List of Perl configure-time dependencies to install.
+
+      Used by target-install-dist-perl-deps.
+    required: false
+    default: ''
   build-enable-parallel:
     description: |
       Setting for building in parallel if possible.
@@ -115,7 +122,7 @@ runs:
           elif ${{ toJSON( runner.os == 'Windows' ) }}; then
             export SYSTEM_CORES=$( powershell -NoProfile -Command "& { Get-WmiObject Win32_Processor | Select-Object -Property NumberOfCores }" | perl -0777 -ne 'print $1, "\n" while /(\d+)/g' );
           fi
-          echo "SYSTEM_CORES=$SYSTEM_CORES";
+          echo "SYSTEM_CORES=$SYSTEM_CORES" >> $GITHUB_ENV
           if ${{ toJSON(
                  fromJSON(inputs.build-enable-parallel || 'true')
               ) }}; then
@@ -205,7 +212,10 @@ runs:
               ) }}; then
             echo "::group::install-dist-perl-deps (via cpanm)"
             cd ${{ inputs.path }}
-            $MYPERL -S cpanm -n ExtUtils::MakeMaker Devel::CheckLib && $MYPERL -S cpanm -n --installdeps . || cat ~/.cpanm/build.log
+            if [ -n "${{ inputs.dist-perl-deps-configure }}" ]; then
+              $MYPERL -S cpanm --build-args -j$SYSTEM_CORES --dev -n ${{ inputs.dist-perl-deps-configure }} || ( cat ~/.cpanm/build.log && false )
+            fi
+            $MYPERL -S cpanm -n --installdeps . || ( cat ~/.cpanm/build.log && false )
             echo "::endgroup::"
           fi
     # Target: target-test-release-testing | target-test
