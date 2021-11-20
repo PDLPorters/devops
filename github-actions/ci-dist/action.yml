@@ -115,7 +115,7 @@ runs:
           elif ${{ toJSON( runner.os == 'Windows' ) }}; then
             export SYSTEM_CORES=$( powershell -NoProfile -Command "& { Get-WmiObject Win32_Processor | Select-Object -Property NumberOfCores }" | perl -0777 -ne 'print $1, "\n" while /(\d+)/g' );
           fi
-          echo "SYSTEM_CORES=$SYSTEM_CORES";
+          echo "SYSTEM_CORES=$SYSTEM_CORES" >> $GITHUB_ENV
           if ${{ toJSON(
                  fromJSON(inputs.build-enable-parallel || 'true')
               ) }}; then
