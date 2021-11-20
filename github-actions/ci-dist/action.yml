@@ -213,7 +213,7 @@ runs:
             echo "::group::install-dist-perl-deps (via cpanm)"
             cd ${{ inputs.path }}
             if [ -n "${{ inputs.dist-perl-deps-configure }}" ]; then
-              $MYPERL -S cpanm --build-args -j$SYSTEM_CORES --dev -n ${{ inputs.dist-perl-deps-configure }} || ( cat ~/.cpanm/build.log && false )
+              $MYPERL -S cpanm --dev -n ${{ inputs.dist-perl-deps-configure }} || ( cat ~/.cpanm/build.log && false )
             fi
             $MYPERL -S cpanm -n --installdeps . || ( cat ~/.cpanm/build.log && false )
             echo "::endgroup::"
