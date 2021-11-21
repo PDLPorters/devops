@@ -208,6 +208,7 @@ runs:
         key: locallib-v2.${{ inputs.perl-deps-cache-version }}-${{ runner.os }}-${{ env.GHA_CACHE_PERL_V_HASH }}
         path: ~/perl5
     - name: target-setup-perl (ccache)
+      # ccache support on Windows is not well-tested
       if: |
                 fromJSON(inputs.ccache-enable-cache)
                 &&
@@ -216,7 +217,7 @@ runs:
                 )
                 &&
                 (
-                  runner.os != 'Windows' # ccache support on Windows is not well-tested
+                  runner.os != 'Windows'
                 )
       uses: Chocobo1/setup-ccache-action@v1
       with:
