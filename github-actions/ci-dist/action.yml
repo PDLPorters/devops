@@ -173,7 +173,7 @@ runs:
                 )
       uses: actions/cache@v2
       with:
-        key: locallib-v1-${{ runner.os }}-${{ hashFiles('perlversion.txt') }}
+        key: locallib-v2-${{ runner.os }}-${{ hashFiles('perlversion.txt') }}
         path: ~/perl5
     - name: target-setup-perl (setup local::lib)
       shell: bash
