@@ -192,6 +192,18 @@ runs:
       with:
         key: locallib-v2.${{ inputs.perl-deps-cache-version }}-${{ runner.os }}-${{ hashFiles('perlversion.txt') }}
         path: ~/perl5
+    - name: target-setup-perl (ccache)
+      if: |
+                (  fromJSON(inputs.target-all)
+                || fromJSON(inputs.target-setup-perl)
+                )
+                &&
+                (
+                  runner.os != 'Windows'
+                )
+      uses: Chocobo1/setup-ccache-action@v1
+      with:
+        override_cache_key: ccache-v0-${{ runner.os }}-${{ hashFiles('perlversion.txt') }}
     - name: target-setup-perl (setup local::lib)
       shell: bash
       run: |
