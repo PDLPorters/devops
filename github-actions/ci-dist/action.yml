@@ -56,6 +56,21 @@ inputs:
       Used by target-setup-perl.
     required: false
     default: false
+  perl-deps-enable-cache:
+    description: |
+      Setting for enabling a cache of Perl dependencies.
+
+      Used by target-setup-perl.
+    required: false
+    default: true
+  perl-deps-cache-version:
+    description: |
+      Setting for cache version. Increment this to invalidate the existing
+      cache.
+
+      Used by target-setup-perl.
+    required: false
+    default: '0'
   dist-perl-deps-configure:
     description: |
       List of Perl configure-time dependencies to install.
@@ -168,14 +183,14 @@ runs:
           fi
     - name: target-setup-perl (cache ~/perl5)
       if: |
-                false
+                fromJSON(inputs.perl-deps-enable-cache)
                 &&
                 (  fromJSON(inputs.target-all)
                 || fromJSON(inputs.target-setup-perl)
                 )
       uses: actions/cache@v2
       with:
-        key: locallib-v1-${{ runner.os }}-${{ hashFiles('perlversion.txt') }}
+        key: locallib-v2.${{ inputs.perl-deps-cache-version }}-${{ runner.os }}-${{ hashFiles('perlversion.txt') }}
         path: ~/perl5
     - name: target-setup-perl (setup local::lib)
       shell: bash
@@ -187,6 +202,8 @@ runs:
               ) }}; then
             echo "::group::setup-perl (setup local::lib)"
             rm perlversion.txt # removing from previous step
+            # older Perls need this upgrade
+            $MYPERL -S cpanm -n --local-lib=~/perl5 ExtUtils::MakeMaker
             $MYPERL -S cpanm -n --local-lib=~/perl5 local::lib
             LOCALLIB_VARS="$($MYPERL -I ~/perl5/lib/perl5 -Mlocal::lib=--shelltype,bourne )"
             eval $( echo "$LOCALLIB_VARS" | $MYPERL -MFile::Spec -pne '
