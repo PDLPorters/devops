@@ -65,8 +65,23 @@ inputs:
     default: true
   perl-deps-cache-version:
     description: |
-      Setting for cache version. Increment this to invalidate the existing
-      cache.
+      Setting for cache version for Perl dependencies. Increment this to
+      invalidate the existing cache.
+
+      Used by target-setup-perl.
+    required: false
+    default: '0'
+  ccache-enable-cache:
+    description: |
+      Setting for enabling a cache using ccache.
+
+      Used by target-setup-perl.
+    required: false
+    default: true
+  ccache-cache-version:
+    description: |
+      Setting for cache version of ccache. Increment this to invalidate the
+      existing cache.
 
       Used by target-setup-perl.
     required: false
@@ -178,7 +193,7 @@ runs:
             export MYPERL=$(which -a perl | grep -m 1 hostedtoolcache)
             echo "MYPERL=$MYPERL" >> $GITHUB_ENV
             $MYPERL -V
-            $MYPERL -V > perlversion.txt
+            $MYPERL -MDigest::MD5=md5_hex -e 'print "GHA_CACHE_PERL_V_HASH=", md5_hex(`$^X -V`), "\n"' >> $GITHUB_ENV
             echo "::endgroup::"
           fi
     - name: target-setup-perl (cache ~/perl5)
@@ -190,8 +205,22 @@ runs:
                 )
       uses: actions/cache@v2
       with:
-        key: locallib-v2.${{ inputs.perl-deps-cache-version }}-${{ runner.os }}-${{ hashFiles('perlversion.txt') }}
+        key: locallib-v2.${{ inputs.perl-deps-cache-version }}-${{ runner.os }}-${{ env.GHA_CACHE_PERL_V_HASH }}
         path: ~/perl5
+    - name: target-setup-perl (ccache)
+      if: |
+                fromJSON(inputs.ccache-enable-cache)
+                &&
+                (  fromJSON(inputs.target-all)
+                || fromJSON(inputs.target-setup-perl)
+                )
+                &&
+                (
+                  runner.os != 'Windows' # ccache support on Windows is not well-tested
+                )
+      uses: Chocobo1/setup-ccache-action@v1
+      with:
+        override_cache_key: ccache-v0.${{ inputs.ccache-cache-version }}-${{ runner.os }}-${{ env.GHA_CACHE_PERL_V_HASH }}
     - name: target-setup-perl (setup local::lib)
       shell: bash
       run: |
@@ -201,7 +230,6 @@ runs:
                 )
               ) }}; then
             echo "::group::setup-perl (setup local::lib)"
-            rm perlversion.txt # removing from previous step
             # older Perls need this upgrade
             $MYPERL -S cpanm -n --local-lib=~/perl5 ExtUtils::MakeMaker
             $MYPERL -S cpanm -n --local-lib=~/perl5 local::lib
