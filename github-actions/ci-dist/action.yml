@@ -168,8 +168,6 @@ runs:
           fi
     - name: target-setup-perl (cache ~/perl5)
       if: |
-                false
-                &&
                 (  fromJSON(inputs.target-all)
                 || fromJSON(inputs.target-setup-perl)
                 )
