@@ -185,6 +185,8 @@ runs:
               ) }}; then
             echo "::group::setup-perl (setup local::lib)"
             rm perlversion.txt # removing from previous step
+            # older Perls need this upgrade
+            $MYPERL -S cpanm -n --local-lib=~/perl5 ExtUtils::MakeMaker
             $MYPERL -S cpanm -n --local-lib=~/perl5 local::lib
             LOCALLIB_VARS="$($MYPERL -I ~/perl5/lib/perl5 -Mlocal::lib=--shelltype,bourne )"
             eval $( echo "$LOCALLIB_VARS" | $MYPERL -MFile::Spec -pne '
