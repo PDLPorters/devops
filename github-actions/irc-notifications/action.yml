@@ -105,6 +105,7 @@ runs:
         map_color_branch: 'GREEN'
         map_color_success: 'GREEN'
         map_color_failure: 'RED'
+        map_color_cancelled: 'TEAL'
         map_color_insertion: 'GREEN'
         map_color_deletion: 'RED'
         map_color_modification: 'YELLOW'
@@ -283,14 +284,19 @@ runs:
         if $GHA_IRC_TARGET_BUILD_STATUS; then
           echo "GITHUB_WORKFLOW_URL=https://github.com/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID" >> $GITHUB_ENV
           echo "commitmsg=$( git show -s --pretty='format:${{env.color_ref}}%h${{env.color_reset}} | ${{env.color_actor}}%an${{env.color_reset}} | %s' ${{ github.sha }} )" >> $GITHUB_ENV
+          if ${{ toJSON( contains(fromJSON(inputs.needs).*.result, 'cancelled') ) }}; then
+            echo "irc_msgpart_cancelled=${{ env.color_cancelled }} (& ∃ cancelled)${{ env.color_reset }}" >> $GITHUB_ENV
+          else
+            echo "irc_msgpart_cancelled=" >> $GITHUB_ENV
+          fi
         fi
     - name: IRC build success
       shell: bash
       run: |
           if ${{ toJSON(
                       fromJSON(env.GHA_IRC_TARGET_BUILD_STATUS)
-                   && (    ! contains(fromJSON(inputs.needs).*.result, 'failure')
-                        && ! contains(fromJSON(inputs.needs).*.result, 'cancelled')
+                   && (
+                        ! contains(fromJSON(inputs.needs).*.result, 'failure')
                       )
                  ) }}; then
             echo "::group::IRC notification (build status: success)"
@@ -299,7 +305,7 @@ runs:
           fi
       env:
         INPUT_MESSAGE: |
-          [${{env.color_repo}}${{env.SHORT_REPO}}${{env.color_reset}}] [build/${{ github.event_name }}]: ${{env.color_success}}∀S ✓${{env.color_reset}} ${{ env.commitmsg }} ${{env.color_url}}${{ env.GITHUB_WORKFLOW_URL }}${{env.color_reset}}
+          [${{env.color_repo}}${{env.SHORT_REPO}}${{env.color_reset}}] [build/${{ github.event_name }}]: ${{env.color_success}}∀S ✓${{env.color_reset}}${{ env.irc_msgpart_cancelled }} ${{ env.commitmsg }} ${{env.color_url}}${{ env.GITHUB_WORKFLOW_URL }}${{env.color_reset}}
         # Common inputs for Gottox/irc-message-action@v1.3
         INPUT_CHANNEL: ${{ inputs.irc-channel }}
         INPUT_SERVER: ${{ inputs.irc-server }}
