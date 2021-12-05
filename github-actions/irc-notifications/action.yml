@@ -280,6 +280,7 @@ runs:
                   ) }} >> $GITHUB_ENV
     - name: Prepare message
       shell: bash
+      if: fromJSON(env.GHA_IRC_TARGET_BUILD_STATUS)
       run: |
         if $GHA_IRC_TARGET_BUILD_STATUS; then
           echo "GITHUB_WORKFLOW_URL=https://github.com/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID" >> $GITHUB_ENV
