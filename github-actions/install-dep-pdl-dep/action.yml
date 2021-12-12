@@ -21,7 +21,7 @@ runs:
       run: |
         if ${{ toJSON( runner.os == 'Linux' || runner.os == 'macOS' ) }}; then
           echo "::group::Install extra optional main PDL deps (via cpanm)"
-          cpanm -n Term::ReadLine::Gnu PGPLOT Alien::HDF4 Alien::Proj4 Inline::C || cat ~/.cpanm/build.log
+          cpanm -n Term::ReadLine::Gnu PGPLOT Alien::HDF4 Alien::proj Inline::C || cat ~/.cpanm/build.log
           echo "::endgroup::"
         fi
     - name: Install OpenGL PDL deps
