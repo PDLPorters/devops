@@ -162,8 +162,10 @@ runs:
           if ${{ toJSON( runner.os == 'Windows' ) }}; then
             # Set TEMP to full path instead of 8.3 short filenames.
             # See <https://github.com/actions/virtual-environments/issues/712>.
-            echo "TMP=$USERPROFILE\\AppData\\Local\\Temp" >> $GITHUB_ENV
-            echo "TEMP=$USERPROFILE\\AppData\\Local\\Temp" >> $GITHUB_ENV
+            # $USERPROFILE\\AppData\\Local\\Temp
+            [ -d 'C:\tmp' ] || mkdir 'C:\tmp';
+            echo 'TMP=C:\tmp' >> $GITHUB_ENV
+            echo 'TEMP=C:\tmp' >> $GITHUB_ENV
           fi
           echo "::endgroup::"
     # Target: target-setup-perl
