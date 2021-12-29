@@ -159,14 +159,14 @@ runs:
             echo "MAKEFLAGS=-j$(( SYSTEM_CORES + 1))" >> $GITHUB_ENV
           fi
 
-          if ${{ toJSON( runner.os == 'Windows' ) }}; then
-            # Set TEMP to full path instead of 8.3 short filenames.
-            # See <https://github.com/actions/virtual-environments/issues/712>.
-            # $USERPROFILE\\AppData\\Local\\Temp
-            [ -d 'C:\tmp' ] || mkdir 'C:\tmp';
-            echo 'TMP=C:\tmp' >> $GITHUB_ENV
-            echo 'TEMP=C:\tmp' >> $GITHUB_ENV
-          fi
+          #if ${{ toJSON( runner.os == 'Windows' ) }}; then
+          #  # Set TEMP to full path instead of 8.3 short filenames.
+          #  # See <https://github.com/actions/virtual-environments/issues/712>.
+          #  # $USERPROFILE\\AppData\\Local\\Temp
+          #  [ -d 'C:\tmp' ] || mkdir 'C:\tmp';
+          #  echo 'TMP=C:\tmp' >> $GITHUB_ENV
+          #  echo 'TEMP=C:\tmp' >> $GITHUB_ENV
+          #fi
           echo "::endgroup::"
     # Target: target-setup-perl
     - name: target-setup-perl (actions-setup-perl)
