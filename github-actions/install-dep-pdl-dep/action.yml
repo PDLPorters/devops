@@ -37,6 +37,6 @@ runs:
       run: |
         if ${{ toJSON( runner.os == 'Linux' ) }}; then
           echo "::group::Install extra optional OpenGL PDL deps (via cpanm)"
-          xvfb-run cpanm -n OpenGL || cat ~/.cpanm/build.log
+          xvfb-run cpanm -n OpenGL OpenGL::GLUT || cat ~/.cpanm/build.log
           echo "::endgroup::"
         fi
