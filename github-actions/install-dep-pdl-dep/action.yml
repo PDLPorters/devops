@@ -11,7 +11,7 @@ runs:
           echo "::endgroup::"
         elif ${{ toJSON( runner.os == 'macOS' ) }}; then
           echo "::group::Install main PDL deps (via brew)"
-          brew install proj netpbm ffmpeg gsl gfortran
+          brew install proj netpbm ffmpeg gsl
           echo "::endgroup::"
         fi
     - name: Install PGPLOT
