@@ -54,7 +54,7 @@ runs:
     - uses: actions/checkout@v2
       with:
         repository: Gottox/irc-message-action
-        ref: v1.3
+        ref: v2.1.1
         path: .github/actions/irc-message-action
     - name: Set up environment variables (e.g., IRC colors)
       shell: bash
@@ -150,7 +150,7 @@ runs:
       env:
         INPUT_MESSAGE: |
           [${{env.color_repo}}${{env.SHORT_REPO}}${{env.color_reset}}] ${{ env.color_actor }}${{ github.actor }}${{ env.color_reset }} pushed ${{ env.color_number }}${{ env.commitnum }}${{ env.color_reset }} ${{ env.committext }} ${{ env.color_branch }}${{ github.event.ref }}${{ env.color_reset }} [${{ env.commitstats }}] ${{ env.commitmsg }} ${{env.color_url}}${{ github.event.compare }}${{env.color_reset}}
-        # Common inputs for Gottox/irc-message-action@v1.3
+        # Common inputs for Gottox/irc-message-action@v2.1.1
         INPUT_CHANNEL: ${{ inputs.irc-channel }}
         INPUT_SERVER: ${{ inputs.irc-server }}
         INPUT_PORT: ${{ inputs.irc-port }}
@@ -175,7 +175,7 @@ runs:
       env:
         INPUT_MESSAGE: |
           [${{env.color_repo}}${{env.SHORT_REPO}}${{env.color_reset}}] ${{ env.color_actor }}${{ github.actor }}${{ env.color_reset }} ${{ github.event.action }} PR «${{ github.event.pull_request.title }}» ${{ env.color_url }}${{ github.event.pull_request.html_url }}${{ env.color_reset }}
-        # Common inputs for Gottox/irc-message-action@v1.3
+        # Common inputs for Gottox/irc-message-action@v2.1.1
         INPUT_CHANNEL: ${{ inputs.irc-channel }}
         INPUT_SERVER: ${{ inputs.irc-server }}
         INPUT_PORT: ${{ inputs.irc-port }}
@@ -201,7 +201,7 @@ runs:
       env:
         INPUT_MESSAGE: |
           [${{env.color_repo}}${{env.SHORT_REPO}}${{env.color_reset}}] ${{ env.color_actor }}${{ github.actor }}${{ env.color_reset }} tagged ${{ env.color_ref }}${{ github.event.ref }}${{ env.color_reset }}
-        # Common inputs for Gottox/irc-message-action@v1.3
+        # Common inputs for Gottox/irc-message-action@v2.1.1
         INPUT_CHANNEL: ${{ inputs.irc-channel }}
         INPUT_SERVER: ${{ inputs.irc-server }}
         INPUT_PORT: ${{ inputs.irc-port }}
@@ -226,7 +226,7 @@ runs:
       env:
         INPUT_MESSAGE: |
           [${{env.color_repo}}${{env.SHORT_REPO}}${{env.color_reset}}] ${{ env.color_actor }}${{ github.actor }}${{ env.color_reset }} ${{ github.event.action }} issue ${{ env.color_number }}#${{ github.event.issue.number }}${{ env.color_reset }} ${{ env.color_url }}${{ github.event.issue.html_url }}${{ env.color_reset }}
-        # Common inputs for Gottox/irc-message-action@v1.3
+        # Common inputs for Gottox/irc-message-action@v2.1.1
         INPUT_CHANNEL: ${{ inputs.irc-channel }}
         INPUT_SERVER: ${{ inputs.irc-server }}
         INPUT_PORT: ${{ inputs.irc-port }}
@@ -251,7 +251,7 @@ runs:
       env:
         INPUT_MESSAGE: |
           [${{env.color_repo}}${{env.SHORT_REPO}}${{env.color_reset}}] ${{ env.color_actor }}${{ github.actor }}${{ env.color_reset }} ${{ github.event.review.state || 'commented' }} on ${{ env.color_number }}#${{ github.event.issue.number }}${{ env.color_reset }} ${{ env.color_url }}${{ github.event.comment.html_url || github.event.review.html_url }}${{ env.color_reset }}
-        # Common inputs for Gottox/irc-message-action@v1.3
+        # Common inputs for Gottox/irc-message-action@v2.1.1
         INPUT_CHANNEL: ${{ inputs.irc-channel }}
         INPUT_SERVER: ${{ inputs.irc-server }}
         INPUT_PORT: ${{ inputs.irc-port }}
@@ -307,7 +307,7 @@ runs:
       env:
         INPUT_MESSAGE: |
           [${{env.color_repo}}${{env.SHORT_REPO}}${{env.color_reset}}] [build/${{ github.event_name }}]: ${{env.color_success}}∀S ✓${{env.color_reset}}${{ env.irc_msgpart_cancelled }} ${{ env.commitmsg }} ${{env.color_url}}${{ env.GITHUB_WORKFLOW_URL }}${{env.color_reset}}
-        # Common inputs for Gottox/irc-message-action@v1.3
+        # Common inputs for Gottox/irc-message-action@v2.1.1
         INPUT_CHANNEL: ${{ inputs.irc-channel }}
         INPUT_SERVER: ${{ inputs.irc-server }}
         INPUT_PORT: ${{ inputs.irc-port }}
@@ -328,7 +328,7 @@ runs:
       env:
         INPUT_MESSAGE: |
           [${{env.color_repo}}${{env.SHORT_REPO}}${{env.color_reset}}] [build/${{ github.event_name }}]: ${{env.color_failure}}∃F ✗${{env.color_reset}} ${{ env.commitmsg }} ${{env.color_url}}${{ env.GITHUB_WORKFLOW_URL }}${{env.color_reset}}
-        # Common inputs for Gottox/irc-message-action@v1.3
+        # Common inputs for Gottox/irc-message-action@v2.1.1
         INPUT_CHANNEL: ${{ inputs.irc-channel }}
         INPUT_SERVER: ${{ inputs.irc-server }}
         INPUT_PORT: ${{ inputs.irc-port }}
