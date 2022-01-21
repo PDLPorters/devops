@@ -26,6 +26,9 @@ inputs:
   irc-notice:
     required: true
     default: true
+  irc-excess-flood:
+    required: false
+    default: 'throttle'
   needs:
     description: |
       The GitHub Actions `need` context which should be passed
@@ -157,6 +160,7 @@ runs:
         INPUT_NICKNAME: ${{ inputs.irc-nickname }}
         INPUT_TLS: ${{ inputs.irc-tls }}
         INPUT_NOTICE: ${{ inputs.irc-notice }}
+        INPUT_EXCESS_FLOOD: ${{ inputs.irc-excess-flood }}
     - name: irc pull request
       shell: bash
       run: |
@@ -182,6 +186,7 @@ runs:
         INPUT_NICKNAME: ${{ inputs.irc-nickname }}
         INPUT_TLS: ${{ inputs.irc-tls }}
         INPUT_NOTICE: ${{ inputs.irc-notice }}
+        INPUT_EXCESS_FLOOD: ${{ inputs.irc-excess-flood }}
     - name: irc tag created
       shell: bash
       run: |
@@ -208,6 +213,7 @@ runs:
         INPUT_NICKNAME: ${{ inputs.irc-nickname }}
         INPUT_TLS: ${{ inputs.irc-tls }}
         INPUT_NOTICE: ${{ inputs.irc-notice }}
+        INPUT_EXCESS_FLOOD: ${{ inputs.irc-excess-flood }}
     - name: irc issue
       shell: bash
       run: |
@@ -233,6 +239,7 @@ runs:
         INPUT_NICKNAME: ${{ inputs.irc-nickname }}
         INPUT_TLS: ${{ inputs.irc-tls }}
         INPUT_NOTICE: ${{ inputs.irc-notice }}
+        INPUT_EXCESS_FLOOD: ${{ inputs.irc-excess-flood }}
     - name: irc comment
       shell: bash
       run: |
@@ -258,6 +265,7 @@ runs:
         INPUT_NICKNAME: ${{ inputs.irc-nickname }}
         INPUT_TLS: ${{ inputs.irc-tls }}
         INPUT_NOTICE: ${{ inputs.irc-notice }}
+        INPUT_EXCESS_FLOOD: ${{ inputs.irc-excess-flood }}
     # Target: target-build-status
     - name: Set target-build-status conditional env
       shell: bash
@@ -314,6 +322,7 @@ runs:
         INPUT_NICKNAME: ${{ inputs.irc-nickname }}
         INPUT_TLS: ${{ inputs.irc-tls }}
         INPUT_NOTICE: ${{ inputs.irc-notice }}
+        INPUT_EXCESS_FLOOD: ${{ inputs.irc-excess-flood }}
     - name: IRC build failure
       shell: bash
       run: |
@@ -335,3 +344,4 @@ runs:
         INPUT_NICKNAME: ${{ inputs.irc-nickname }}
         INPUT_TLS: ${{ inputs.irc-tls }}
         INPUT_NOTICE: ${{ inputs.irc-notice }}
+        INPUT_EXCESS_FLOOD: ${{ inputs.irc-excess-flood }}
