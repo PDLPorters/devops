@@ -167,6 +167,17 @@ runs:
           #  echo 'TMP=C:\tmp' >> $GITHUB_ENV
           #  echo 'TEMP=C:\tmp' >> $GITHUB_ENV
           #fi
+
+          # This is needed for Clang 12 due to
+          # <https://github.com/Perl/perl5/issues/18780>.
+          if ${{ toJSON( runner.os == 'macOS' ) }}; then
+            PATCH_EUMM_DIR=$HOME/build_aux
+            [ -d $PATCH_EUMM_DIR ] || mkdir $PATCH_EUMM_DIR
+            if [ ! -f $PATCH_EUMM_DIR/clang12_no_warnings.pm ]; then
+              echo 'package clang12_no_warnings; use ExtUtils::MakeMaker::Config; $Config{ccflags} = join " ", $Config{ccflags}, "-Wno-compound-token-split-by-macro"; 1;' > $PATCH_EUMM_DIR/clang12_no_warnings.pm
+              echo "PERL5OPT=${PERL5OPT:+${PERL5OPT} }-I$PATCH_EUMM_DIR -Mclang12_no_warnings" >> $GITHUB_ENV
+            fi
+          fi
           echo "::endgroup::"
     # Target: target-setup-perl
     - name: target-setup-perl (actions-setup-perl)
