@@ -283,7 +283,7 @@ runs:
             if [ -n "${{ inputs.dist-perl-deps-configure }}" ]; then
               $MYPERL -S cpanm --dev -n ${{ inputs.dist-perl-deps-configure }} || ( cat ~/.cpanm/build.log && false )
             fi
-            $MYPERL -S cpanm -n --installdeps . || ( cat ~/.cpanm/build.log && false )
+            $MYPERL -S cpanm -n --installdeps --dev . || ( cat ~/.cpanm/build.log && false )
             echo "::endgroup::"
           fi
     # Target: target-test-release-testing | target-test
