@@ -98,6 +98,13 @@ inputs:
       Setting for building in parallel if possible.
     required: false
     default: true
+  build-enable-graphical-display:
+    description: |
+      Flag for enabling build with graphical display setup. On a Linux
+      system, this uses xvfb to set up an X11 display. This does not do
+      anything on macOS and Windows systems.
+    required: true
+    default: false
   test-harness-options:
     description: |
       Sets env $HARNESS_OPTIONS.
@@ -179,6 +186,31 @@ runs:
             fi
           fi
           echo "::endgroup::"
+    # Shared step for setting up graphical display.
+    - name: Set up graphical display
+      shell: bash
+      run: |
+          if ${{ toJSON(
+                (
+                  fromJSON(inputs.build-enable-graphical-display || 'false')
+                  ||
+                  fromJSON(inputs.test-enable-graphical-display || 'false')
+                )
+              ) }}; then
+            if ${{ toJSON( runner.os == 'Linux' ) }}; then
+              echo "::group::Install xvfb (via apt-get)"
+              sudo apt-get install xvfb
+              mkdir /tmp/runtime-runner && chmod 0700 /tmp/runtime-runner
+              echo "XDG_RUNTIME_DIR=/tmp/runtime-runner" >> $GITHUB_ENV
+              if ${{ fromJSON(inputs.build-enable-graphical-display || 'false') }}; then
+                echo "BUILD_RUNNER_PREFIX=xvfb-run -a" >> $GITHUB_ENV
+              fi
+              if ${{ fromJSON(inputs.test-enable-graphical-display || 'false') }}; then
+                echo "TEST_RUNNER_PREFIX=xvfb-run -a" >> $GITHUB_ENV
+              fi
+              echo "::endgroup::"
+            fi
+          fi
     # Target: target-setup-perl
     - name: target-setup-perl (actions-setup-perl)
       shell: bash
@@ -281,31 +313,10 @@ runs:
             echo "::group::install-dist-perl-deps (via cpanm)"
             cd ${{ inputs.path }}
             if [ -n "${{ inputs.dist-perl-deps-configure }}" ]; then
-              $MYPERL -S cpanm --dev -n ${{ inputs.dist-perl-deps-configure }} || ( cat ~/.cpanm/build.log && false )
+              $BUILD_RUNNER_PREFIX $MYPERL -S cpanm --dev -n ${{ inputs.dist-perl-deps-configure }} || ( cat ~/.cpanm/build.log && false )
             fi
-            $MYPERL -S cpanm -n --installdeps --dev . || ( cat ~/.cpanm/build.log && false )
+            $BUILD_RUNNER_PREFIX $MYPERL -S cpanm -n --installdeps --dev . || ( cat ~/.cpanm/build.log && false )
             echo "::endgroup::"
-          fi
-    # Target: target-test-release-testing | target-test
-    # Shared step for setting up graphical display.
-    - name: target-test-release-testing | target-test
-      shell: bash
-      run: |
-          if ${{ toJSON(
-                (  fromJSON(inputs.target-all)
-                || fromJSON(inputs.target-test-release-testing)
-                || fromJSON(inputs.target-test)
-                )
-                && fromJSON(inputs.test-enable-graphical-display || 'false')
-              ) }}; then
-            if ${{ toJSON( runner.os == 'Linux' ) }}; then
-              echo "::group::Install xvfb (via apt-get)"
-              sudo apt-get install xvfb
-              mkdir /tmp/runtime-runner && chmod 0700 /tmp/runtime-runner
-              echo "XDG_RUNTIME_DIR=/tmp/runtime-runner" >> $GITHUB_ENV
-              echo "TEST_RUNNER_PREFIX=xvfb-run -a" >> $GITHUB_ENV
-              echo "::endgroup::"
-            fi
           fi
     # Target: target-test-release-testing
     # Run release tests, before others as may install useful stuff
@@ -323,8 +334,8 @@ runs:
               ) }}; then
             echo "::group::test-release-testing (via cpanm)"
             cd ${{ inputs.path }}
-            $MYPERL -S cpanm -n --installdeps --with-develop . || cat ~/.cpanm/build.log
-            $MYPERL -S cpanm -n CPAN::Changes || cat ~/.cpanm/build.log
+            $BUILD_RUNNER_PREFIX $MYPERL -S cpanm -n --installdeps --with-develop . || cat ~/.cpanm/build.log
+            $BUILD_RUNNER_PREFIX $MYPERL -S cpanm -n CPAN::Changes || cat ~/.cpanm/build.log
             if [ -d xt ]; then
               $TEST_RUNNER_PREFIX $MYPERL -S prove -lr xt
             else
@@ -347,9 +358,9 @@ runs:
             echo "::group::test (prepare for testing)"
             cd ${{ inputs.path }}
             if [ -f Makefile.PL ]; then
-              ( [ -f Makefile ] || $MYPERL Makefile.PL )
+              ( [ -f Makefile ] || $BUILD_RUNNER_PREFIX $MYPERL Makefile.PL )
             elif [ -f Build.PL ]; then
-              ( [ -f Build ] || $MYPERL Build.PL )
+              ( [ -f Build ] || $BUILD_RUNNER_PREFIX $MYPERL Build.PL )
             else
               echo "No file Makefile.PL or Build.PL" >&2
             fi
