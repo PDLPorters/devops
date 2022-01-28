@@ -25,13 +25,8 @@ runs:
           echo "::endgroup::"
         fi
     - name: Install OpenGL PDL deps
-      shell: bash
-      run: |
-        if ${{ toJSON( runner.os == 'Linux' ) }}; then
-          echo "::group::Install OpenGL PDL deps (via apt-get)"
-          sudo apt-get install libx11-dev libxpm-dev libxi-dev libxmu-dev freeglut3-dev
-          echo "::endgroup::"
-        fi
+      uses: Perl-GPU/devops/github-actions/install-dep-pogl-dep@main
+      if: runner.os == 'Linux'
     - name: Install extra optional OpenGL PDL deps
       shell: bash
       run: |
