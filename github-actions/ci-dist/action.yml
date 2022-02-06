@@ -381,9 +381,9 @@ runs:
             echo "::group::test (no coverage)"
             cd ${{ inputs.path }}
             if [ -f Makefile.PL ]; then
-              $TEST_RUNNER_PREFIX make && $TEST_RUNNER_PREFIX make test
+              ( $TEST_RUNNER_PREFIX make && $TEST_RUNNER_PREFIX make test ) || exit 1
             elif [ -f Build.PL ]; then
-              $TEST_RUNNER_PREFIX ./Build test
+              ( $TEST_RUNNER_PREFIX ./Build test ) || exit 1
             else
               echo "No file Makefile.PL or Build.PL" >&2
             fi
