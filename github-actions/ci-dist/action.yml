@@ -405,7 +405,7 @@ runs:
             echo "::group::test (with coverage)"
             cd ${{ inputs.path }}
             $MYPERL -S cpanm -n Devel::Cover::Report::Coveralls || cat ~/.cpanm/build.log
-            $MYPERL -S cpanm git://github.com/mohawk2/Devel--Cover.git@deepdirs || cat ~/.cpanm/build.log
+            $MYPERL -S cpanm -n git://github.com/PDLPorters/Devel--Cover.git@patches || cat ~/.cpanm/build.log
             $TEST_RUNNER_PREFIX $MYPERL -S cover -test -relative_only -gcov_chdir -report Coveralls
             echo "::endgroup::"
           fi
