@@ -7,7 +7,7 @@ runs:
       run: |
         if ${{ toJSON( runner.os == 'Linux' ) }}; then
           echo "::group::Install main PDL deps (via apt-get)"
-          sudo apt-get -y update && sudo apt-get install build-essential libgd-dev libhdf4-alt-dev libproj-dev proj-bin libcfitsio-dev libreadline-dev libvpx-dev libgsl0-dev libnetpbm10-dev
+          sudo apt-get -y update && sudo apt-get install build-essential libgd-dev libhdf4-alt-dev libproj-dev proj-bin libcfitsio-dev libreadline-dev libvpx-dev libgsl0-dev netpbm libnetpbm10-dev
           echo "::endgroup::"
         elif ${{ toJSON( runner.os == 'macOS' ) }}; then
           echo "::group::Install main PDL deps (via brew)"
