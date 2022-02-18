@@ -1,0 +1,3 @@
+requires 'YAML';
+requires 'Path::Tiny';
+requires 'Parallel::ForkManager';

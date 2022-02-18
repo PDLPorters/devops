@@ -1,0 +1,9 @@
+PATH_TO_PDL := .
+
+all: docker.pdl-graphical
+
+docker.pdl: Dockerfile
+	docker build -f $< -t pdl $(PATH_TO_PDL)
+
+docker.pdl-graphical: Dockerfile.graphical docker.pdl
+	docker build -f $< -t pdl-graphical $(PATH_TO_PDL)
