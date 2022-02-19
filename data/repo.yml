@@ -27,10 +27,15 @@ groups:
   pdlporters-downstream:
     - repo: https://github.com/PDLPorters/PDL-Graphics-Gnuplot
       dist: PDL-Graphics-Gnuplot
+      graphical-display: true
+      depends-on:
+        - Alien-Gnuplot
     - repo: https://github.com/PDLPorters/PDL-Graphics-ColorSpace
       dist: PDL-Graphics-ColorSpace
     - repo: https://github.com/PDLPorters/pdl-linearalgebra
       dist: PDL-LinearAlgebra
+      apt:
+        - liblapack-dev
     - repo: https://github.com/PDLPorters/PDL-Transform-Color
       dist: PDL-Transform-Color
     - repo: https://github.com/PDLPorters/PDL-Stats
@@ -43,19 +48,28 @@ groups:
       dist: PDL-IO-HDF5
     - repo: https://github.com/PDLPorters/PDL-Graphics-Simple
       dist: PDL-Graphics-Simple
+      depends-on:
+        - PDL-Graphics-Gnuplot
+        - PDL-Graphics-PLplot
     - repo: https://github.com/PDLPorters/pdl-graphics-plplot
       dist: PDL-Graphics-PLplot
     - repo: https://github.com/PDLPorters/pdl-fftw3
       dist: PDL-FFTW3
+      apt:
+        - libfftw3-dev
   pdlporters-alien:
     - dist: Alien-PLplot
       repo: https://github.com/PDLPorters/Alien-PLplot
+      apt:
+        - libplplot-dev
     - repo: https://github.com/PDLPorters/Alien-Proj4
       dist: Alien-Proj4
     - repo: https://github.com/PDLPorters/Alien-HDF4
       dist: Alien-HDF4
     - repo: https://github.com/PDLPorters/Alien-FFTW3
       dist: Alien-FFTW3
+      apt:
+        - libfftw3-dev
   upstream-alien:
     - dist: Alien-Gnuplot
       repo: https://github.com/drzowie/Alien-Gnuplot
@@ -106,9 +120,6 @@ groups:
       dist: PDL-VectorValued
     - repo: 'https://github.com/wlmb/Photonic'
       dist: Photonic
-      apt:
-        - libfftw3-dev # for PDL::FFTW3
-        - liblapack-dev # for PDL::LinearAlgebra
       depends-on:
         - PDL-FFTW3
         - PDL-LinearAlgebra
