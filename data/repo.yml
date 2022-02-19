@@ -64,6 +64,8 @@ groups:
         - gnuplot-qt
     - dist: Alien-PGPLOT
       repo: https://gitlab.com/djerius/alien-pgplot
+    - dist: Alien-proj
+      repo: https://github.com/shawnlaffan/perl-alien-proj
   cpan-downstream:
     - dist: 'PDL-IO-Matlab'
       repo: 'https://github.com/jlapeyre/PDL-IO-Matlab'
