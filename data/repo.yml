@@ -169,3 +169,7 @@ groups:
           cpanm --verbose ./perl-package/AI-MXNetCAPI ./perl-package/AI-NNVMCAPI ./perl-package/AI-MXNet ./perl-package/AI-MXNet-Gluon-Contrib ./perl-package/AI-MXNet-Gluon-ModelZoo
     - dist: Test2-Tools-PDL
       repo: https://github.com/stphnlyd/perl5-Test2-Tools-PDL
+    - dist: PDL-IO-Dcm
+      repo: https://github.com/fantasma13/PDL-IO-Dcm
+    - dist: PDL-Dims
+    - dist: PDL-IO-Nifti
