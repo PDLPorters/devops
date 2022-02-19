@@ -10,13 +10,21 @@ groups:
   pdlporters-documentation:
     - repo: https://github.com/PDLPorters/pdlporters.github.com
       description: website
-  pdlporters-other:
+    - repo: https://github.com/PDLPorters/pdl-book
+    - repo: https://github.com/PDLPorters/PDL-SampleData
+  pdlporters-pdl:
     - repo: https://github.com/PDLPorters/pdl
-    - repo: https://github.com/PDLPorters/PDL-Graphics-Gnuplot
+  pdlporters-upstream:
+    - repo: https://github.com/PDLPorters/perl5-PGPLOT
+    - repo: https://github.com/PDLPorters/extutils-f77
+  pdlporters-other:
     - repo: https://github.com/PDLPorters/devops
+    - repo: https://github.com/PDLPorters/.github
+    - repo: https://github.com/PDLPorters/Devel--Cover
+  pdlporters-downstream:
+    - repo: https://github.com/PDLPorters/PDL-Graphics-Gnuplot
     - repo: https://github.com/PDLPorters/PDL-Graphics-ColorSpace
     - repo: https://github.com/PDLPorters/pdl-linearalgebra
-    - repo: https://github.com/PDLPorters/perl5-PGPLOT
     - repo: https://github.com/PDLPorters/PDL-Transform-Color
     - repo: https://github.com/PDLPorters/PDL-Stats
     - repo: https://github.com/PDLPorters/PDL-Opt-NonLinear
@@ -25,20 +33,12 @@ groups:
     - repo: https://github.com/PDLPorters/PDL-Graphics-Simple
     - repo: https://github.com/PDLPorters/pdl-graphics-plplot
     - repo: https://github.com/PDLPorters/pdl-fftw3
-    - repo: https://github.com/PDLPorters/extutils-f77
-    - repo: https://github.com/PDLPorters/Alien-Proj4
-    - repo: https://github.com/PDLPorters/Alien-PLplot
-    - repo: https://github.com/PDLPorters/Alien-HDF4
-    - repo: https://github.com/PDLPorters/Alien-FFTW3
-    - repo: https://github.com/PDLPorters/.github
-    - repo: https://github.com/PDLPorters/Devel--Cover
-    - repo: https://github.com/PDLPorters/pdlporters.github.com
-    - repo: https://github.com/PDLPorters/pdl-book
-    - repo: https://github.com/PDLPorters/PDL-SampleData
-  pdlporters-downstream: ~
   pdlporters-alien:
     - dist: Alien-PLplot
       repo: https://github.com/PDLPorters/Alien-PLplot
+    - repo: https://github.com/PDLPorters/Alien-Proj4
+    - repo: https://github.com/PDLPorters/Alien-HDF4
+    - repo: https://github.com/PDLPorters/Alien-FFTW3
   upstream-alien:
     - dist: Alien-Gnuplot
       repo: https://github.com/drzowie/Alien-Gnuplot
