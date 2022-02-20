@@ -4,6 +4,8 @@ package PDL::Devops::Process::Docker;
 use Mu;
 use Path::Tiny;
 
+ro 'db';
+
 ro 'dockerfile_path';
 
 ro 'item';
@@ -11,6 +13,7 @@ ro 'item';
 sub run {
 	my ($self) = @_;
 	my $item = $self->item;
+	my $db = $self->db;
 	my $tag = $item->docker_tag;
 	(my $module_name = $item->dist) =~ s/-/::/g;
 	my $apt_pkgs = join " ", @{ $db->apt_pkgs( $item ) };

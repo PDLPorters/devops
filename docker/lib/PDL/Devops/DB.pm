@@ -46,7 +46,10 @@ use MooX::Struct
 
 		docker_tag => sub {
 			my ($self) = @_;
-			(my $tag = lc $self->key) =~ s/[^a-z0-9]//g;
+			# A tag name must be valid ASCII and may contain
+			# lowercase and uppercase letters, digits, underscores,
+			# periods and dashes
+			(my $tag = lc $self->key) =~ s/[^a-zA-Z0-9_.-]//g;
 			$tag;
 		},
 	],
