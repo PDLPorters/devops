@@ -66,6 +66,13 @@ groups:
         - PDL-Graphics-PLplot
     - repo: https://github.com/PDLPorters/pdl-graphics-plplot
       dist: PDL-Graphics-PLplot
+      depends-on:
+        - Alien-PLplot
+      skip: |
+        Test failure with latest PDL.
+
+        Error in PDL::Graphics::PLplot::plsvect: input parameter 'arrowx' is null
+        at ./t/x22.pl line 276.
     - repo: https://github.com/PDLPorters/pdl-fftw3
       dist: PDL-FFTW3
       apt:
