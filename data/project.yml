@@ -7,11 +7,15 @@ groups:
   pdlporters-deprecated:
     - repo: https://github.com/PDLPorters/pdl-fftw
       description: obsolete, replaced by PDL-FFTW3
+      dist: PDL-FFTW
   pdlporters-documentation:
     - repo: https://github.com/PDLPorters/pdlporters.github.com
       description: website
+      key: pdl-website
     - repo: https://github.com/PDLPorters/pdl-book
+      key: pdl-book
     - repo: https://github.com/PDLPorters/PDL-SampleData
+      key: pdl-sampledata
   pdlporters-pdl:
     - repo: https://github.com/PDLPorters/pdl
       dist: PDL
@@ -22,8 +26,11 @@ groups:
       dist: ExtUtils-F77
   pdlporters-other:
     - repo: https://github.com/PDLPorters/devops
+      key: devops
     - repo: https://github.com/PDLPorters/.github
+      key: .github
     - repo: https://github.com/PDLPorters/Devel--Cover
+      key: Devel--Cover-fork
   pdlporters-downstream:
     - repo: https://github.com/PDLPorters/PDL-Graphics-Gnuplot
       dist: PDL-Graphics-Gnuplot
@@ -139,9 +146,13 @@ groups:
     - dist: PDL-Parallel-threads
       repo: 'https://github.com/run4flat/PDL-Parallel-threads'
     - repo: https://github.com/run4flat/PDL-Fit-ExpRate
+      key: PDL-Fit-ExpRate
     - repo: https://github.com/run4flat/PDL-Fit-OO
+      key: PDL-Fit-OO
     - repo: https://github.com/run4flat/PDL-Periodogram
+      key: PDL-Periodogram
     - repo: https://github.com/run4flat/PDL-Prima-DirectImage
+      key: PDL-Prima-DirectImage
     - dist: PDL-Opt-QP
       repo: 'https://github.com/mvgrimes/pdl-opt-qp'
       apt:
