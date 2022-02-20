@@ -17,9 +17,11 @@ my $DATA_PATH = path( $FindBin::Bin , '../data/project.yml' );
 sub main {
 	my $db = PDL::Devops::DB->new( data_path => $DATA_PATH );
 
-	my $cpan_downstream = $db->item_by_group->{'cpan-downstream'};
+	my @items = map {
+		@{ $db->item_by_group->{$_} }
+	} @{ $db->_data->{'downstream-testing-groups'} };
 	DATA_LOOP:
-	for my $item (@$cpan_downstream) {
+	for my $item (@items) {
 		next if $item->should_skip;
 
 		my $pid = $pm->start and next DATA_LOOP;

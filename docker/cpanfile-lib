@@ -1,4 +1,5 @@
 requires 'Data::Dumper::Concise';
 requires 'MooX::Struct';
 requires 'Mu';
+requires 'Path::Tiny';
 requires 'YAML';
