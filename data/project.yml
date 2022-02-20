@@ -22,6 +22,8 @@ groups:
   pdlporters-upstream:
     - repo: https://github.com/PDLPorters/perl5-PGPLOT
       dist: PGPLOT
+      apt:
+        - pgplot5
     - repo: https://github.com/PDLPorters/extutils-f77
       dist: ExtUtils-F77
   pdlporters-other:
