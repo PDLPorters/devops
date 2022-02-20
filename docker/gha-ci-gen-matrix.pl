@@ -1,6 +1,6 @@
 #!/usr/bin/env perl
-# PODNAME: ci-gen-matrix.pl
-# ABSTRACT: Create matrix for CI
+# PODNAME: gha-ci-gen-matrix.pl
+# ABSTRACT: Create matrix for GitHub Actions CI
 
 use FindBin;
 use lib "$FindBin::Bin/lib";
@@ -18,7 +18,8 @@ sub main {
 		@{ $db->item_by_group->{$_} }
 	} @{ $db->_data->{'downstream-testing-groups'} };
 	my @keys = map { $_->should_skip ? () : +{ key => $_->key } } @items;
-	print encode_json(\@keys);
+	my $matrix = { include => \@keys };
+	print "::set-output name=project-matrix::" . encode_json($matrix) . "\n";
 }
 
 main;
