@@ -3,34 +3,36 @@
 # ABSTRACT: Run docker downstream deps
 
 use FindBin;
-use YAML qw(LoadFile);
+use lib "$FindBin::Bin/lib";
 use Path::Tiny;
 use Parallel::ForkManager;
+
+use PDL::Devops::DB;
 
 my $procs = 0;
 my $pm = Parallel::ForkManager->new($procs);
 
-my $DATA_PATH = path( $FindBin::Bin , '../data/repo.yml' );
+my $DATA_PATH = path( $FindBin::Bin , '../data/project.yml' );
 
 sub main {
-	my $data = LoadFile( $DATA_PATH );
-	my $cpan_downstream = $data->{groups}{'cpan-downstream'};
+	my $db = PDL::Devops::DB->new( data_path => $DATA_PATH );
+
+	my $cpan_downstream = $db->item_by_group->{'cpan-downstream'};
 	DATA_LOOP:
 	for my $item (@$cpan_downstream) {
-		next unless exists $item->{dist};
-		next if exists $item->{skip};
+		next if $item->should_skip;
 
 		my $pid = $pm->start and next DATA_LOOP;
 
-		print "Working on $item->{dist}\n";
-		(my $tag = lc $item->{dist}) =~ s/[^a-z0-9]//g;
-		(my $module_name = $item->{dist}) =~ s/-/::/g;
-		my $apt_pkgs = join " ", sort @{ $item->{apt} // [] };
+		print "Working on @{[ $item->key ]}\n";
+		my $tag = $item->docker_tag;
+		(my $module_name = $item->dist) =~ s/-/::/g;
+		my $apt_pkgs = join " ", @{ $db->apt_pkgs( $item ) };
 		system(
 			qw(docker build),
-				qw(-f Dockerfile.downstream),
+				qw(-f ), path($FindBin::Bin, "Dockerfile.downstream"),
 				qw(-t), "pdl-dep:$tag",
-				( $item->{'graphical-display'}
+				( $item->graphical_display
 				? (
 					#qw(--build-arg), "BASE_CONTAINER=pdl-graphical:latest",
 					qw(--build-arg), "START_XVFB=true",
@@ -43,7 +45,7 @@ sub main {
 				: ()
 				),
 				'.',
-		) == 0 or die "Could not build $item->{dist}";
+		) == 0 or die "Could not build @{[ $item->dist ]}";
 
 		$pm->finish;
 	}

@@ -1,3 +1,2 @@
-requires 'YAML';
-requires 'Path::Tiny';
-requires 'Parallel::ForkManager';
+do './cpanfile-lib';
+do './cpanfile-runner';
