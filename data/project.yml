@@ -59,8 +59,12 @@ groups:
         <https://github.com/PDLPorters/PDL-Opt-NonLinear/issues/2>
     - repo: https://github.com/PDLPorters/PDL-NetCDF
       dist: PDL-NetCDF
+      apt:
+        - libnetcdf-dev
     - repo: https://github.com/PDLPorters/pdl-io-hdf5
       dist: PDL-IO-HDF5
+      apt:
+        - libhdf5-dev
     - repo: https://github.com/PDLPorters/PDL-Graphics-Simple
       dist: PDL-Graphics-Simple
       depends-on:
@@ -88,6 +92,8 @@ groups:
       dist: Alien-Proj4
     - repo: https://github.com/PDLPorters/Alien-HDF4
       dist: Alien-HDF4
+      apt:
+        - libhdf4-dev
     - repo: https://github.com/PDLPorters/Alien-FFTW3
       dist: Alien-FFTW3
       apt:
