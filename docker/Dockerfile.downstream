@@ -1,0 +1,23 @@
+ARG BASE_CONTAINER=pdl:latest
+FROM $BASE_CONTAINER as base
+
+WORKDIR /pdl
+
+ARG APT_PKGS=build-essential
+RUN apt-get update && apt-get install --no-install-recommends -y $APT_PKGS
+ENV DISPLAY=:99
+ARG START_XVFB
+RUN \
+	if [ -n "$START_XVFB" ]; then \
+		apt-get update \
+			&& apt-get install --no-install-recommends -y \
+				xvfb xauth; \
+	fi
+
+ARG CPANM_CONFIGURE_DEPS=strict
+ARG CPANM_ARGS
+RUN \
+	if [ -n "$START_XVFB" ]; then Xvfb $DISPLAY & sleep 5; fi; \
+	cpanm -nq $CPANM_CONFIGURE_DEPS \
+		&& cpanm -nq --installdeps $CPANM_ARGS \
+		&& cpanm --verbose $CPANM_ARGS

@@ -1,0 +1,18 @@
+PATH_TO_PDL := .
+
+all: docker.pdl
+
+deps-lib:
+	cpanm -nq --installdeps --cpanfile cpanfile-lib .
+
+gen-ci-matrix:
+	./gha-ci-gen-matrix.pl
+
+run-ci-key:
+	./ci-run-item.pl $(KEY)
+
+docker.pdl: Dockerfile
+	docker build -f $< -t pdl $(PATH_TO_PDL)
+
+docker.pdl-graphical: Dockerfile.graphical docker.pdl
+	docker build -f $< -t pdl-graphical $(PATH_TO_PDL)

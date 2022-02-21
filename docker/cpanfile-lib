@@ -1,0 +1,6 @@
+requires 'Data::Dumper::Concise';
+requires 'JSON::PP';
+requires 'MooX::Struct';
+requires 'Mu';
+requires 'Path::Tiny';
+requires 'YAML';
