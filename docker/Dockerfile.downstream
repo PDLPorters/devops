@@ -19,5 +19,5 @@ ARG CPANM_ARGS
 RUN \
 	if [ -n "$START_XVFB" ]; then Xvfb $DISPLAY & sleep 5; fi; \
 	cpanm -nq $CPANM_CONFIGURE_DEPS \
-		&& cpanm -nq --installdeps $CPANM_ARGS \
-		&& cpanm --verbose $CPANM_ARGS
+		&& cpanm -nq --installdeps --dev $CPANM_ARGS \
+		&& cpanm --verbose --dev $CPANM_ARGS
