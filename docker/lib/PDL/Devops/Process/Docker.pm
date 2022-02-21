@@ -25,7 +25,7 @@ sub run {
 			? (
 				#qw(--build-arg), "BASE_CONTAINER=pdl-graphical:latest",
 				qw(--build-arg), "START_XVFB=true",
-			  )
+			)
 			: ()
 			),
 			qw(--build-arg), "CPANM_ARGS=$module_name",
@@ -34,7 +34,7 @@ sub run {
 			: ()
 			),
 			'.',
-	) == 0 or die "Could not build @{[ $item->dist ]}";
+	) == 0 or die "Could not build @{[ $item->key ]}";
 }
 
 1;

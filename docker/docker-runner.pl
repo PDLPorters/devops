@@ -4,18 +4,31 @@
 
 use FindBin;
 use lib "$FindBin::Bin/lib";
+
+use Getopt::Long;
+use Pod::Usage;
+
 use Path::Tiny;
 use Parallel::ForkManager;
 
 use PDL::Devops::DB;
 use PDL::Devops::Process::Docker;
 
-my $procs = 0;
-my $pm = Parallel::ForkManager->new($procs);
-
 my $DATA_PATH = path( $FindBin::Bin , '../data/project.yml' );
 
 sub main {
+	my $procs = 0; # run without fork
+	my $verbose = 0;
+	my $help = 0;
+	GetOptions(
+		"jobs=i"  => \$procs,
+		"verbose" => \$verbose,
+		"help"    => \$help )
+		or die("Error in command line arguments\n");
+	pod2usage(1) if $help;
+
+	my $pm = Parallel::ForkManager->new($procs);
+
 	my $db = PDL::Devops::DB->new( data_path => $DATA_PATH );
 
 	my @items = map {
@@ -27,7 +40,7 @@ sub main {
 
 		my $pid = $pm->start and next DATA_LOOP;
 
-		print "Working on @{[ $item->key ]}\n";
+		print "Working on @{[ $item->key ]}\n" if $verbose;
 		PDL::Devops::Process::Docker->new(
 			db => $db,
 			dockerfile_path => $FindBin::Bin,
@@ -39,3 +52,37 @@ sub main {
 }
 
 main;
+__END__
+
+=head1 NAME
+
+docker-runner.pl - Run all downstream testing in Docker
+
+=head1 SYNOPSIS
+
+docker-runner.pl [options]
+
+ Options:
+   --help     brief help message
+   --jobs N   run N jobs in parallel
+
+=head1 OPTIONS
+
+=over 8
+
+=item B<--help>
+
+Print a brief help message and exits.
+
+=item B<--jobs>
+
+Run N jobs in parallel.
+
+=back
+
+=head1 DESCRIPTION
+
+This script reads the project data file and runs downstream testing for all
+projects using Docker.
+
+=cut
