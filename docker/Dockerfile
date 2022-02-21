@@ -4,9 +4,6 @@ FROM $BASE_CONTAINER as base
 
 WORKDIR /pdl
 
-# Set up HTTPS mirror.
-ENV PERL_CPANM_OPT="-M https://cpan.metacpan.org/"
-
 # Set up local::lib.
 ENV PERL_LOCAL_LIB_ROOT=/pdl/local
 
