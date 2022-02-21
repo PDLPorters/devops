@@ -225,8 +225,12 @@ groups:
       repo: https://github.com/kmx/pdl-datetime
     - dist: PDL-Finance-TA
       repo: https://github.com/kmx/pdl-finance-ta
+      skip: |
+        Unknown failure to install Alien::TALib.
     - dist: PDL-Finance-Talib
       repo: https://github.com/kmx/pdl-finance-talib
+      skip: |
+        Unknown failure to install Alien::TALib.
     - dist: PDL-IO-CSV
       repo: https://github.com/kmx/pdl-io-csv
     - dist: PDL-IO-DBI
