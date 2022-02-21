@@ -55,8 +55,6 @@ groups:
       dist: PDL-Stats
     - repo: https://github.com/PDLPorters/PDL-Opt-NonLinear
       dist: PDL-Opt-NonLinear
-      skip: |
-        <https://github.com/PDLPorters/PDL-Opt-NonLinear/issues/2>
     - repo: https://github.com/PDLPorters/PDL-NetCDF
       dist: PDL-NetCDF
       apt:
