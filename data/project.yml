@@ -122,9 +122,6 @@ groups:
       dist: PDL-GA
     - repo: 'https://github.com/moocow-the-bovine/PDL-HMM'
       dist: PDL-HMM
-      skip: |
-        error: 'Core' has no member named 'propogate_badflag'; did you mean 'propagate_badflag'?
-        Fix in PR <https://github.com/moocow-the-bovine/PDL-HMM/pull/1>.
     - repo: 'https://github.com/moocow-the-bovine/PDL-Ngrams'
       dist: PDL-Ngrams
     - repo: 'https://github.com/moocow-the-bovine/PDL-SVDLIBC'
