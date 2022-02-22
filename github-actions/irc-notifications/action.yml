@@ -35,6 +35,11 @@ inputs:
       in using toJSON(). Only required for the
       target-build-status target.
     required: false
+  build-status-source:
+    description: |
+      Passed on to build-status-source input.
+    required: false
+    default: 'ci'
   target-notifications:
     description: |
       Flag for target that notifies on various events.
@@ -66,5 +71,6 @@ runs:
         irc-notice: ${{ inputs.irc-notice }}
         irc-excess-flood: ${{ inputs.irc-excess-flood }}
         needs: ${{ inputs.needs }}
+        build-status-source: ${{ inputs.build-status-source }}
         target-notifications: ${{ inputs.target-notifications }}
         target-build-status: ${{ inputs.target-build-status }}
