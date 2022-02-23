@@ -135,6 +135,8 @@ groups:
 
         Fix is:
           export LD_PRELOAD=/usr/lib/x86_64-linux-gnu/libpetsc_real.so.3.15.5:/usr/lib/x86_64-linux-gnu/libslepc_real.so.3.15.2 ; make test
+
+        Reported at <https://github.com/moocow-the-bovine/PDL-SVDSLEPc/issues/1>.
     - repo: 'https://github.com/moocow-the-bovine/PDL-VectorValued'
       dist: PDL-VectorValued
     - repo: 'https://github.com/wlmb/Photonic'
