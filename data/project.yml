@@ -169,6 +169,7 @@ groups:
         - libblas-dev
       skip: |
         Linker does not load libblas. LD_PRELOAD is a solution.
+        Reported at <https://github.com/mvgrimes/pdl-opt-qp/issues/2>.
     - dist: Gimp
       repo: 'https://gitlab.gnome.org/GNOME/gimp-perl'
       graphical-display: true
