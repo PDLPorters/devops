@@ -147,6 +147,9 @@ groups:
     - repo: 'https://github.com/run4flat/PDL-Drawing-Prima'
       dist: PDL-Drawing-Prima
       graphical-display: true
+      skip: |
+        As of Prima v1.64, refuses to install.
+        Reported at <https://github.com/dk/Prima/issues/62>
     - repo: 'https://github.com/run4flat/PDL-Graphics-Prima'
       dist: PDL-Graphics-Prima
       graphical-display: true
