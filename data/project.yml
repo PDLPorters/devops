@@ -41,10 +41,6 @@ groups:
         - Alien-Gnuplot
     - repo: https://github.com/PDLPorters/PDL-Graphics-ColorSpace
       dist: PDL-Graphics-ColorSpace
-      skip: |
-        Awaiting permissions on the module.
-        Currently <https://metacpan.org/module/PDL::Graphics::ColorSpace/permissions>
-        only permissions for MAGGIEXYZ.
     - repo: https://github.com/PDLPorters/pdl-linearalgebra
       dist: PDL-LinearAlgebra
       apt:
