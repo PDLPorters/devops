@@ -264,3 +264,5 @@ groups:
       repo: https://github.com/lab-measurement/lab-measurement
     - dist: PDL-Opt-Simplex-Simple
       repo: https://github.com/KJ7LNW/perl-PDL-Opt-Simplex-Simple
+    - dist: PDL-IO-Touchstone
+      repo: https://github.com/KJ7LNW/perl-PDL-IO-Touchstone
