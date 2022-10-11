@@ -266,3 +266,5 @@ groups:
       repo: https://github.com/KJ7LNW/perl-PDL-Opt-Simplex-Simple
     - dist: PDL-IO-Touchstone
       repo: https://github.com/KJ7LNW/perl-PDL-IO-Touchstone
+      depends-on:
+        - PDL-LinearAlgebra
