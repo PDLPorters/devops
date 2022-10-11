@@ -266,7 +266,3 @@ groups:
       repo: https://github.com/KJ7LNW/perl-PDL-Opt-Simplex-Simple
     - dist: PDL-IO-Touchstone
       repo: https://github.com/KJ7LNW/perl-PDL-IO-Touchstone
-      skip: |
-        v1.002 fails to declare PDL::LinearAlgebra dep
-
-        https://github.com/KJ7LNW/perl-PDL-IO-Touchstone/issues/2
