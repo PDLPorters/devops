@@ -225,7 +225,7 @@ runs:
                     https://github.com/shogo82148/actions-setup-perl.git \
                     -b v1 \
                     .github/actions/actions-setup-perl;
-            node .github/actions/actions-setup-perl/dist/index.js
+            node .github/actions/actions-setup-perl/dist/setup/index.js
             echo "::endgroup::"
           fi
       env:
