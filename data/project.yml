@@ -229,6 +229,8 @@ groups:
     - dist: PDL-Finance-Talib
       repo: https://github.com/kmx/pdl-finance-talib
       skip: |
+        Deprecated in favor of PDL-Finance-TA.
+
         Unknown failure to install Alien::TALib.
     - dist: PDL-IO-CSV
       repo: https://github.com/kmx/pdl-io-csv
