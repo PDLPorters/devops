@@ -1,0 +1,30 @@
+name: Install OpenCV
+runs:
+  using: "composite"
+  steps:
+    - name: Install OpenCV (via apt-get)
+      shell: bash
+      run: |
+          if ${{ toJSON( runner.os == 'Linux' ) }}; then
+            echo "::group::Install OpenCV (via apt-get)"
+            sudo apt-get -y update && sudo apt-get install libopencv-dev
+            echo "::endgroup::"
+          fi
+    - name: Install OpenCV (via brew)
+      shell: bash
+      run: |
+          if ${{ toJSON( runner.os == 'macOS' ) }}; then
+            echo "::group::Install OpenCV (via brew)"
+            brew install opencv
+            echo "::endgroup::"
+          fi
+    - name: Install OpenCV (via Alien::OpenCV)
+      shell: bash
+      run: |
+          if ${{ toJSON( runner.os == 'Windows' ) }}; then
+            echo "::group::Install OpenCV (via Alien::OpenCV TODO)"
+            # TODO Alien::OpenCV does not have build support for MSWin32 yet
+            #$MYPERL -S cpanm -n Alien::OpenCV || cat ~/.cpanm/build.log
+            echo "::endgroup::"
+          fi
+
