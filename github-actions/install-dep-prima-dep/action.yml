@@ -1,0 +1,19 @@
+name: Install dependencies for Prima
+runs:
+  using: "composite"
+  steps:
+    - name: Install Prima deps
+      shell: bash
+      run: |
+        if ${{ toJSON( runner.os == 'Linux' ) }}; then
+          echo "::group::Install Prima deps (via apt-get)"
+          sudo apt-get -y update && \
+            sudo apt-get install --no-install-recommends -y \
+              libx11-dev \
+              libgif-dev libjpeg-dev libtiff-dev libxpm-dev libwebp-dev \
+              libfribidi-dev libharfbuzz-dev libthai-dev
+          echo "::endgroup::"
+        elif ${{ toJSON( runner.os == 'macOS' ) }}; then
+          echo "::group::Install Prima deps (via brew)"
+          echo "::endgroup::"
+        fi
