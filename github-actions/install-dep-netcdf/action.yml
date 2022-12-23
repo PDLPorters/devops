@@ -7,7 +7,7 @@ runs:
       run: |
           if ${{ toJSON( runner.os == 'Linux' ) }}; then
             echo "::group::Install NetCDF (via apt-get)"
-            sudo apt-get -y update && sudo apt-get install libnetcdf-dev
+            sudo apt-get -y update && sudo apt-get install --no-install-recommends -y libnetcdf-dev
             echo "::endgroup::"
           fi
     - name: Install NetCDF (via brew)

@@ -7,7 +7,7 @@ runs:
       run: |
           if ${{ toJSON( runner.os == 'Linux' ) }}; then
             echo "::group::Install gfortran (via apt-get)"
-            sudo apt-get -y update && sudo apt-get install gfortran
+            sudo apt-get -y update && sudo apt-get install --no-install-recommends -y gfortran
             echo "::endgroup::"
           elif ${{ toJSON( runner.os == 'macOS' ) }}; then
             echo "::group::Install gfortran (via brew)"

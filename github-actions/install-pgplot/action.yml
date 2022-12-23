@@ -7,7 +7,7 @@ runs:
       run: |
           if ${{ toJSON( runner.os == 'Linux' ) }}; then
             echo "::group::Install PGPLOT (via apt-get)"
-            sudo apt-get -y update && sudo apt-get install pgplot5
+            sudo apt-get -y update && sudo apt-get install --no-install-recommends -y pgplot5
             echo "::endgroup::"
           elif ${{ toJSON( runner.os == 'macOS' ) }}; then
             echo "::group::Install PGPLOT (via brew)"

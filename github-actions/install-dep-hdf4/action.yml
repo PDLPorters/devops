@@ -7,7 +7,7 @@ runs:
       run: |
           if ${{ toJSON( runner.os == 'Linux' ) }}; then
             echo "::group::Install HDF4 (via apt-get)"
-            sudo apt-get -y update && sudo apt-get install libhdf4-dev
+            sudo apt-get -y update && sudo apt-get install --no-install-recommends -y libhdf4-dev
             echo "::endgroup::"
           fi
     - name: Install HDF4 (via brew)

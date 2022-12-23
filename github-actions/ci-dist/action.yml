@@ -199,7 +199,7 @@ runs:
               ) }}; then
             if ${{ toJSON( runner.os == 'Linux' ) }}; then
               echo "::group::Install xvfb (via apt-get)"
-              sudo apt-get install xvfb
+              sudo apt-get install --no-install-recommends -y xvfb
               mkdir /tmp/runtime-runner && chmod 0700 /tmp/runtime-runner
               echo "XDG_RUNTIME_DIR=/tmp/runtime-runner" >> $GITHUB_ENV
               if ${{ fromJSON(inputs.build-enable-graphical-display || 'false') }}; then

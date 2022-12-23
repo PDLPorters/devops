@@ -7,7 +7,7 @@ runs:
       run: |
           if ${{ toJSON( runner.os == 'Linux' ) }}; then
             echo "::group::Install FFTW3 (via apt-get)"
-            sudo apt-get -y update && sudo apt-get install libfftw3-dev
+            sudo apt-get -y update && sudo apt-get install --no-install-recommends -y libfftw3-dev
             echo "::endgroup::"
           fi
     - name: Install FFTW3 (via brew)
