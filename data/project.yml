@@ -74,6 +74,18 @@ groups:
       dist: PDL-FFTW3
       apt:
         - libfftw3-dev
+    - repo: 'https://github.com/PDLPorters/PDL-Graphics-Prima'
+      dist: PDL-Graphics-Prima
+      graphical-display: true
+      skip: |
+        Prima::ImageDialog is deprecated and not available since Prima v1.61.
+        <https://metacpan.org/release/KARASIK/Prima-1.60/source/Prima/ImageDialog.pm>
+    - dist: PDL-Parallel-threads
+      repo: 'https://github.com/PDLPorters/PDL-Parallel-threads'
+    - repo: https://github.com/PDLPorters/PDL-Fit-ExpRate
+      key: PDL-Fit-ExpRate
+    - repo: https://github.com/PDLPorters/PDL-Fit-OO
+      key: PDL-Fit-OO
   pdlporters-alien:
     - dist: Alien-PLplot
       repo: https://github.com/PDLPorters/Alien-PLplot
@@ -146,18 +158,6 @@ groups:
       skip: |
         As of Prima v1.64, refuses to install.
         Reported at <https://github.com/dk/Prima/issues/62>
-    - repo: 'https://github.com/PDLPorters/PDL-Graphics-Prima'
-      dist: PDL-Graphics-Prima
-      graphical-display: true
-      skip: |
-        Prima::ImageDialog is deprecated and not available since Prima v1.61.
-        <https://metacpan.org/release/KARASIK/Prima-1.60/source/Prima/ImageDialog.pm>
-    - dist: PDL-Parallel-threads
-      repo: 'https://github.com/PDLPorters/PDL-Parallel-threads'
-    - repo: https://github.com/PDLPorters/PDL-Fit-ExpRate
-      key: PDL-Fit-ExpRate
-    - repo: https://github.com/PDLPorters/PDL-Fit-OO
-      key: PDL-Fit-OO
     - repo: https://github.com/run4flat/PDL-Periodogram
       key: PDL-Periodogram
     - repo: https://github.com/run4flat/PDL-Prima-DirectImage
