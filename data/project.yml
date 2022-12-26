@@ -80,6 +80,8 @@ groups:
       skip: |
         Prima::ImageDialog is deprecated and not available since Prima v1.61.
         <https://metacpan.org/release/KARASIK/Prima-1.60/source/Prima/ImageDialog.pm>
+      depends-on:
+        - PDL-Drawing-Prima
     - dist: PDL-Parallel-threads
       repo: 'https://github.com/PDLPorters/PDL-Parallel-threads'
     - repo: https://github.com/PDLPorters/PDL-Fit-ExpRate
