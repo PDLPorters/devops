@@ -15,6 +15,8 @@ runs:
       run: |
           if ${{ toJSON( runner.os == 'macOS' ) }}; then
             echo "::group::Install OpenCV (via brew)"
+            brew install opencv || true
+            brew link --overwrite python@3.10 # fix a dep
             brew install opencv
             echo "::endgroup::"
           fi
