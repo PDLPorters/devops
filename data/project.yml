@@ -205,9 +205,7 @@ groups:
     - dist: PDL-DSP-Fir
       repo: https://github.com/jlapeyre/PDL-DSP-Fir
     - dist: Astro-FITS-CFITSIO-Simple
-      repo: ~
-      skip: |
-        Test failures.
+      repo: https://gitlab.com/djerius/Astro-FITS-CFITSIO-Simple
     - dist: Graphics-Asymptote
       repo: ~
       apt:
