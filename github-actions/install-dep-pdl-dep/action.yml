@@ -8,7 +8,6 @@ runs:
         if ${{ toJSON( runner.os == 'Linux' ) }}; then
           echo "::group::Install main PDL deps (via apt-get)"
           sudo apt-get -y update && \
-            sudo apt-get remove libgd3 nginx && \
             sudo apt-get install --no-install-recommends -y build-essential libgd-dev libhdf4-alt-dev libproj-dev proj-bin libcfitsio-dev libreadline-dev libvpx-dev libgsl0-dev netpbm libnetpbm10-dev
           echo "::endgroup::"
         elif ${{ toJSON( runner.os == 'macOS' ) }}; then
