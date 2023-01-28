@@ -157,6 +157,8 @@ groups:
     - repo: 'https://github.com/dk/PDL-Drawing-Prima'
       dist: PDL-Drawing-Prima
       graphical-display: true
+    - repo: 'https://github.com/dk/PDL-PrimaImage'
+      dist: PDL-PrimaImage
     - repo: https://github.com/run4flat/PDL-Periodogram
       key: PDL-Periodogram
     - repo: https://github.com/run4flat/PDL-Prima-DirectImage
