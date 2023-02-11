@@ -159,6 +159,7 @@ groups:
       graphical-display: true
     - repo: 'https://github.com/dk/PDL-PrimaImage'
       dist: PDL-PrimaImage
+      skip: 'Test failures 2023-02-11, Undefined subroutine &PDL::PrimaImage::image called at test.pl line 24'
     - repo: https://github.com/run4flat/PDL-Periodogram
       key: PDL-Periodogram
     - repo: https://github.com/run4flat/PDL-Prima-DirectImage
