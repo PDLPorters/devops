@@ -23,7 +23,7 @@ runs:
       run: |
           if ${{ toJSON( runner.os == 'Windows' ) }}; then
             echo "::group::Install gnuplot (extract from archive)"
-            pwsh -c ' $request = Invoke-WebRequest -UserAgent Curl -Uri  "https://sourceforge.net/projects/gnuplot/files/gnuplot/5.4.6/gp546-win64-mingw.7z/download" -OutFile "gp546-win64-mingw.7z"'
+            pwsh -c ' [Net.ServicePointManager]::SecurityProtocol = "tls12, tls11, tls"; $request = Invoke-WebRequest -MaximumRetryCount 3 -UserAgent Curl -Uri  "https://sourceforge.net/projects/gnuplot/files/gnuplot/5.4.6/gp546-win64-mingw.7z/download" -OutFile "gp546-win64-mingw.7z"'
             7z x gp546-win64-mingw.7z -o..
             pwsh -c 'echo "'$( cygpath -w $( realpath ../gnuplot/bin ) )'" | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append'
             echo "::endgroup::"
