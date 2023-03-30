@@ -21,8 +21,8 @@ runs:
     - name: Install gnuplot (extract from archive)
       shell: bash
       env:
-        GNUPLOT_URI: "https://sourceforge.net/projects/gnuplot/files/gnuplot/5.4.6/gp546-win64-mingw.7z/download"
-        GNUPLOT_FILE: "gp546-win64-mingw.7z"
+        GNUPLOT_URI: "https://sourceforge.net/projects/gnuplot/files/gnuplot/5.4.6/gp546-win64-mingw-2.7z/download"
+        GNUPLOT_FILE: "gp546-win64-mingw-2.7z"
       run: |
           if ${{ toJSON( runner.os == 'Windows' ) }}; then
             echo "::group::Install gnuplot (extract from archive)"
