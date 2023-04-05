@@ -41,6 +41,7 @@ groups:
         - Alien-Gnuplot
     - repo: https://github.com/PDLPorters/PDL-OpenCV
       dist: PDL-OpenCV
+      skip: 'GH Actions has OpenCV 4.5.1 whereas the distro supports 4.5.5'
       apt:
         - libopencv-dev
     - repo: https://github.com/PDLPorters/PDL-Graphics-ColorSpace
