@@ -39,6 +39,10 @@ groups:
       graphical-display: true
       depends-on:
         - Alien-Gnuplot
+    - repo: https://github.com/PDLPorters/PDL-OpenCV
+      dist: PDL-OpenCV
+      apt:
+        - libopencv-dev
     - repo: https://github.com/PDLPorters/PDL-Graphics-ColorSpace
       dist: PDL-Graphics-ColorSpace
     - repo: https://github.com/PDLPorters/pdl-linearalgebra
