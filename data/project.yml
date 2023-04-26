@@ -162,6 +162,7 @@ groups:
     - repo: 'https://github.com/dk/PDL-Drawing-Prima'
       dist: PDL-Drawing-Prima
       graphical-display: true
+      skip: Prima won't install as of 2023-04-26
     - repo: 'https://github.com/dk/PDL-PrimaImage'
       dist: PDL-PrimaImage
       skip: 'Test failures 2023-02-11, Undefined subroutine &PDL::PrimaImage::image called at test.pl line 24'
