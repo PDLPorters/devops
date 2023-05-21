@@ -26,7 +26,7 @@ runs:
           if ${{ toJSON( runner.os == 'Windows' ) }}; then
             echo "::group::Install OpenCV (via Alien::OpenCV TODO)"
             # TODO Alien::OpenCV does not have build support for MSWin32 yet
-            #$MYPERL -S cpanm -n Alien::OpenCV || cat ~/.cpanm/build.log
+            #$MYPERL -S cpanm -n Alien::OpenCV || ( cat ~/.cpanm/build.log && false )
             echo "::endgroup::"
           fi
 

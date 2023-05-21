@@ -18,6 +18,7 @@ ARG CPANM_CONFIGURE_DEPS=strict
 ARG CPANM_ARGS
 RUN \
 	if [ -n "$START_XVFB" ]; then Xvfb $DISPLAY & sleep 5; fi; \
-	cpanm -nq $CPANM_CONFIGURE_DEPS \
+	(cpanm -nq $CPANM_CONFIGURE_DEPS \
 		&& cpanm -nq --installdeps --dev $CPANM_ARGS \
-		&& cpanm --verbose --dev $CPANM_ARGS
+		&& cpanm --verbose --dev $CPANM_ARGS \
+		) || ( cat ~/.cpanm/build.log && false )

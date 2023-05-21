@@ -7,5 +7,5 @@ runs:
       shell: bash
       run: |
           echo "::group::Install ExtUtils::F77 (via cpanm)"
-          $MYPERL -S cpanm -n ExtUtils::F77 || cat ~/.cpanm/build.log
+          $MYPERL -S cpanm -n ExtUtils::F77 || ( cat ~/.cpanm/build.log && false )
           echo "::endgroup::"

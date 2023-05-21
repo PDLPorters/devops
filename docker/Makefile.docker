@@ -3,7 +3,7 @@ PATH_TO_PDL := .
 all: docker.pdl
 
 deps-lib:
-	cpanm -nq --installdeps --cpanfile cpanfile-lib .
+	(cpanm -nq --installdeps --cpanfile cpanfile-lib .) || ( cat ~/.cpanm/build.log && false )
 
 gen-ci-matrix:
 	./gha-ci-gen-matrix.pl

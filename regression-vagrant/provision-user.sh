@@ -14,8 +14,8 @@ perlbrew switch perl-5.14.4
 if ! which cpanm > /dev/null 2>&1; then
 	perlbrew install-cpanm
 fi
-cpanm --installdeps .
-cpanm Data::Printer Devel::REPL Devel::REPL::Plugin::DataPrinter Lexical::Persistence Data::Dump::Streamer PPI App::pmuninstall pmtools List::UtilsBy
+cpanm --installdeps . || ( cat ~/.cpanm/build.log && false )
+cpanm Data::Printer Devel::REPL Devel::REPL::Plugin::DataPrinter Lexical::Persistence Data::Dump::Streamer PPI App::pmuninstall pmtools List::UtilsBy || ( cat ~/.cpanm/build.log && false )
 
 git config --global user.name "PDLPorters regression bot"
 git config --global user.email "pdl-devel@lists.sourceforge.net"

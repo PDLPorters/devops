@@ -24,7 +24,7 @@ runs:
           if ${{ toJSON( runner.os == 'Windows' ) }}; then
             echo "::group::Install FFTW3 (via Alien::FFTW3 TODO)"
             # TODO Alien::FFTW3 does not have build support for MSWin32 yet
-            #$MYPERL -S cpanm -n Module::Build || cat ~/.cpanm/build.log
-            #$MYPERL -S cpanm -n Alien::FFTW3 || cat ~/.cpanm/build.log
+            #$MYPERL -S cpanm -n Module::Build || ( cat ~/.cpanm/build.log && false )
+            #$MYPERL -S cpanm -n Alien::FFTW3 || ( cat ~/.cpanm/build.log && false )
             echo "::endgroup::"
           fi

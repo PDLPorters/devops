@@ -6,6 +6,6 @@ runs:
       shell: bash
       run: |
           echo "::group::Install ExtUtils::MakeMaker blead (via cpanm)"
-          cpanm -n --dev ExtUtils::MakeMaker || cat ~/.cpanm/build.log
+          cpanm -n --dev ExtUtils::MakeMaker || ( cat ~/.cpanm/build.log && false )
           echo "::endgroup::"
 

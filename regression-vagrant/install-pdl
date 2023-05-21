@@ -9,10 +9,10 @@ function start() {
 	sudo apt-get install -y libxi-dev libxmu-dev freeglut3-dev libgsl0-dev libnetpbm10-dev # for OpenGL
 	sudo apt-get install -y xvfb # for OpenGL
 	export PGPLOT_DEV=/NULL
-	cpanm --installdeps PDL
+	cpanm --installdeps PDL || ( cat ~/.cpanm/build.log && false )
 	Xvfb :12 -screen 0 800x600x24 &
 	XVFB_PID=$!
-	DISPLAY=:12 cpanm OpenGL
+	DISPLAY=:12 cpanm OpenGL || ( cat ~/.cpanm/build.log && false )
 	kill $XVFB_PID
 }
 
@@ -43,7 +43,7 @@ function install() {
 		URL="$EUPXS_URL $URL"
 	fi
 	perlbrew lib create "pdl-$version"
-	perlbrew exec --with @"pdl-$version" cpanm --verbose --notest $URL
+	perlbrew exec --with @"pdl-$version" cpanm --verbose --notest $URL || ( cat ~/.cpanm/build.log && false )
 }
 
 #start

@@ -1,7 +1,7 @@
 #!/usr/bin/env perl
 
 # need:
-# (unset AUTHOR_TESTING; cpanm File::Which HTTP::Request LWP::UserAgent Moo JSON::MaybeXS App::git::hub)
+# (unset AUTHOR_TESTING; cpanm File::Which HTTP::Request LWP::UserAgent Moo JSON::MaybeXS App::git::hub) || ( cat ~/.cpanm/build.log && false )
 
 package Enchant;
 use Net::Netrc;

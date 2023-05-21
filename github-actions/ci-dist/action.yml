@@ -284,8 +284,8 @@ runs:
               ) }}; then
             echo "::group::setup-perl (setup local::lib)"
             # older Perls need this upgrade
-            $MYPERL -S cpanm -n --local-lib=~/perl5 ExtUtils::MakeMaker
-            $MYPERL -S cpanm -n --local-lib=~/perl5 local::lib
+            $MYPERL -S cpanm -n --local-lib=~/perl5 ExtUtils::MakeMaker || ( cat ~/.cpanm/build.log && false )
+            $MYPERL -S cpanm -n --local-lib=~/perl5 local::lib || ( cat ~/.cpanm/build.log && false )
             LOCALLIB_VARS="$($MYPERL -I ~/perl5/lib/perl5 -Mlocal::lib=--shelltype,bourne )"
             eval $( echo "$LOCALLIB_VARS" | $MYPERL -MFile::Spec -pne '
               $_ = "" if /^PATH=/;
@@ -334,8 +334,8 @@ runs:
               ) }}; then
             echo "::group::test-release-testing (via cpanm)"
             cd ${{ inputs.path }}
-            $BUILD_RUNNER_PREFIX $MYPERL -S cpanm -n --installdeps --with-develop . || cat ~/.cpanm/build.log
-            $BUILD_RUNNER_PREFIX $MYPERL -S cpanm -n CPAN::Changes || cat ~/.cpanm/build.log
+            $BUILD_RUNNER_PREFIX $MYPERL -S cpanm -n --installdeps --with-develop . || ( cat ~/.cpanm/build.log && false )
+            $BUILD_RUNNER_PREFIX $MYPERL -S cpanm -n CPAN::Changes || ( cat ~/.cpanm/build.log && false )
             if [ -d xt ]; then
               $TEST_RUNNER_PREFIX $MYPERL -S prove -lr xt
             else
@@ -404,8 +404,8 @@ runs:
               ) }}; then
             echo "::group::test (with coverage)"
             cd ${{ inputs.path }}
-            $MYPERL -S cpanm -n Devel::Cover::Report::Coveralls || cat ~/.cpanm/build.log
-            $MYPERL -S cpanm -n https://github.com/PDLPorters/Devel--Cover.git@patches || cat ~/.cpanm/build.log
+            $MYPERL -S cpanm -n Devel::Cover::Report::Coveralls || ( cat ~/.cpanm/build.log && false )
+            $MYPERL -S cpanm -n https://github.com/PDLPorters/Devel--Cover.git@patches || ( cat ~/.cpanm/build.log && false )
             $TEST_RUNNER_PREFIX $MYPERL -S cover -test -relative_only -gcov_chdir -report Coveralls
             echo "::endgroup::"
           fi

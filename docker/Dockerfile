@@ -21,11 +21,12 @@ RUN apt-get update \
 
 FROM deps as builder
 COPY . /pdl/src
-RUN cd /pdl/src && cpanm -nq \
+RUN cd /pdl/src && (cpanm -nq \
 	    Carp Devel::CheckLib ExtUtils::Depends ExtUtils::MakeMaker \
 	    ExtUtils::ParseXS File::Path File::Which \
 	&& cpanm -nq --installdeps . \
-	&& cpanm --verbose --build-args -j${NCPUS} .
+	&& cpanm --verbose --build-args -j${NCPUS} . \
+	) || ( cat ~/.cpanm/build.log && false )
 
 FROM deps as run
 COPY --from=builder ${PERL_LOCAL_LIB_ROOT} ${PERL_LOCAL_LIB_ROOT}

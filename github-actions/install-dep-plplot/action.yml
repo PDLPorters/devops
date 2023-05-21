@@ -23,6 +23,6 @@ runs:
       run: |
           if ${{ toJSON( runner.os == 'Windows' ) }}; then
             echo "::group::Install plplot (via Alien::PLplot)"
-            $MYPERL -S cpanm -n Alien::PLplot || cat ~/.cpanm/build.log
+            $MYPERL -S cpanm -n Alien::PLplot || ( cat ~/.cpanm/build.log && false )
             echo "::endgroup::"
           fi
