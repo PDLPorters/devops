@@ -15,7 +15,7 @@ runs:
       run: |
           if ${{ toJSON( runner.os == 'macOS' ) }}; then
             echo "::group::Install gnuplot (via brew)"
-            brew install gnuplot
+            HOMEBREW_NO_INSTALLED_DEPENDENTS_CHECK=1 brew install gnuplot
             echo "::endgroup::"
           fi
     - name: Install gnuplot (extract from archive)
