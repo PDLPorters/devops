@@ -366,6 +366,11 @@ runs:
             fi
             echo "::endgroup::"
           fi
+    - name: GNU make for Windows
+      shell: bash
+      if: ${{ matrix.os == 'windows-latest' }}
+      run: |
+        choco install --verbose make
     - name: target-test (no coverage)
       shell: bash
       env:
