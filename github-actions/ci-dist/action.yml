@@ -257,7 +257,7 @@ runs:
                 )
       uses: actions/cache@v2
       with:
-        key: locallib-v2.${{ inputs.perl-deps-cache-version }}-${{ runner.os }}-${{ env.GHA_CACHE_PERL_V_HASH }}
+        key: locallib-v2.${{ inputs.perl-deps-cache-version }}-${{ runner.os }}-${{ inputs.perl-version }}-${{ env.GHA_CACHE_PERL_V_HASH }}
         path: ~/perl5
     - name: target-setup-perl (ccache)
       # ccache support on Windows is not well-tested
