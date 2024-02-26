@@ -11,6 +11,7 @@ runs:
             echo "::endgroup::"
           elif ${{ toJSON( runner.os == 'macOS' ) }}; then
             echo "::group::Install PGPLOT (via brew)"
+            export HOMEBREW_NO_INSTALLED_DEPENDENTS_CHECK=1
             brew install kazuakiyama/pgplot/pgplot
             echo "::endgroup::"
           fi
