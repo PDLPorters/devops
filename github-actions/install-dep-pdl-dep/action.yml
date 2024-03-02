@@ -12,7 +12,7 @@ runs:
           echo "::endgroup::"
         elif ${{ toJSON( runner.os == 'macOS' ) }}; then
           echo "::group::Install main PDL deps (via brew)"
-          brew install proj netpbm gsl
+          HOMEBREW_NO_INSTALLED_DEPENDENTS_CHECK=1 brew install proj netpbm gsl
           echo "::endgroup::"
         fi
     - name: Install PGPLOT
