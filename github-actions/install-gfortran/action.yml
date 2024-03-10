@@ -11,6 +11,6 @@ runs:
             echo "::endgroup::"
           elif ${{ toJSON( runner.os == 'macOS' ) }}; then
             echo "::group::Install gfortran (via brew)"
-            brew reinstall gfortran
+            HOMEBREW_NO_INSTALLED_DEPENDENTS_CHECK=1 brew reinstall gfortran # python@3.12 link problem
             echo "::endgroup::"
           fi
