@@ -32,6 +32,7 @@ groups:
   pdlporters-downstream:
     - repo: https://github.com/PDLPorters/perl5-PGPLOT
       dist: PGPLOT
+      skip: 'Ubuntu has no pgplot5 except in multiverse - if fix, also enable as dep of P-G-Simple'
       apt:
         - pgplot5
     - repo: https://github.com/PDLPorters/PDL-Graphics-Gnuplot
@@ -71,6 +72,7 @@ groups:
       depends-on:
         - PDL-Graphics-Gnuplot
         - PDL-Graphics-PLplot
+        #- PGPLOT
     - repo: https://github.com/PDLPorters/pdl-graphics-plplot
       dist: PDL-Graphics-PLplot
       depends-on:
