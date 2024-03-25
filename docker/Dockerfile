@@ -13,7 +13,11 @@ ENV PERL_MB_OPT="--install_base \"${PERL_LOCAL_LIB_ROOT}\""
 ENV PERL_MM_OPT="INSTALL_BASE=${PERL_LOCAL_LIB_ROOT}"
 
 FROM base as deps
+# non-free for e.g. pgplot5
 RUN apt-get update \
+	&& apt-get install -y software-properties-common \
+	&& apt-add-repository non-free \
+	&& apt-get update \
 	&& apt-get install --no-install-recommends -y \
 		build-essential gfortran libgd-dev libhdf4-alt-dev libproj-dev \
 		proj-bin libcfitsio-dev libreadline-dev libvpx-dev libgsl0-dev \
