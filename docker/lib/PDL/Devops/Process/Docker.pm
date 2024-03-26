@@ -17,7 +17,7 @@ sub run {
 	my $tag = $item->docker_tag;
 	(my $module_name = $item->dist) =~ s/-/::/g;
 	my $apt_pkgs = join " ", @{ $db->apt_pkgs( $item ) };
-	system(
+	my @cmd = (
 		qw(docker build),
 			qw(-f ), path($self->dockerfile_path, "Dockerfile.downstream"),
 			qw(-t), "pdl-dep:$tag",
@@ -34,7 +34,8 @@ sub run {
 			: ()
 			),
 			'.',
-	) == 0 or die "Could not build @{[ $item->key ]}";
+	);
+	system(@cmd) == 0 or die "Could not build @{[ $item->key ]}";
 }
 
 1;
