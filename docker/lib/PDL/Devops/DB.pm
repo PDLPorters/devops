@@ -99,6 +99,18 @@ sub module_name {
 	$module_name;
 }
 
+# this could also be used to layer in already-built containers
+sub cpan_pkgs {
+	my ($self, $item) = @_;
+	my @cpan = $self->module_name($item);
+	for my $deps (@{ $item->depends }) {
+		unshift @cpan, @{ $self->cpan_pkgs(
+			$self->key_to_item->{ $deps }
+		) };
+	}
+	\@cpan; # order matters here - deps installed before main
+}
+
 sub apt_pkgs {
 	my ($self, $item) = @_;
 	my @apt = @{ $item->apt };
