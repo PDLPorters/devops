@@ -15,7 +15,7 @@ sub run {
 	my $item = $self->item;
 	my $db = $self->db;
 	my $tag = $item->docker_tag;
-	(my $module_name = $item->dist) =~ s/-/::/g;
+	my $module_name = $db->module_name($item);
 	my $apt_pkgs = join " ", @{ $db->apt_pkgs( $item ) };
 	my @cmd = (
 		qw(docker build),

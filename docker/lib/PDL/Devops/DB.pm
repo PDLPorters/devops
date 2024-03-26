@@ -93,10 +93,15 @@ lazy groups => sub {
 	return [ keys %{ $self->_item_by_group } ];
 };
 
+sub module_name {
+	my ($self, $item) = @_;
+	(my $module_name = $item->dist) =~ s/-/::/g;
+	$module_name;
+}
+
 sub apt_pkgs {
 	my ($self, $item) = @_;
-	my @apt = ();
-	push @apt, @{ $item->apt };
+	my @apt = @{ $item->apt };
 	for my $deps (@{ $item->depends }) {
 		push @apt, @{ $self->apt_pkgs(
 			$self->key_to_item->{ $deps }
