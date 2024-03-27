@@ -7,7 +7,7 @@ runs:
       run: |
           if ${{ toJSON( runner.os == 'Linux' ) }}; then
             echo "::group::Install plplot (via apt-get)"
-            sudo apt-get -y update && sudo apt-get install --no-install-recommends -y libplplot-dev
+            sudo apt-get -y update && sudo apt-get install --no-install-recommends -y libplplot-dev plplot-driver-qt
             echo "::endgroup::"
           fi
     - name: Install plplot (via brew)
