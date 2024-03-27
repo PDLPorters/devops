@@ -41,6 +41,7 @@ groups:
         - Alien-Gnuplot
     - repo: https://github.com/PDLPorters/PDL-Graphics-Simple
       dist: PDL-Graphics-Simple
+      graphical-display: true
       depends-on:
         - PDL-Graphics-Gnuplot
         - PDL-Graphics-PLplot
