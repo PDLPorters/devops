@@ -99,6 +99,7 @@ groups:
       repo: https://github.com/PDLPorters/Alien-PLplot
       apt:
         - libplplot-dev
+        - plplot-driver-qt
     - repo: https://github.com/PDLPorters/Alien-Proj4
       dist: Alien-Proj4
     - repo: https://github.com/PDLPorters/Alien-HDF4
