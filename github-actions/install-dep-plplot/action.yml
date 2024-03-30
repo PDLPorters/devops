@@ -15,7 +15,9 @@ runs:
       run: |
           if ${{ toJSON( runner.os == 'macOS' ) }}; then
             echo "::group::Install plplot (via brew)"
-            brew install plplot
+            brew update
+            brew upgrade python || true # currently (2024-03-30) 3.12 link fails
+            HOMEBREW_NO_INSTALLED_DEPENDENTS_CHECK=1 brew install plplot
             echo "::endgroup::"
           fi
     - name: Install plplot (via Alien::PLplot)
