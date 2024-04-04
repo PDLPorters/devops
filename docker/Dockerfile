@@ -27,7 +27,7 @@ FROM deps as builder
 COPY . /pdl/src
 RUN cd /pdl/src && (cpanm -nq \
 	    Carp Devel::CheckLib ExtUtils::Depends ExtUtils::MakeMaker \
-	    ExtUtils::ParseXS File::Path File::Which \
+	    ExtUtils::F77 ExtUtils::ParseXS File::Path File::Which \
 	&& cpanm -nq --installdeps . \
 	&& cpanm --verbose --build-args -j${NCPUS} . \
 	) || ( cat ~/.cpanm/build.log && false )
