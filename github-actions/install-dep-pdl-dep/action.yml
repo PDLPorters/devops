@@ -12,6 +12,7 @@ runs:
           echo "::endgroup::"
         elif ${{ toJSON( runner.os == 'macOS' ) }}; then
           echo "::group::Install main PDL deps (via brew)"
+          brew update
           HOMEBREW_NO_INSTALLED_DEPENDENTS_CHECK=1 brew install proj netpbm gsl
           echo "::endgroup::"
         fi
@@ -20,7 +21,8 @@ runs:
       run: |
         if ${{ toJSON( runner.os == 'Linux' || runner.os == 'macOS' ) }}; then
           echo "::group::Install extra optional main PDL deps (via cpanm)"
-          cpanm -n Term::ReadLine::Gnu Alien::HDF4 Alien::proj Inline::C || cat ~/.cpanm/build.log
+          cpanm -n Term::ReadLine::Gnu Alien::HDF4 Inline::C || cat ~/.cpanm/build.log
+          cpanm -n --reinstall Alien::proj || cat ~/.cpanm/build.log # in case has old path
           echo "::endgroup::"
         fi
     - name: Install OpenGL PDL deps
