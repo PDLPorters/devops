@@ -55,7 +55,7 @@ runs:
           perl Makefile.PL && make distdir DISTVNAME=build-dir
           echo "::endgroup::"
     - name: Upload artifact
-      uses: actions/upload-artifact@v2
+      uses: actions/upload-artifact@v4
       with:
         name: dist
         path: ./build-dir
