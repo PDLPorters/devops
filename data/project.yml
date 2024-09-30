@@ -122,6 +122,13 @@ groups:
     - dist: Alien-proj
       repo: https://github.com/shawnlaffan/perl-alien-proj
   cpan-downstream:
+    - repo: 'https://github.com/wlmb/Photonic'
+      dist: Photonic
+      depends-on:
+        - PDL-FFTW3
+        - PDL-LinearAlgebra
+    - dist: 'PDL-Graphics-IIS'
+      repo: 'https://github.com/PDLPorters/PDL-Graphics-IIS'
     - dist: 'PDL-IO-Matlab'
       repo: 'https://github.com/jlapeyre/PDL-IO-Matlab'
       apt:
@@ -157,11 +164,6 @@ groups:
         Reported at <https://github.com/moocow-the-bovine/PDL-SVDSLEPc/issues/1>.
     - repo: 'https://github.com/moocow-the-bovine/PDL-VectorValued'
       dist: PDL-VectorValued
-    - repo: 'https://github.com/wlmb/Photonic'
-      dist: Photonic
-      depends-on:
-        - PDL-FFTW3
-        - PDL-LinearAlgebra
     - repo: 'https://github.com/dk/PDL-Drawing-Prima'
       dist: PDL-Drawing-Prima
       graphical-display: true
