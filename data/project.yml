@@ -129,6 +129,8 @@ groups:
         - PDL-LinearAlgebra
     - dist: 'PDL-Graphics-IIS'
       repo: 'https://github.com/PDLPorters/PDL-Graphics-IIS'
+    - dist: 'PDL-Minuit'
+      repo: 'https://github.com/PDLPorters/PDL-Minuit'
     - dist: 'PDL-IO-Matlab'
       repo: 'https://github.com/jlapeyre/PDL-IO-Matlab'
       apt:
