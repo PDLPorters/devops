@@ -25,18 +25,9 @@ REPO_NAME="..."
 git hub repo-new PDLPorters/$REPO_NAME
 ```
 
-## Enchant
+## CI
 
-```markdown
-- [ ] Travis-CI <https://travis-ci.org/PDLPorters/$REPO> (https://travis-ci.org/profile/PDLPorters)
-- [ ] Appveyor CI (https://ci.appveyor.com/)
-- [ ] Coveralls <https://coveralls.io/r/PDLPorters/$REPO> (https://coveralls.io/repos/new?name=PDLPorters)
-- [ ] IRC notifications (handled by devops `enchant` script)
-```
-
-```shell
-./tool/enchant $REPO_NAME
-```
+Copy from main-PDL or one of the submodules like pdl-linearalgebra (for a Fortran module).
 
 ## How to split history
 Make sure `git-subtree` is installed and works (if not, get from
@@ -60,6 +51,8 @@ git branch -d $SPLITBRANCH
 git push origin
 popd
 ```
+
+Consider copying `MANIFEST.SKIP` and `.gitignore` sections.
 
 ## How to restructure repo into lib/*
 ```
