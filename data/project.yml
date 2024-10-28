@@ -89,8 +89,6 @@ groups:
         <https://metacpan.org/release/KARASIK/Prima-1.60/source/Prima/ImageDialog.pm>
       depends-on:
         - PDL-Drawing-Prima
-    - dist: PDL-Parallel-threads
-      repo: 'https://github.com/PDLPorters/PDL-Parallel-threads'
     - repo: https://github.com/PDLPorters/PDL-Fit-ExpRate
       key: PDL-Fit-ExpRate
     - repo: https://github.com/PDLPorters/PDL-Fit-OO
@@ -135,8 +133,6 @@ groups:
       repo: 'https://github.com/jlapeyre/PDL-IO-Matlab'
       apt:
         - libmatio-dev
-    - dist: 'Test-PDL'
-      repo: 'https://github.com/ebaudrez/Test-PDL'
     - dist: 'PDL-NDBin'
       repo: 'https://github.com/ebaudrez/PDL-NDBin'
     - repo: 'https://github.com/moocow-the-bovine/PDL-CCS'
