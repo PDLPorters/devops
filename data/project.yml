@@ -269,6 +269,7 @@ groups:
     - dist: PDL-IO-Nifti
     - dist: Lab-Measurement
       repo: https://github.com/lab-measurement/lab-measurement
+      skip: see https://github.com/lab-measurement/Lab-Measurement/pull/88
     - dist: PDL-Opt-Simplex-Simple
       repo: https://github.com/KJ7LNW/perl-PDL-Opt-Simplex-Simple
     - dist: PDL-IO-Touchstone
