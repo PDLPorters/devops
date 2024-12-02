@@ -81,6 +81,10 @@ groups:
       dist: PDL-FFTW3
       apt:
         - libfftw3-dev
+    - repo: https://github.com/PDLPorters/PDL-Complex
+      dist: PDL-Complex
+    - repo: https://github.com/PDLPorters/PDL-Graphics-Limits
+      dist: PDL-Graphics-Limits
     - repo: 'https://github.com/PDLPorters/PDL-Graphics-Prima'
       dist: PDL-Graphics-Prima
       graphical-display: true
