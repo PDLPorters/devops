@@ -7,14 +7,15 @@ runs:
       run: |
           if ${{ toJSON( runner.os == 'Linux' ) }}; then
             echo "::group::Install HDF4 (via apt-get)"
-            sudo apt-get -y update && sudo apt-get install --no-install-recommends -y libhdf4-dev
+            sudo apt-get -y update && sudo apt-get install --no-install-recommends -y libhdf4-alt-dev
             echo "::endgroup::"
           fi
-    - name: Install HDF4 (via brew)
-      shell: bash
-      run: |
-          if ${{ toJSON( runner.os == 'macOS' ) }}; then
-            echo "::group::Install HDF4 (via brew)"
-            brew install brewsci/science/hdf4
-            echo "::endgroup::"
-          fi
+# formula is broken as of 2024-12-03 "no formula szip"
+#    - name: Install HDF4 (via brew)
+#      shell: bash
+#      run: |
+#          if ${{ toJSON( runner.os == 'macOS' ) }}; then
+#            echo "::group::Install HDF4 (via brew)"
+#            brew install brewsci/science/hdf4
+#            echo "::endgroup::"
+#          fi
