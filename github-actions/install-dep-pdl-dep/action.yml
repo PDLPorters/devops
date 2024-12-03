@@ -8,7 +8,7 @@ runs:
         if ${{ toJSON( runner.os == 'Linux' ) }}; then
           echo "::group::Install main PDL deps (via apt-get)"
           sudo apt-get -y update && \
-            sudo apt-get install --no-install-recommends -y build-essential libgd-dev libhdf4-alt-dev libproj-dev proj-bin libcfitsio-dev libreadline-dev libvpx-dev libgsl0-dev netpbm libnetpbm10-dev
+            sudo apt-get install --no-install-recommends -y build-essential libgd-dev libproj-dev proj-bin libcfitsio-dev libreadline-dev libvpx-dev libgsl0-dev netpbm libnetpbm10-dev
           echo "::endgroup::"
         elif ${{ toJSON( runner.os == 'macOS' ) }}; then
           echo "::group::Install main PDL deps (via brew)"
@@ -21,7 +21,7 @@ runs:
       run: |
         if ${{ toJSON( runner.os == 'Linux' || runner.os == 'macOS' ) }}; then
           echo "::group::Install extra optional main PDL deps (via cpanm)"
-          cpanm -n Term::ReadLine::Gnu Alien::HDF4 Inline::C || cat ~/.cpanm/build.log
+          cpanm -n Term::ReadLine::Gnu Inline::C || cat ~/.cpanm/build.log
           cpanm -n --reinstall Alien::proj || cat ~/.cpanm/build.log # in case has old path
           echo "::endgroup::"
         fi
