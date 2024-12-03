@@ -1,0 +1,20 @@
+name: Install Proj
+runs:
+  using: "composite"
+  steps:
+    - name: Install Proj (via apt-get)
+      shell: bash
+      run: |
+          if ${{ toJSON( runner.os == 'Linux' ) }}; then
+            echo "::group::Install Proj (via apt-get)"
+            sudo apt-get -y update && sudo apt-get install --no-install-recommends -y libproj-dev proj-bin
+            echo "::endgroup::"
+          fi
+    - name: Install Proj (via brew)
+      shell: bash
+      run: |
+          if ${{ toJSON( runner.os == 'macOS' ) }}; then
+            echo "::group::Install Proj (via brew)"
+            brew install proj
+            echo "::endgroup::"
+          fi
