@@ -85,6 +85,10 @@ groups:
       dist: PDL-Complex
     - repo: https://github.com/PDLPorters/PDL-Graphics-Limits
       dist: PDL-Graphics-Limits
+    - repo: https://github.com/PDLPorters/PDL-IO-HDF
+      dist: PDL-IO-HDF
+      apt:
+        - libhdf4-alt-dev
     - repo: 'https://github.com/PDLPorters/PDL-Graphics-Prima'
       dist: PDL-Graphics-Prima
       graphical-display: true
