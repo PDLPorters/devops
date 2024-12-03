@@ -1,0 +1,20 @@
+name: Install GD
+runs:
+  using: "composite"
+  steps:
+    - name: Install GD (via apt-get)
+      shell: bash
+      run: |
+          if ${{ toJSON( runner.os == 'Linux' ) }}; then
+            echo "::group::Install GD (via apt-get)"
+            sudo apt-get -y update && sudo apt-get install --no-install-recommends -y libgd-dev
+            echo "::endgroup::"
+          fi
+    - name: Install GD (via brew)
+      shell: bash
+      run: |
+          if ${{ toJSON( runner.os == 'macOS' ) }}; then
+            echo "::group::Install GD (via brew)"
+            brew install gd
+            echo "::endgroup::"
+          fi
