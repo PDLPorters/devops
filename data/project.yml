@@ -85,6 +85,15 @@ groups:
       dist: PDL-Complex
     - repo: https://github.com/PDLPorters/PDL-Graphics-Limits
       dist: PDL-Graphics-Limits
+    - repo: https://github.com/PDLPorters/PDL-Transform-Proj4
+      dist: PDL-Transform-Proj4
+      apt:
+        - libproj-dev
+        - proj-bin
+    - repo: https://github.com/PDLPorters/PDL-IO-GD
+      dist: PDL-IO-GD
+      apt:
+        - libgd-dev
     - repo: https://github.com/PDLPorters/PDL-IO-HDF
       dist: PDL-IO-HDF
       apt:
