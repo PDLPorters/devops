@@ -90,6 +90,10 @@ groups:
       apt:
         - libproj-dev
         - proj-bin
+    - repo: https://github.com/PDLPorters/PDL-IO-IDL
+      dist: PDL-IO-IDL
+    - repo: https://github.com/PDLPorters/PDL-IO-ENVI
+      dist: PDL-IO-ENVI
     - repo: https://github.com/PDLPorters/PDL-IO-GD
       dist: PDL-IO-GD
       apt:
