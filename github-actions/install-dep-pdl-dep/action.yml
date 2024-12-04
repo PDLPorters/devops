@@ -25,14 +25,14 @@ runs:
           cpanm -n --reinstall Alien::proj || cat ~/.cpanm/build.log # in case has old path
           echo "::endgroup::"
         fi
-    - name: Install OpenGL PDL deps
-      uses: Perl-GPU/devops/github-actions/install-dep-pogl-dep@main
-      if: runner.os == 'Linux'
-    - name: Install extra optional OpenGL PDL deps
-      shell: bash
-      run: |
-        if ${{ toJSON( runner.os == 'Linux' ) }}; then
-          echo "::group::Install extra optional OpenGL PDL deps (via cpanm)"
-          xvfb-run cpanm -n OpenGL OpenGL::GLUT || cat ~/.cpanm/build.log
-          echo "::endgroup::"
-        fi
+#    - name: Install OpenGL PDL deps
+#      uses: Perl-GPU/devops/github-actions/install-dep-pogl-dep@main
+#      if: runner.os == 'Linux'
+#    - name: Install extra optional OpenGL PDL deps
+#      shell: bash
+#      run: |
+#        if ${{ toJSON( runner.os == 'Linux' ) }}; then
+#          echo "::group::Install extra optional OpenGL PDL deps (via cpanm)"
+#          xvfb-run cpanm -n OpenGL OpenGL::GLUT || cat ~/.cpanm/build.log
+#          echo "::endgroup::"
+#        fi
