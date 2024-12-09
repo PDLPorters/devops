@@ -34,6 +34,7 @@ groups:
       dist: PGPLOT
       apt:
         - pgplot5
+        - gfortran
     - repo: https://github.com/PDLPorters/PDL-Graphics-Gnuplot
       dist: PDL-Graphics-Gnuplot
       graphical-display: true
@@ -60,6 +61,8 @@ groups:
       dist: PDL-Opt-NonLinear
       depends-on:
         - PDL-LinearAlgebra
+      apt:
+        - gfortran
     - repo: https://github.com/PDLPorters/PDL-NetCDF
       dist: PDL-NetCDF
       apt:
@@ -108,6 +111,10 @@ groups:
       dist: PDL-GSL
       apt:
         - libgsl0-dev
+    - repo: https://github.com/PDLPorters/PDL-Slatec
+      dist: PDL-Slatec
+      apt:
+        - gfortran
     - repo: 'https://github.com/PDLPorters/PDL-Graphics-Prima'
       dist: PDL-Graphics-Prima
       graphical-display: true
@@ -156,6 +163,8 @@ groups:
       repo: 'https://github.com/PDLPorters/PDL-Graphics-IIS'
     - dist: 'PDL-Minuit'
       repo: 'https://github.com/PDLPorters/PDL-Minuit'
+      apt:
+        - gfortran
     - dist: 'PDL-IO-Matlab'
       repo: 'https://github.com/jlapeyre/PDL-IO-Matlab'
       apt:
