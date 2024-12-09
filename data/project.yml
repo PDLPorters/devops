@@ -308,6 +308,7 @@ groups:
       skip: see https://github.com/lab-measurement/Lab-Measurement/pull/88
     - dist: PDL-Opt-Simplex-Simple
       repo: https://github.com/KJ7LNW/perl-PDL-Opt-Simplex-Simple
+      skip: not yet dep-ing on P:O:Simplex - https://github.com/KJ7LNW/perl-PDL-Opt-Simplex-Simple/issues/5
     - dist: PDL-IO-Touchstone
       repo: https://github.com/KJ7LNW/perl-PDL-IO-Touchstone
       depends-on:
