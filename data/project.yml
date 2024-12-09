@@ -102,6 +102,10 @@ groups:
       dist: PDL-IO-HDF
       apt:
         - libhdf4-alt-dev
+    - repo: https://github.com/PDLPorters/PDL-GSL
+      dist: PDL-GSL
+      apt:
+        - libgsl0-dev
     - repo: 'https://github.com/PDLPorters/PDL-Graphics-Prima'
       dist: PDL-Graphics-Prima
       graphical-display: true
