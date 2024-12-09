@@ -20,7 +20,7 @@ RUN apt-get update \
 	&& apt-get update \
 	&& apt-get install --no-install-recommends -y \
 		build-essential gfortran \
-		libcfitsio-dev libreadline-dev libvpx-dev libgsl0-dev \
+		libcfitsio-dev libreadline-dev libvpx-dev \
 		netpbm libnetpbm10-dev
 
 FROM deps as builder

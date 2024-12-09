@@ -1,0 +1,20 @@
+name: Install GSL
+runs:
+  using: "composite"
+  steps:
+    - name: Install GSL (via apt-get)
+      shell: bash
+      run: |
+          if ${{ toJSON( runner.os == 'Linux' ) }}; then
+            echo "::group::Install GSL (via apt-get)"
+            sudo apt-get -y update && sudo apt-get install --no-install-recommends -y libgsl0-dev
+            echo "::endgroup::"
+          fi
+    - name: Install GSL (via brew)
+      shell: bash
+      run: |
+          if ${{ toJSON( runner.os == 'macOS' ) }}; then
+            echo "::group::Install GSL (via brew)"
+            brew install gsl
+            echo "::endgroup::"
+          fi
