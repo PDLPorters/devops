@@ -5,7 +5,6 @@ function start() {
 	perlbrew switch perl-5.14.4
 	sudo apt-get update
 	sudo apt-get install -y build-essential libx11-dev pgplot5 libplplot-dev libvpx-dev libxpm-dev libcfitsio3-dev libreadline-dev
-	if [ "$DISABLE_FORTRAN" != 1 ]; then sudo apt-get install -y gfortran; fi # set DISABLE_FOTRAN = 1 to not install gfortran
 	sudo apt-get install -y libxi-dev libxmu-dev freeglut3-dev libnetpbm10-dev # for OpenGL
 	sudo apt-get install -y xvfb # for OpenGL
 	export PGPLOT_DEV=/NULL

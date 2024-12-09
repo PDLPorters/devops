@@ -19,7 +19,7 @@ RUN apt-get update \
 	&& apt-add-repository non-free \
 	&& apt-get update \
 	&& apt-get install --no-install-recommends -y \
-		build-essential gfortran \
+		build-essential \
 		libcfitsio-dev libreadline-dev libvpx-dev \
 		netpbm libnetpbm10-dev
 
