@@ -244,7 +244,6 @@ groups:
       repo: https://gitlab.com/djerius/types-pdl
     - dist: MooX-PDL2
       repo: https://github.com/djerius/moox-pdl2
-      skip: need https://github.com/djerius/MooX-PDL2/pull/1 releasing
     - dist: PDLx-DetachedObject
       repo: https://github.com/djerius/pdlx-detachedobject
     - dist: PDLx-Mask
@@ -253,7 +252,6 @@ groups:
         strictures is a test dependency, but not listed.
     - dist: PDL-FuncND
       repo: https://gitlab.com/djerius/PDL-FuncND
-      skip: need https://gitlab.com/djerius/PDL-FuncND/-/merge_requests/1 releasing
     - dist: PDL-Fit-Levmar
       repo: https://github.com/jlapeyre/PDL-Fit-Levmar
     - dist: PDL-DSP-Fir
