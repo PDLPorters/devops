@@ -55,8 +55,6 @@ groups:
       dist: PDL-Transform-Color
     - repo: https://github.com/PDLPorters/PDL-Stats
       dist: PDL-Stats
-      apt:
-        - gfortran
     - repo: https://github.com/PDLPorters/PDL-Opt-NonLinear
       dist: PDL-Opt-NonLinear
       depends-on:
