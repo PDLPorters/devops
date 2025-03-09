@@ -129,6 +129,12 @@ groups:
       key: PDL-Fit-ExpRate
     - repo: https://github.com/PDLPorters/PDL-Fit-OO
       key: PDL-Fit-OO
+    - key: 'PDL-Graphics-IIS'
+      repo: 'https://github.com/PDLPorters/PDL-Graphics-IIS'
+    - key: 'PDL-Minuit'
+      repo: 'https://github.com/PDLPorters/PDL-Minuit'
+      apt:
+        - gfortran
   pdlporters-alien:
     - dist: Alien-PLplot
       repo: https://github.com/PDLPorters/Alien-PLplot
@@ -161,12 +167,6 @@ groups:
       depends-on:
         - PDL-FFTW3
         - PDL-LinearAlgebra
-    - dist: 'PDL-Graphics-IIS'
-      repo: 'https://github.com/PDLPorters/PDL-Graphics-IIS'
-    - dist: 'PDL-Minuit'
-      repo: 'https://github.com/PDLPorters/PDL-Minuit'
-      apt:
-        - gfortran
     - dist: 'PDL-IO-Matlab'
       repo: 'https://github.com/jlapeyre/PDL-IO-Matlab'
       apt:
