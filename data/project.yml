@@ -246,8 +246,6 @@ groups:
       repo: https://github.com/djerius/pdlx-detachedobject
     - dist: PDLx-Mask
       repo: https://gitlab.com/djerius/PDLx-Mask
-      skip: |
-        strictures is a test dependency, but not listed.
     - dist: PDL-FuncND
       repo: https://gitlab.com/djerius/PDL-FuncND
     - dist: PDL-Fit-Levmar
