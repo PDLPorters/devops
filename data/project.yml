@@ -247,7 +247,8 @@ groups:
     - dist: PDLx-Mask
       repo: https://gitlab.com/djerius/PDLx-Mask
       skip: |
-        strictures is a test dependency, but not listed.
+        https://rt.cpan.org/Ticket/Display.html?id=150940
+        Exception: restricted piddle: cannot mutate at /tmp/loop_over_bdir-2189-wDOunq/PDL-2.099-0/lib/PDL/PP.pm line 1456.
     - dist: PDL-FuncND
       repo: https://gitlab.com/djerius/PDL-FuncND
     - dist: PDL-Fit-Levmar
