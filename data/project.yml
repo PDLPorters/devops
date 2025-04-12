@@ -39,7 +39,7 @@ groups:
       dist: PDL-Graphics-TriD
       graphical-display: true
       apt:
-        - libx11-dev libxpm-dev libxi-dev libxmu-dev freeglut3-dev
+        - libx11-dev libxpm-dev libxi-dev libxmu-dev freeglut3-dev libglfw3-dev
     - repo: https://github.com/PDLPorters/PDL-Graphics-Gnuplot
       dist: PDL-Graphics-Gnuplot
       graphical-display: true
