@@ -181,30 +181,29 @@ runs:
         fi
         echo "::endgroup::"
     # Shared step for setting up graphical display.
-    - name: Set up graphical display
+    - name: Set up graphical display (via apt-get)
       shell: bash
+      if: runner.os == 'Linux'
       run: |
-          if ${{ toJSON(
-                (
-                  fromJSON(inputs.build-enable-graphical-display || 'false')
-                  ||
-                  fromJSON(inputs.test-enable-graphical-display || 'false')
-                )
-              ) }}; then
-            if ${{ toJSON( runner.os == 'Linux' ) }}; then
-              echo "::group::Install xvfb (via apt-get)"
-              sudo apt-get install --no-install-recommends -y xvfb
-              mkdir /tmp/runtime-runner && chmod 0700 /tmp/runtime-runner
-              echo "XDG_RUNTIME_DIR=/tmp/runtime-runner" >> $GITHUB_ENV
-              if ${{ fromJSON(inputs.build-enable-graphical-display || 'false') }}; then
-                echo "BUILD_RUNNER_PREFIX=xvfb-run -a" >> $GITHUB_ENV
-              fi
-              if ${{ fromJSON(inputs.test-enable-graphical-display || 'false') }}; then
-                echo "TEST_RUNNER_PREFIX=xvfb-run -a" >> $GITHUB_ENV
-              fi
-              echo "::endgroup::"
-            fi
+        if ${{ toJSON(
+              (
+                fromJSON(inputs.build-enable-graphical-display || 'false')
+                ||
+                fromJSON(inputs.test-enable-graphical-display || 'false')
+              )
+            ) }}; then
+          echo "::group::Install xvfb (via apt-get)"
+          sudo apt-get install --no-install-recommends -y xvfb
+          mkdir /tmp/runtime-runner && chmod 0700 /tmp/runtime-runner
+          echo "XDG_RUNTIME_DIR=/tmp/runtime-runner" >> $GITHUB_ENV
+          if ${{ fromJSON(inputs.build-enable-graphical-display || 'false') }}; then
+            echo "BUILD_RUNNER_PREFIX=xvfb-run -a" >> $GITHUB_ENV
           fi
+          if ${{ fromJSON(inputs.test-enable-graphical-display || 'false') }}; then
+            echo "TEST_RUNNER_PREFIX=xvfb-run -a" >> $GITHUB_ENV
+          fi
+          echo "::endgroup::"
+        fi
     # Target: target-setup-perl
     - name: target-setup-perl (actions-setup-perl)
       shell: bash
