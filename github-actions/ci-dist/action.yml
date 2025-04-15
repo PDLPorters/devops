@@ -366,11 +366,14 @@ runs:
             fi
             echo "::endgroup::"
           fi
-    - name: GNU make for Windows
+    - name: set MYMAKE (Windows)
       shell: bash
-      if: ${{ matrix.os == 'windows-latest' }}
-      run: |
-        choco install --verbose make
+      if: runner.os == 'Windows'
+      run: echo MYMAKE=gmake >> $GITHUB_ENV
+    - name: set MYMAKE (non-Windows)
+      shell: bash
+      if: runner.os != 'Windows'
+      run: echo MYMAKE=make >> $GITHUB_ENV
     - name: target-test (no coverage)
       shell: bash
       env:
