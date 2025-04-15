@@ -147,36 +147,31 @@ runs:
   steps:
     # Target: none
     # Shared step to do initial set up
-    - name: initial setup
+    - name: set SYSTEM_CORES (Linux)
+      shell: bash
+      if: runner.os == 'Linux'
+      run: echo SYSTEM_CORES="$(grep -c ^processor /proc/cpuinfo 2>/dev/null || echo 1 )" >> $GITHUB_ENV
+    - name: set SYSTEM_CORES (macOS)
+      shell: bash
+      if: runner.os == 'macOS'
+      run: echo SYSTEM_CORES="$(sysctl -n hw.ncpu || echo 1)" >> $GITHUB_ENV
+    - name: set SYSTEM_CORES (Windows)
+      shell: bash
+      if: runner.os == 'Windows'
+      run: echo SYSTEM_CORES=$( powershell -NoProfile -Command "& { Get-WmiObject Win32_Processor | Select-Object -Property NumberOfCores }" | perl -0777 -ne 'print $1, "\n" while /(\d+)/g' ) >> $GITHUB_ENV
+    - name: set MAKEFLAGS
       shell: bash
       run: |
-          echo "::group::initial setup"
-          export SYSTEM_CORES=1;
-          if ${{ toJSON( runner.os == 'Linux' ) }}; then
-            export SYSTEM_CORES="$(grep -c ^processor /proc/cpuinfo 2>/dev/null || echo 1 )"
-          elif ${{ toJSON( runner.os == 'macOS' ) }}; then
-            export SYSTEM_CORES="$(sysctl -n hw.ncpu || echo 1)"
-          elif ${{ toJSON( runner.os == 'Windows' ) }}; then
-            export SYSTEM_CORES=$( powershell -NoProfile -Command "& { Get-WmiObject Win32_Processor | Select-Object -Property NumberOfCores }" | perl -0777 -ne 'print $1, "\n" while /(\d+)/g' );
-          fi
-          echo "SYSTEM_CORES=$SYSTEM_CORES" >> $GITHUB_ENV
-          if ${{ toJSON(
-                 fromJSON(inputs.build-enable-parallel || 'true')
-              ) }}; then
-            echo "MAKEFLAGS=-j$(( SYSTEM_CORES + 1))" >> $GITHUB_ENV
-          fi
+        if ${{ toJSON(fromJSON(inputs.build-enable-parallel || 'true')) }}; then
+          echo "MAKEFLAGS=-j$(( SYSTEM_CORES + 1))" >> $GITHUB_ENV
+        fi
 
-          #if ${{ toJSON( runner.os == 'Windows' ) }}; then
-          #  # Set TEMP to full path instead of 8.3 short filenames.
-          #  # See <https://github.com/actions/virtual-environments/issues/712>.
-          #  # $USERPROFILE\\AppData\\Local\\Temp
-          #  [ -d 'C:\tmp' ] || mkdir 'C:\tmp';
-          #  echo 'TMP=C:\tmp' >> $GITHUB_ENV
-          #  echo 'TEMP=C:\tmp' >> $GITHUB_ENV
-          #fi
-
+    - name: setup Clang noise suppression (MacOS)
+      shell: bash
+      run: |
           # This is needed for Clang 12 due to
           # <https://github.com/Perl/perl5/issues/18780>.
+          echo "::group::setup Clang noise suppression (MacOS)"
           if ${{ toJSON( runner.os == 'macOS' ) }}; then
             PATCH_EUMM_DIR=$HOME/build_aux
             [ -d $PATCH_EUMM_DIR ] || mkdir $PATCH_EUMM_DIR
