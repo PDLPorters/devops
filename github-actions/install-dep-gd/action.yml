@@ -4,17 +4,15 @@ runs:
   steps:
     - name: Install GD (via apt-get)
       shell: bash
+      if: runner.os == 'Linux'
       run: |
-          if ${{ toJSON( runner.os == 'Linux' ) }}; then
-            echo "::group::Install GD (via apt-get)"
-            sudo apt-get -y update && sudo apt-get install --no-install-recommends -y libgd-dev
-            echo "::endgroup::"
-          fi
+          echo "::group::Install GD (via apt-get)"
+          sudo apt-get -y update && sudo apt-get install --no-install-recommends -y libgd-dev
+          echo "::endgroup::"
     - name: Install GD (via brew)
       shell: bash
+      if: runner.os == 'macOS'
       run: |
-          if ${{ toJSON( runner.os == 'macOS' ) }}; then
-            echo "::group::Install GD (via brew)"
-            brew install gd
-            echo "::endgroup::"
-          fi
+          echo "::group::Install GD (via brew)"
+          brew install gd
+          echo "::endgroup::"

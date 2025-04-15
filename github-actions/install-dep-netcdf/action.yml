@@ -4,17 +4,14 @@ runs:
   steps:
     - name: Install NetCDF (via apt-get)
       shell: bash
+      if: runner.os == 'Linux'
       run: |
-          if ${{ toJSON( runner.os == 'Linux' ) }}; then
-            echo "::group::Install NetCDF (via apt-get)"
-            sudo apt-get -y update && sudo apt-get install --no-install-recommends -y libnetcdf-dev
-            echo "::endgroup::"
-          fi
+          echo "::group::Install NetCDF (via apt-get)"
+          sudo apt-get -y update && sudo apt-get install --no-install-recommends -y libnetcdf-dev
+          echo "::endgroup::"
     - name: Install NetCDF (via brew)
       shell: bash
-      run: |
-          if ${{ toJSON( runner.os == 'macOS' ) }}; then
-            echo "::group::Install NetCDF (via brew)"
-            brew install netcdf
-            echo "::endgroup::"
-          fi
+      if: runner.os == 'macOS'
+          echo "::group::Install NetCDF (via brew)"
+          brew install netcdf
+          echo "::endgroup::"

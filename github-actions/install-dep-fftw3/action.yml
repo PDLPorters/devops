@@ -4,27 +4,23 @@ runs:
   steps:
     - name: Install FFTW3 (via apt-get)
       shell: bash
-      run: |
-          if ${{ toJSON( runner.os == 'Linux' ) }}; then
-            echo "::group::Install FFTW3 (via apt-get)"
-            sudo apt-get -y update && sudo apt-get install --no-install-recommends -y libfftw3-dev
-            echo "::endgroup::"
-          fi
+      if: runner.os == 'Linux'
+          echo "::group::Install FFTW3 (via apt-get)"
+          sudo apt-get -y update && sudo apt-get install --no-install-recommends -y libfftw3-dev
+          echo "::endgroup::"
     - name: Install FFTW3 (via brew)
       shell: bash
+      if: runner.os == 'macOS'
       run: |
-          if ${{ toJSON( runner.os == 'macOS' ) }}; then
-            echo "::group::Install FFTW3 (via brew)"
-            brew install fftw
-            echo "::endgroup::"
-          fi
+          echo "::group::Install FFTW3 (via brew)"
+          brew install fftw
+          echo "::endgroup::"
     - name: Install FFTW3 (via Alien::FFTW3)
       shell: bash
+      if: runner.os == 'Windows'
       run: |
-          if ${{ toJSON( runner.os == 'Windows' ) }}; then
-            echo "::group::Install FFTW3 (via Alien::FFTW3 TODO)"
-            # TODO Alien::FFTW3 does not have build support for MSWin32 yet
-            #$MYPERL -S cpanm -n Module::Build || ( cat ~/.cpanm/build.log && false )
-            #$MYPERL -S cpanm -n Alien::FFTW3 || ( cat ~/.cpanm/build.log && false )
-            echo "::endgroup::"
-          fi
+          echo "::group::Install FFTW3 (via Alien::FFTW3 TODO)"
+          # TODO Alien::FFTW3 does not have build support for MSWin32 yet
+          #$MYPERL -S cpanm -n Module::Build || ( cat ~/.cpanm/build.log && false )
+          #$MYPERL -S cpanm -n Alien::FFTW3 || ( cat ~/.cpanm/build.log && false )
+          echo "::endgroup::"

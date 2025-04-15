@@ -4,37 +4,34 @@ runs:
   steps:
     - name: Install gnuplot (via apt-get)
       shell: bash
+      if: runner.os == 'Linux'
       run: |
-          if ${{ toJSON( runner.os == 'Linux' ) }}; then
-            echo "::group::Install gnuplot (via apt-get)"
-            sudo apt-get -y update && sudo apt-get install --no-install-recommends -y gnuplot gnuplot-qt
-            echo "::endgroup::"
-          fi
+          echo "::group::Install gnuplot (via apt-get)"
+          sudo apt-get -y update && sudo apt-get install --no-install-recommends -y gnuplot gnuplot-qt
+          echo "::endgroup::"
     - name: Install gnuplot (via brew)
       shell: bash
+      if: runner.os == 'macOS'
       run: |
-          if ${{ toJSON( runner.os == 'macOS' ) }}; then
-            echo "::group::Install gnuplot (via brew)"
-            brew update
-            brew upgrade python || true # currently (2024-03-25) 3.12 link fails
-            HOMEBREW_NO_INSTALLED_DEPENDENTS_CHECK=1 brew install gnuplot
-            echo "::endgroup::"
-          fi
+          echo "::group::Install gnuplot (via brew)"
+          brew update
+          brew upgrade python || true # currently (2024-03-25) 3.12 link fails
+          HOMEBREW_NO_INSTALLED_DEPENDENTS_CHECK=1 brew install gnuplot
+          echo "::endgroup::"
     - name: Install gnuplot (extract from archive)
       shell: bash
+      if: runner.os == 'Windows'
       env:
         GNUPLOT_URI: "https://sourceforge.net/projects/gnuplot/files/gnuplot/5.4.6/gp546-win64-mingw-2.7z/download"
         GNUPLOT_FILE: "gp546-win64-mingw-2.7z"
       run: |
-          if ${{ toJSON( runner.os == 'Windows' ) }}; then
-            echo "::group::Install gnuplot (extract from archive)"
-            num_attempts=1
-            until \
-              pwsh -c ' [Net.ServicePointManager]::SecurityProtocol = "tls12, tls11, tls"; $request = Invoke-WebRequest -MaximumRetryCount 3 -UserAgent Curl -Uri  $Env:GNUPLOT_URI -OutFile $Env:GNUPLOT_FILE' \
-              || [[ $num_attempts -gt 3 ]]; do
-              echo $((num_attempts++));
-            done
-            7z x $GNUPLOT_FILE -o..
-            pwsh -c 'echo "'$( cygpath -w $( realpath ../gnuplot/bin ) )'" | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append'
-            echo "::endgroup::"
-          fi
+        echo "::group::Install gnuplot (extract from archive)"
+        num_attempts=1
+        until \
+          pwsh -c ' [Net.ServicePointManager]::SecurityProtocol = "tls12, tls11, tls"; $request = Invoke-WebRequest -MaximumRetryCount 3 -UserAgent Curl -Uri  $Env:GNUPLOT_URI -OutFile $Env:GNUPLOT_FILE' \
+          || [[ $num_attempts -gt 3 ]]; do
+          echo $((num_attempts++));
+        done
+        7z x $GNUPLOT_FILE -o..
+        pwsh -c 'echo "'$( cygpath -w $( realpath ../gnuplot/bin ) )'" | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append'
+        echo "::endgroup::"

@@ -4,23 +4,24 @@ runs:
   steps:
     - name: Install main PDL deps
       shell: bash
+      if: runner.os == 'Linux'
       run: |
-        if ${{ toJSON( runner.os == 'Linux' ) }}; then
-          echo "::group::Install main PDL deps (via apt-get)"
-          sudo apt-get -y update && \
-            sudo apt-get install --no-install-recommends -y build-essential libcfitsio-dev libreadline-dev libvpx-dev netpbm libnetpbm10-dev
-          echo "::endgroup::"
-        elif ${{ toJSON( runner.os == 'macOS' ) }}; then
-          echo "::group::Install main PDL deps (via brew)"
-          brew update
-          HOMEBREW_NO_INSTALLED_DEPENDENTS_CHECK=1 brew install netpbm
-          echo "::endgroup::"
-        fi
+        echo "::group::Install main PDL deps (via apt-get)"
+        sudo apt-get -y update && \
+          sudo apt-get install --no-install-recommends -y build-essential libcfitsio-dev libreadline-dev libvpx-dev netpbm libnetpbm10-dev
+        echo "::endgroup::"
+    - name: Install main PDL deps (via brew)
+      shell: bash
+      if: runner.os == 'macOS'
+      run: |
+        echo "::group::Install main PDL deps (via brew)"
+        brew update
+        HOMEBREW_NO_INSTALLED_DEPENDENTS_CHECK=1 brew install netpbm
+        echo "::endgroup::"
     - name: Install extra optional main PDL deps
       shell: bash
+      if: runner.os == 'Linux' || runner.os == 'macOS'
       run: |
-        if ${{ toJSON( runner.os == 'Linux' || runner.os == 'macOS' ) }}; then
-          echo "::group::Install extra optional main PDL deps (via cpanm)"
-          cpanm -n Term::ReadLine::Gnu Inline::C || cat ~/.cpanm/build.log
-          echo "::endgroup::"
-        fi
+        echo "::group::Install extra optional main PDL deps (via cpanm)"
+        cpanm -n Term::ReadLine::Gnu Inline::C || cat ~/.cpanm/build.log
+        echo "::endgroup::"

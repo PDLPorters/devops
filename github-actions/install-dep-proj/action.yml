@@ -4,17 +4,15 @@ runs:
   steps:
     - name: Install Proj (via apt-get)
       shell: bash
+      if: runner.os == 'Linux'
       run: |
-          if ${{ toJSON( runner.os == 'Linux' ) }}; then
-            echo "::group::Install Proj (via apt-get)"
-            sudo apt-get -y update && sudo apt-get install --no-install-recommends -y libproj-dev proj-bin
-            echo "::endgroup::"
-          fi
+          echo "::group::Install Proj (via apt-get)"
+          sudo apt-get -y update && sudo apt-get install --no-install-recommends -y libproj-dev proj-bin
+          echo "::endgroup::"
     - name: Install Proj (via brew)
       shell: bash
+      if: runner.os == 'macOS'
       run: |
-          if ${{ toJSON( runner.os == 'macOS' ) }}; then
-            echo "::group::Install Proj (via brew)"
-            brew install proj
-            echo "::endgroup::"
-          fi
+          echo "::group::Install Proj (via brew)"
+          brew install proj
+          echo "::endgroup::"

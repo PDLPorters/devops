@@ -4,14 +4,16 @@ runs:
   steps:
     - name: Install PGPLOT
       shell: bash
+      if: runner.os == 'Linux'
       run: |
-          if ${{ toJSON( runner.os == 'Linux' ) }}; then
-            echo "::group::Install PGPLOT (via apt-get)"
-            sudo apt-get -y update && sudo apt-get install --no-install-recommends -y pgplot5 libx11-dev
-            echo "::endgroup::"
-          elif ${{ toJSON( runner.os == 'macOS' ) }}; then
-            echo "::group::Install PGPLOT (via brew)"
-            export HOMEBREW_NO_INSTALLED_DEPENDENTS_CHECK=1
-            brew install kazuakiyama/pgplot/pgplot
-            echo "::endgroup::"
-          fi
+        echo "::group::Install PGPLOT (via apt-get)"
+        sudo apt-get -y update && sudo apt-get install --no-install-recommends -y pgplot5 libx11-dev
+        echo "::endgroup::"
+    - name: Install PGPLOT (via brew)
+      shell: bash
+      if: runner.os == 'macOS'
+      run: |
+        echo "::group::Install PGPLOT (via brew)"
+        export HOMEBREW_NO_INSTALLED_DEPENDENTS_CHECK=1
+        brew install kazuakiyama/pgplot/pgplot
+        echo "::endgroup::"

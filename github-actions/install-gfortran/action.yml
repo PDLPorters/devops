@@ -4,13 +4,15 @@ runs:
   steps:
     - name: Install gfortran
       shell: bash
+      if: runner.os == 'Linux'
       run: |
-          if ${{ toJSON( runner.os == 'Linux' ) }}; then
-            echo "::group::Install gfortran (via apt-get)"
-            sudo apt-get -y update && sudo apt-get install --no-install-recommends -y gfortran
-            echo "::endgroup::"
-          elif ${{ toJSON( runner.os == 'macOS' ) }}; then
-            echo "::group::Install gfortran (via brew)"
-            HOMEBREW_NO_INSTALLED_DEPENDENTS_CHECK=1 brew reinstall gfortran # python@3.12 link problem
-            echo "::endgroup::"
-          fi
+        echo "::group::Install gfortran (via apt-get)"
+        sudo apt-get -y update && sudo apt-get install --no-install-recommends -y gfortran
+        echo "::endgroup::"
+    - name: Install gfortran (via brew)
+      shell: bash
+      if: runner.os == 'macOS'
+      run: |
+        echo "::group::Install gfortran (via brew)"
+        HOMEBREW_NO_INSTALLED_DEPENDENTS_CHECK=1 brew reinstall gfortran # python@3.12 link problem
+        echo "::endgroup::"
