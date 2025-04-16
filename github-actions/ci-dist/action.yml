@@ -382,7 +382,7 @@ runs:
             echo "::group::test (no coverage)"
             cd ${{ inputs.path }}
             if [ -f Makefile.PL ]; then
-              ( $TEST_RUNNER_PREFIX make && $TEST_RUNNER_PREFIX make test ) || exit 1
+              ( $TEST_RUNNER_PREFIX $MYMAKE && $TEST_RUNNER_PREFIX $MYMAKE test ) || exit 1
             elif [ -f Build.PL ]; then
               ( $TEST_RUNNER_PREFIX $MYPERL Build test ) || exit 1
             else
