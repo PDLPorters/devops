@@ -205,27 +205,13 @@ runs:
           echo "::endgroup::"
         fi
     # Target: target-setup-perl
-    - name: target-setup-perl (actions-setup-perl)
-      shell: bash
-      run: |
-          if ${{ toJSON(
-                (  fromJSON(inputs.target-all)
-                || fromJSON(inputs.target-setup-perl)
-                )
-              ) }}; then
-            echo "::group::setup-perl (actions-setup-perl)"
-            git clone \
-                    https://github.com/shogo82148/actions-setup-perl.git \
-                    -b v1 \
-                    .github/actions/actions-setup-perl;
-            node .github/actions/actions-setup-perl/dist/setup/index.js
-            echo "::endgroup::"
-          fi
-      env:
-        INPUT_DISTRIBUTION: ${{ inputs.perl-distribution }}
-        INPUT_PERL-VERSION: ${{ inputs.perl-version }}
-        INPUT_MULTI-THREAD: ${{ inputs.perl-threaded }}
-        INPUT_ENABLE-MODULES-CACHE: false
+    - uses: shogo82148/actions-setup-perl@v1
+      if: inputs.target-all == 'true' || inputs.target-setup-perl == 'true'
+      with:
+        distribution: ${{ inputs.perl-distribution }}
+        perl-version: ${{ inputs.perl-version }}
+        multi-thread: ${{ inputs.perl-threaded }}
+        enable-modules-cache: false
     - name: target-setup-perl (perl -V)
       shell: bash
       run: |
