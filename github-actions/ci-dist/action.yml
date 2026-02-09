@@ -337,7 +337,7 @@ runs:
             echo "::group::test (prepare for testing)"
             cd ${{ inputs.path }}
             if [ -f Makefile.PL ]; then
-              ( [ -f Makefile ] || $BUILD_RUNNER_PREFIX $MYPERL Makefile.PL )
+              ( [ -f Makefile ] || $BUILD_RUNNER_PREFIX $MYPERL Makefile.PL verbose )
             elif [ -f Build.PL ]; then
               ( [ -f Build ] || $BUILD_RUNNER_PREFIX $MYPERL Build.PL )
             else
