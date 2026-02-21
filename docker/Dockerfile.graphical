@@ -1,5 +1,5 @@
 ARG BASE_CONTAINER=pdl:latest
-FROM $BASE_CONTAINER as base
+FROM $BASE_CONTAINER AS base
 
 RUN apt-get update \
 	&& apt-get install --no-install-recommends -y \

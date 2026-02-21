@@ -1,6 +1,6 @@
 ARG BASE_CONTAINER=perl:5.34
 ARG NCPUS=4
-FROM $BASE_CONTAINER as base
+FROM $BASE_CONTAINER AS base
 
 WORKDIR /pdl
 
@@ -12,7 +12,7 @@ ENV PERL5LIB="${PERL_LOCAL_LIB_ROOT}/lib/perl5${PERL5LIB:+:${PERL5LIB}}"
 ENV PERL_MB_OPT="--install_base \"${PERL_LOCAL_LIB_ROOT}\""
 ENV PERL_MM_OPT="INSTALL_BASE=${PERL_LOCAL_LIB_ROOT}"
 
-FROM base as deps
+FROM base AS deps
 # non-free for e.g. pgplot5
 RUN apt-get update \
 	&& apt-get install -y software-properties-common \
@@ -23,7 +23,7 @@ RUN apt-get update \
 		libcfitsio-dev libreadline-dev libvpx-dev \
 		netpbm libnetpbm10-dev
 
-FROM deps as builder
+FROM deps AS builder
 COPY . /pdl/src
 RUN cd /pdl/src && (cpanm -nq \
 	    Devel::CheckLib ExtUtils::MakeMaker \
@@ -32,7 +32,7 @@ RUN cd /pdl/src && (cpanm -nq \
 	&& cpanm --verbose --build-args -j${NCPUS} . \
 	) || ( cat ~/.cpanm/build.log && false )
 
-FROM deps as run
+FROM deps AS run
 COPY --from=builder ${PERL_LOCAL_LIB_ROOT} ${PERL_LOCAL_LIB_ROOT}
 # Download CPAN metadata for builds
 RUN cpanm -nq strict
