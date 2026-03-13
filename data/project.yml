@@ -279,6 +279,8 @@ groups:
       repo: https://github.com/kmx/pdl-datetime
     - dist: PDL-Finance-TA
       repo: https://github.com/kmx/pdl-finance-ta
+      #apt: # commented as only in Debian as of Jun 2025, so not in trixie
+      #  - ta-lib-dev
     - dist: PDL-Finance-Talib
       repo: https://github.com/kmx/pdl-finance-talib
       skip: |
