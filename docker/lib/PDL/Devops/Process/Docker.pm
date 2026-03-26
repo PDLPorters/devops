@@ -31,7 +31,7 @@ sub run {
 			: ()
 			),
 			qw(--build-arg), "CPANM_CONFIGURE_DEPS=$dep_modules",
-			qw(--build-arg), "CPANM_ARGS=$main_module",
+			qw(--build-arg), "CPANM_ARGS=-v $main_module",
 			( $apt_pkgs
 			? ( qw(--build-arg), "APT_PKGS=$apt_pkgs", )
 			: ()
