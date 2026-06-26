@@ -15,8 +15,7 @@ runs:
       if: runner.os == 'macOS'
       run: |
         echo "::group::Install main PDL deps (via brew)"
-        brew update
-        HOMEBREW_NO_INSTALLED_DEPENDENTS_CHECK=1 brew install netpbm
+        brew install netpbm
         echo "::endgroup::"
     - name: Install extra optional main PDL deps
       shell: bash
