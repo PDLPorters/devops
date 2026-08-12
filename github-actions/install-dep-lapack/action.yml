@@ -10,10 +10,10 @@ runs:
             echo "::group::Install LAPACK (via apt-get)"
             sudo apt-get -y update && sudo apt-get install --no-install-recommends -y liblapack-dev
             echo "::endgroup::"
-    - name: Install LAPACK (via brew)
+    - name: Install OpenBLAS (via brew)
       shell: bash
       if: runner.os == 'macOS'
       run: |
-          echo "::group::Install LAPACK (via brew)"
-          brew install lapack
+          echo "::group::Install OpenBLAS (via brew)"
+          brew install openblas
           echo "::endgroup::"
