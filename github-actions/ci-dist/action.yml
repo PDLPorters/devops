@@ -289,12 +289,14 @@ runs:
                 || fromJSON(inputs.target-install-dist-perl-deps)
                 )
               ) }}; then
-            echo "::group::install-dist-perl-deps (via cpanm)"
             cd ${{ inputs.path }}
             if [ -n "${{ inputs.dist-perl-deps-configure }}" ]; then
-              $BUILD_RUNNER_PREFIX $MYPERL -S cpanm --dev -n ${{ inputs.dist-perl-deps-configure }} || ( cat ~/.cpanm/build.log && false )
+              echo "::group::install-dist-perl-configure-deps (via cpanm)"
+              $BUILD_RUNNER_PREFIX $MYPERL -S cpanm --dev -n -v ${{ inputs.dist-perl-deps-configure }}
+              echo "::endgroup::"
             fi
-            $BUILD_RUNNER_PREFIX $MYPERL -S cpanm -n --installdeps --dev . || ( cat ~/.cpanm/build.log && false )
+            echo "::group::install-dist-perl-deps (via cpanm)"
+            $BUILD_RUNNER_PREFIX $MYPERL -S cpanm -n -v --installdeps --dev .
             echo "::endgroup::"
           fi
     # Target: target-test-release-testing
