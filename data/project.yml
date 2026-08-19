@@ -104,6 +104,8 @@ groups:
       dist: PDL-IO-ENVI
     - repo: https://github.com/PDLPorters/PDL-Opt-Simplex
       dist: PDL-Opt-Simplex
+    - repo: https://github.com/PDLPorters/PDL-Filter
+      dist: PDL-Filter
     - repo: https://github.com/PDLPorters/PDL-Fit
       dist: PDL-Fit
     - repo: https://github.com/PDLPorters/PDL-IO-GD
