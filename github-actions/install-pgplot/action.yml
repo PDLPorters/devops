@@ -15,5 +15,5 @@ runs:
       run: |
         echo "::group::Install PGPLOT (via brew)"
         export HOMEBREW_NO_INSTALLED_DEPENDENTS_CHECK=1
-        brew install kazuakiyama/pgplot/pgplot
+        brew install kazuakiyama/vlbi/pgplot
         echo "::endgroup::"
