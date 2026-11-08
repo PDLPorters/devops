@@ -33,7 +33,7 @@ groups:
     - repo: https://github.com/PDLPorters/perl5-PGPLOT
       dist: PGPLOT
       apt:
-        - pgplot5
+        - pgplot5-dev
         - gfortran
     - repo: https://github.com/PDLPorters/PDL-Graphics-TriD
       dist: PDL-Graphics-TriD

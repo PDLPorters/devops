@@ -7,7 +7,7 @@ runs:
       if: runner.os == 'Linux'
       run: |
         echo "::group::Install PGPLOT (via apt-get)"
-        sudo apt-get -y update && sudo apt-get install --no-install-recommends -y pgplot5 libx11-dev
+        sudo apt-get -y update && sudo apt-get install --no-install-recommends -y pgplot5-dev libx11-dev
         echo "::endgroup::"
     - name: Install PGPLOT (via brew)
       shell: bash
