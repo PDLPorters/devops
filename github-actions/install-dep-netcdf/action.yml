@@ -12,6 +12,7 @@ runs:
     - name: Install NetCDF (via brew)
       shell: bash
       if: runner.os == 'macOS'
+      run: |
           echo "::group::Install NetCDF (via brew)"
           brew install netcdf
           echo "::endgroup::"
