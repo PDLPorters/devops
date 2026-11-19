@@ -8,7 +8,7 @@ runs:
       run: |
         echo "::group::Install main PDL deps (via apt-get)"
         sudo apt-get -y update && \
-          sudo apt-get install --no-install-recommends -y build-essential libcfitsio-dev libreadline-dev libvpx-dev netpbm libnetpbm10-dev
+          sudo apt-get install --no-install-recommends -y build-essential libcfitsio-dev libreadline-dev libvpx-dev netpbm libnetpbm-dev
         echo "::endgroup::"
     - name: Install main PDL deps (via brew)
       shell: bash
