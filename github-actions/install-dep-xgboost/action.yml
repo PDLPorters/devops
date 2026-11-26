@@ -1,0 +1,29 @@
+name: Install XGBoost
+runs:
+  using: "composite"
+  steps:
+    - name: Install XGBoost (via apt-get)
+      shell: bash
+      if: runner.os == 'Linux'
+      run: |
+        echo "::group::Install XGBoost (via apt-get)"
+        sudo apt-get -y update && sudo apt-get install --no-install-recommends -y libxgboost-dev pkg-config
+        echo "::endgroup::"
+    - name: Install XGBoost (via brew)
+      shell: bash
+      if: runner.os == 'macOS'
+      run: |
+        echo "::group::Install XGBoost (via brew)"
+        brew install xgboost pkg-config
+        echo "PKG_CONFIG_PATH=$(brew --prefix)/lib/pkgconfig:${PKG_CONFIG_PATH:-}" >> "$GITHUB_ENV"
+        echo "::endgroup::"
+    - name: Install XGBoost (via vcpkg)
+      shell: bash
+      if: runner.os == 'Windows'
+      run: |
+        echo "::group::Install XGBoost (via vcpkg)"
+        vcpkg install xgboost:x64-windows
+        VCPKG_PREFIX="$(cygpath -w "$VCPKG_INSTALLATION_ROOT")\\installed\\x64-windows"
+        echo "PKG_CONFIG_PATH=${VCPKG_PREFIX}\\lib\\pkgconfig" >> "$GITHUB_ENV"
+        echo "${VCPKG_PREFIX}\\bin" >> "$GITHUB_PATH"
+        echo "::endgroup::"

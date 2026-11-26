@@ -1,0 +1,28 @@
+name: Install FAISS
+runs:
+  using: "composite"
+  steps:
+    - name: Install FAISS (via apt-get)
+      shell: bash
+      if: runner.os == 'Linux'
+      run: |
+        echo "::group::Install FAISS (via apt-get)"
+        sudo apt-get -y update && sudo apt-get install --no-install-recommends -y libfaiss-dev libblas-dev liblapack-dev
+        echo "::endgroup::"
+    - name: Install FAISS (via brew)
+      shell: bash
+      if: runner.os == 'macOS'
+      run: |
+        echo "::group::Install FAISS (via brew)"
+        brew install faiss
+        echo "::endgroup::"
+    - name: Install FAISS (via vcpkg)
+      shell: bash
+      if: runner.os == 'Windows'
+      run: |
+        echo "::group::Install FAISS (via vcpkg)"
+        vcpkg install faiss:x64-windows
+        VCPKG_PREFIX="$(cygpath -w "$VCPKG_INSTALLATION_ROOT")\\installed\\x64-windows"
+        echo "PKG_CONFIG_PATH=${VCPKG_PREFIX}\\lib\\pkgconfig" >> "$GITHUB_ENV"
+        echo "${VCPKG_PREFIX}\\bin" >> "$GITHUB_PATH"
+        echo "::endgroup::"
