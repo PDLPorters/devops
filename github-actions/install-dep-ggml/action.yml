@@ -1,0 +1,29 @@
+name: Install GGML
+runs:
+  using: "composite"
+  steps:
+    - name: Install GGML (via apt-get)
+      shell: bash
+      if: runner.os == 'Linux'
+      run: |
+        echo "::group::Install GGML (via apt-get)"
+        sudo apt-get -y update && sudo apt-get install --no-install-recommends -y libggml-dev pkg-config
+        echo "::endgroup::"
+    - name: Install GGML (via brew)
+      shell: bash
+      if: runner.os == 'macOS'
+      run: |
+        echo "::group::Install GGML (via brew)"
+        brew install ggml pkg-config
+        echo "PKG_CONFIG_PATH=$(brew --prefix)/lib/pkgconfig:${PKG_CONFIG_PATH:-}" >> "$GITHUB_ENV"
+        echo "::endgroup::"
+    - name: Install GGML (via vcpkg)
+      shell: bash
+      if: runner.os == 'Windows'
+      run: |
+        echo "::group::Install GGML (via vcpkg)"
+        vcpkg install ggml:x64-windows
+        VCPKG_PREFIX="$(cygpath -w "$VCPKG_INSTALLATION_ROOT")\\installed\\x64-windows"
+        echo "PKG_CONFIG_PATH=${VCPKG_PREFIX}\\lib\\pkgconfig" >> "$GITHUB_ENV"
+        echo "${VCPKG_PREFIX}\\bin" >> "$GITHUB_PATH"
+        echo "::endgroup::"
