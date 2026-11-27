@@ -1,0 +1,29 @@
+name: Install Apache Arrow
+runs:
+  using: "composite"
+  steps:
+    - name: Install Apache Arrow (via apt-get)
+      shell: bash
+      if: runner.os == 'Linux'
+      run: |
+        echo "::group::Install Apache Arrow (via apt-get)"
+        sudo apt-get -y update && sudo apt-get install --no-install-recommends -y libarrow-dev libparquet-dev pkg-config
+        echo "::endgroup::"
+    - name: Install Apache Arrow (via brew)
+      shell: bash
+      if: runner.os == 'macOS'
+      run: |
+        echo "::group::Install Apache Arrow (via brew)"
+        brew install apache-arrow pkg-config
+        echo "PKG_CONFIG_PATH=$(brew --prefix)/lib/pkgconfig:${PKG_CONFIG_PATH:-}" >> "$GITHUB_ENV"
+        echo "::endgroup::"
+    - name: Install Apache Arrow (via vcpkg)
+      shell: bash
+      if: runner.os == 'Windows'
+      run: |
+        echo "::group::Install Apache Arrow (via vcpkg)"
+        vcpkg install arrow:x64-windows
+        VCPKG_PREFIX="$(cygpath -w "$VCPKG_INSTALLATION_ROOT")\\installed\\x64-windows"
+        echo "PKG_CONFIG_PATH=${VCPKG_PREFIX}\\lib\\pkgconfig" >> "$GITHUB_ENV"
+        echo "${VCPKG_PREFIX}\\bin" >> "$GITHUB_PATH"
+        echo "::endgroup::"

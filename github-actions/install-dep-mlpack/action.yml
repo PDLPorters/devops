@@ -1,0 +1,28 @@
+name: Install mlpack
+runs:
+  using: "composite"
+  steps:
+    - name: Install mlpack (via apt-get)
+      shell: bash
+      if: runner.os == 'Linux'
+      run: |
+        echo "::group::Install mlpack (via apt-get)"
+        sudo apt-get -y update && sudo apt-get install --no-install-recommends -y libmlpack-dev libarmadillo-dev libblas-dev liblapack-dev
+        echo "::endgroup::"
+    - name: Install mlpack (via brew)
+      shell: bash
+      if: runner.os == 'macOS'
+      run: |
+        echo "::group::Install mlpack (via brew)"
+        brew install mlpack armadillo
+        echo "::endgroup::"
+    - name: Install mlpack (via vcpkg)
+      shell: bash
+      if: runner.os == 'Windows'
+      run: |
+        echo "::group::Install mlpack (via vcpkg)"
+        vcpkg install mlpack:x64-windows
+        VCPKG_PREFIX="$(cygpath -w "$VCPKG_INSTALLATION_ROOT")\\installed\\x64-windows"
+        echo "PKG_CONFIG_PATH=${VCPKG_PREFIX}\\lib\\pkgconfig" >> "$GITHUB_ENV"
+        echo "${VCPKG_PREFIX}\\bin" >> "$GITHUB_PATH"
+        echo "::endgroup::"

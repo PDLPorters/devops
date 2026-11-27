@@ -1,0 +1,28 @@
+name: Install ONNX Runtime
+runs:
+  using: "composite"
+  steps:
+    - name: Install ONNX Runtime (via apt-get)
+      shell: bash
+      if: runner.os == 'Linux'
+      run: |
+        echo "::group::Install ONNX Runtime (via apt-get)"
+        sudo apt-get -y update && sudo apt-get install --no-install-recommends -y libonnxruntime-dev
+        echo "::endgroup::"
+    - name: Install ONNX Runtime (via brew)
+      shell: bash
+      if: runner.os == 'macOS'
+      run: |
+        echo "::group::Install ONNX Runtime (via brew)"
+        brew install onnxruntime
+        echo "::endgroup::"
+    - name: Install ONNX Runtime (via vcpkg)
+      shell: bash
+      if: runner.os == 'Windows'
+      run: |
+        echo "::group::Install ONNX Runtime (via vcpkg)"
+        vcpkg install onnxruntime:x64-windows
+        VCPKG_PREFIX="$(cygpath -w "$VCPKG_INSTALLATION_ROOT")\\installed\\x64-windows"
+        echo "PKG_CONFIG_PATH=${VCPKG_PREFIX}\\lib\\pkgconfig" >> "$GITHUB_ENV"
+        echo "${VCPKG_PREFIX}\\bin" >> "$GITHUB_PATH"
+        echo "::endgroup::"
